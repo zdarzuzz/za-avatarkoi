@@ -1,0 +1,9 @@
+/* Точка входа стилей. Порядок важен: токены → база → сетка → компоненты → разделы → анимации → адаптив. */
+@import url('variables.css');
+@import url('fonts.css');
+@import url('base.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('sections.css');
+@import url('animations.css');
+@import url('responsive.css');

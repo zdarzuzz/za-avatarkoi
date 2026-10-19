@@ -1,0 +1,86 @@
+/* Токены, снятые со слоёв и стилей Figma (файл oEoEN5CxftTMHekTa4hbSt).
+   Значения не подбирались по скриншоту: каждый цвет взят из заливки/обводки/текста слоя.
+   Близкие оттенки сохранены раздельно, как в макете. */
+
+:root {
+  /* — Цвета — */
+  --color-bg: #fbeed5;                     /* фон фреймов, переменная Figma --color */
+  --color-bg-transparent: rgba(251, 236, 211, 0);  /* начало градиента обложки (image 21/26) */
+  --color-bg-transparent-alt: rgba(251, 238, 213, 0); /* середина градиента иллюстрации в статьях (image 23) */
+  --color-red: #c03740;                    /* --color-6: кнопки, рамки кадров, линии, акцентный текст */
+  --color-red-fill: rgba(192, 55, 64, 0.7);/* заливка кнопок-плашек: #C03740, fill-opacity 0.7 */
+  --color-red-name: #b93637;               /* имя в анкете (MacBook Air 7–12) */
+  --color-graphite: #292526;               /* --color-4: подписи, реплики, круг активной иконки, соринка */
+  --color-pink: #ffe8e7;                   /* --color-3: текст на красном */
+  --color-ink: #000000;                    /* основной текст и заголовки */
+  --color-ink-soft: #111111;               /* строка «Интересы» */
+  --color-white: #ffffff;                  /* текст «Продолжить общение» */
+  --color-muted: #b8b2a6;                  /* круг неактивной иконки (Ellipse 13) */
+
+  /* Состояния, которых нет в макете, — только через прозрачность цветов палитры */
+  --color-red-a18: rgba(192, 55, 64, 0.18);      /* растр плейсхолдера */
+  --color-red-a45: rgba(192, 55, 64, 0.45);      /* подсветка карточки при возврате */
+  --color-graphite-a55: rgba(41, 37, 38, 0.55);  /* затемнение под панелями */
+
+  /* — Шрифты — */
+  --font-display: 'ckazka', 'Cormorant Garamond', serif;
+  --font-text: 'Cormorant Garamond', serif;
+  --font-ui: 'Factor A', 'Factor A TRIAL', 'Golos Text', system-ui, sans-serif;
+
+  /* Масштаб: 1 макетный пиксель при ширине 1440 */
+  --page: min(100vw, 1440px);
+  --u: calc(var(--page) / 1440);
+
+  /* Размеры шрифтов из макета (в макетных пикселях × масштаб) */
+  --fs-hero: calc(190 * var(--u));
+  --fs-h1: calc(100 * var(--u));
+  --fs-h2: calc(60 * var(--u));
+  --fs-h3: calc(50 * var(--u));
+  --fs-option: calc(35 * var(--u));
+  --fs-body: calc(32 * var(--u));
+  --fs-small: calc(24 * var(--u));
+
+  --gutter: calc(75 * var(--u));
+  --line: 1px solid var(--color-red);
+  --radius-poll: calc(30 * var(--u));
+  --radius-bubble: calc(20 * var(--u));
+  --bubble-border: calc(3 * var(--u));
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --t-fast: 0.25s;
+  --t: 0.5s;
+
+  --focus: 0 0 0 3px var(--color-bg), 0 0 0 5px var(--color-red);
+}
+
+/* Планшет */
+@media (max-width: 1024px) {
+  :root {
+    --fs-h1: clamp(44px, 8.2vw, 84px);
+    --fs-h2: clamp(32px, 5vw, 50px);
+    --fs-h3: clamp(28px, 4.2vw, 42px);
+    --fs-body: clamp(18px, 2.4vw, 24px);
+    --fs-small: clamp(16px, 1.9vw, 19px);
+    --fs-option: clamp(20px, 2.8vw, 28px);
+    --gutter: clamp(20px, 4vw, 48px);
+    --radius-poll: 24px;
+    --radius-bubble: 14px;
+    --bubble-border: 2px;
+  }
+}
+
+/* Телефон */
+@media (max-width: 600px) {
+  :root {
+    --fs-hero: clamp(56px, 17vw, 96px);
+    --fs-h1: clamp(40px, 11vw, 56px);
+    --fs-h2: clamp(28px, 8vw, 40px);
+    --fs-h3: clamp(26px, 7vw, 34px);
+    --fs-body: 18px;
+    --fs-small: 16px;
+    --fs-option: 21px;
+    --gutter: 16px;
+    --radius-poll: 20px;
+    --radius-bubble: 12px;
+  }
+}

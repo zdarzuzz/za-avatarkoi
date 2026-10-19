@@ -1,0 +1,85 @@
+/* Появление при прокрутке (статьи) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* Кадры манги: мягкое проявление и небольшое смещение, реплики — чуть позже */
+.panel-frame[data-panel] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: var(--delay, 0s);
+}
+.panel-frame[data-panel] .bubble {
+  opacity: 0;
+  transform: translateY(6px) scale(0.97);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+  transition-delay: calc(var(--delay, 0s) + 0.35s + var(--bdelay, 0s));
+}
+.panel-frame[data-panel].is-visible { opacity: 1; transform: none; }
+.panel-frame[data-panel].is-visible .bubble { opacity: 1; transform: none; }
+/* повторный просмотр: без ожидания */
+.manga--seen .panel-frame[data-panel],
+.manga--seen .panel-frame[data-panel] .bubble {
+  transition-duration: 0.25s;
+  transition-delay: 0s;
+}
+
+/* Смена анкеты */
+.profile { transition: opacity 0.45s var(--ease), transform 0.45s var(--ease); }
+.profile.is-entering { opacity: 0; transform: translateX(40px); }
+.profile.is-leaving { opacity: 0; transform: translateX(-40px); }
+.profile.is-leaving-skip { opacity: 0; transform: translateX(-40px); }
+
+/* Опрос */
+.poll { transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), clip-path 0.55s var(--ease); clip-path: inset(0 0 0 0 round var(--radius-poll)); }
+.poll.is-hidden { opacity: 0; transform: translateY(16px); clip-path: inset(0 0 100% 0 round var(--radius-poll)); }
+
+/* Смена истории */
+.story { transition: opacity 0.4s var(--ease); }
+.story.is-switching { opacity: 0; }
+
+/* Переход статьи → итог */
+.articles.is-leaving,
+.review.is-leaving { opacity: 0; transform: translateY(-20px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+.review.is-entering,
+.articles.is-entering { opacity: 0; transform: translateY(20px); }
+.review, .articles { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+
+/* Подсказки и выбранные состояния */
+.story__hint { transition: opacity 0.35s var(--ease); }
+.story__hint.is-updating { opacity: 0; }
+
+.review-card { transition: transform var(--t) var(--ease); }
+.review-card.is-flash { animation: card-flash 1.2s var(--ease); }
+@keyframes card-flash {
+  0%, 100% { filter: none; }
+  30% { filter: drop-shadow(0 0 0.5rem var(--color-red-a45)); }
+}
+
+/* Уменьшенное движение: без сложных перемещений, контент и переходы сохраняются */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  [data-reveal],
+  .panel-frame[data-panel],
+  .panel-frame[data-panel] .bubble {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .profile, .poll, .story, .articles, .review { transition: opacity 0.2s linear; transform: none !important; }
+  .profile.is-entering, .profile.is-leaving, .profile.is-leaving-skip { transform: none; }
+  .flip-card__inner { transition: none; }
+  .flip-card__btn[aria-pressed='true'] .flip-card__inner { transform: none; }
+  .flip-card__btn[aria-pressed='true'] .flip-card__face--front { visibility: hidden; }
+  .flip-card__face--back { transform: none; visibility: hidden; }
+  .flip-card__btn[aria-pressed='true'] .flip-card__face--back { visibility: visible; }
+  .btn-plaque, .round-btn, .avatar-btn { transition: none; }
+}

@@ -1,0 +1,314 @@
+/* ───────── Кнопка-плашка: декоративная рамка (button-frame) + заливка (#C03740 · 0.7) ───────── */
+.btn-plaque {
+  --w: 417;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: calc(var(--w) * var(--u));
+  aspect-ratio: 3 / 1;
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  color: var(--color-red);
+  isolation: isolate;
+  transition: transform var(--t-fast) var(--ease);
+}
+.btn-plaque::before {
+  /* заливка — слой «Vector», лежит под рамкой */
+  content: '';
+  position: absolute;
+  inset: 25.2% 2.6% 28.6% 3.1%;
+  background: url('../assets/images/decorations/next-fill.svg') center / 100% 100% no-repeat;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease);
+  z-index: -2;
+}
+.btn-plaque::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../assets/images/decorations/button-frame.webp') center / 100% 100% no-repeat;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-plaque > span { padding: 0 12%; text-align: center; line-height: 1.05; }
+.btn-plaque--fill { color: var(--color-pink); }
+.btn-plaque--fill::before { opacity: 1; }
+.btn-plaque--ui { font-family: var(--font-ui); font-weight: 400; }
+.btn-plaque--ui.btn-plaque--fill { color: var(--color-white); }
+.btn-plaque:focus-visible { box-shadow: none; }
+.btn-plaque:focus-visible > span { box-shadow: var(--focus); border-radius: 4px; }
+@media (hover: hover) {
+  .btn-plaque:not(:disabled):hover { transform: translateY(-2px); }
+  .btn-plaque:not(.btn-plaque--fill):not(:disabled):hover::before { opacity: 0.18; }
+}
+.btn-plaque:active { transform: translateY(1px); }
+.btn-plaque[aria-pressed='true'] { color: var(--color-pink); }
+.btn-plaque[aria-pressed='true']::before { opacity: 1; }
+.btn-plaque:disabled { cursor: default; }
+
+/* ───────── Информационная плашка (не кнопка): «Твой первый выбор», «Причина» ───────── */
+.info-plaque { display: grid; gap: calc(-15 * var(--u)); }
+.info-plaque__label {
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--color-graphite);
+  padding-left: calc(21 * var(--u));
+}
+.info-plaque__value {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: calc(438 * var(--u));
+  aspect-ratio: 438 / 146;
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  color: var(--color-pink);
+  isolation: isolate;
+  margin-top: calc(-15 * var(--u));
+}
+.info-plaque__value::before {
+  content: '';
+  position: absolute;
+  left: 2.5%; right: 2.1%; top: 24.7%; bottom: 28.8%;
+  background: url('../assets/images/decorations/plaque-fill.svg') center / 100% 100% no-repeat;
+  z-index: -2;
+}
+.info-plaque__value::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../assets/images/decorations/button-frame.webp') center / 100% 100% no-repeat;
+  z-index: -1;
+}
+.info-plaque__value--empty { color: var(--color-red); }
+.info-plaque__value--empty::before { opacity: 0; }
+
+/* ───────── Круглые кнопки (на месте серых кружков макета) ───────── */
+.round-btn {
+  --size: 71;
+  width: calc(var(--size) * var(--u));
+  height: calc(var(--size) * var(--u));
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--color-red);
+  color: var(--color-red);
+  background: transparent;
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.round-btn svg {
+  width: 46%;
+  height: 46%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.round-btn--arrow { --size: 89; }
+.round-btn--dark { border-color: var(--color-graphite); color: var(--color-graphite); }
+@media (hover: hover) {
+  .round-btn:hover { background: var(--color-red-fill); color: var(--color-pink); }
+  .round-btn--dark:hover { background: var(--color-graphite); color: var(--color-bg); }
+}
+.round-btn[aria-pressed='true'] { background: var(--color-red); color: var(--color-pink); }
+.round-btn:focus-visible { border-radius: 50%; }
+.round-btn:active { transform: scale(0.94); }
+.round-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* ───────── Текстовая ссылка-кнопка ───────── */
+.text-link {
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--color-red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  padding: 6px 0;
+}
+@media (hover: hover) { .text-link:hover { text-decoration-thickness: 2px; } }
+
+/* ───────── Иконки персонажей (ряд из шести кругов, MacBook Air 13/15) ───────── */
+.avatar {
+  --d: 199;
+  position: relative;
+  width: calc(var(--d) * var(--u));
+  height: calc(var(--d) * var(--u));
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-muted);
+  display: block;
+}
+.avatar img {
+  position: absolute;
+  max-width: none;
+  left: var(--l); top: var(--t);
+  width: var(--w); height: var(--h);
+  object-fit: cover;
+}
+.avatar--flip img { transform: scaleX(-1); }
+.avatar .avatar__red { opacity: 0; transition: opacity var(--t) var(--ease); }
+.avatar .avatar__mono { transition: opacity var(--t) var(--ease); }
+.avatar--active { background: var(--color-graphite); }
+.avatar--active .avatar__red { opacity: 1; }
+.avatar--active .avatar__mono { opacity: 0; }
+
+/* ───────── Плейсхолдер отсутствующего ассета ───────── */
+.asset-missing {
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+  border: 1px dashed var(--color-red);
+  color: var(--color-red);
+  font-family: var(--font-text);
+  font-size: var(--fs-small);
+  background:
+    radial-gradient(circle at 1px 1px, var(--color-red-a18) 1px, transparent 1.4px) 0 0 / 7px 7px,
+    var(--color-bg);
+}
+.asset-missing small { font-size: 0.75em; color: var(--color-graphite); font-weight: 400; }
+
+/* ───────── Манга: ряды кадров и реплики ───────── */
+.manga {
+  container-type: inline-size;
+  display: grid;
+  gap: calc(15 * var(--u));
+}
+.manga__row {
+  display: flex;
+  gap: calc(15 * var(--u));
+}
+.panel-frame {
+  position: relative;
+  flex: var(--grow) 1 0;
+  aspect-ratio: var(--ar);
+  border: 3px solid var(--color-red);
+  overflow: hidden;
+  background: var(--color-bg);
+}
+.panel-frame__img {
+  position: absolute;
+  max-width: none;
+}
+.panel-frame__img--fit {
+  left: var(--l); top: var(--t);
+  width: var(--w); height: var(--h);
+}
+.panel-frame__img--cover {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.panel-frame .asset-missing {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  min-height: 0;
+  font-size: clamp(11px, 2.2cqw, 18px);
+}
+.panel-frame .asset-missing small { font-size: clamp(10px, 1.6cqw, 14px); }
+
+.bubble {
+  position: absolute;
+  left: var(--x); top: var(--y);
+  max-width: var(--bw);
+  padding: 0.3em 0.7em 0.35em;
+  background: var(--color-bg);
+  border: var(--bubble-border) solid var(--color-red);
+  border-radius: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) 0;
+  font-family: var(--font-text);
+  font-weight: 600;
+  /* 24 px при колонке 797 px — масштабируется вместе с кадром */
+  font-size: clamp(11px, 3cqw, 24px);
+  line-height: 1.12;
+  color: var(--color-graphite);
+  z-index: 1;
+}
+.bubble--br { border-radius: var(--radius-bubble) var(--radius-bubble) 0 var(--radius-bubble); }
+.bubble--tl { border-radius: 0 var(--radius-bubble) var(--radius-bubble) var(--radius-bubble); }
+.bubble--tr { border-radius: var(--radius-bubble) 0 var(--radius-bubble) var(--radius-bubble); }
+.bubble--you { font-style: italic; }
+.bubble .visually-hidden { font-style: normal; }
+
+/* ───────── Переворачивающиеся карточки ───────── */
+.flip-card {
+  perspective: 1200px;
+}
+.flip-card__btn {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 445 / 297;
+  display: block;
+  text-align: center;
+}
+.flip-card__inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease);
+}
+.flip-card__btn[aria-pressed='true'] .flip-card__inner { transform: rotateY(180deg); }
+.flip-card__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18% 16%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: url('../assets/images/decorations/card-frame.webp') center / 100% 100% no-repeat;
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  line-height: normal;
+  color: var(--color-ink);
+}
+.flip-card__face--back {
+  transform: rotateY(180deg);
+  color: var(--color-red);
+}
+.flip-card__tag {
+  position: absolute;
+  left: 0; right: 0; bottom: 13%;
+  font-size: var(--fs-small);
+  font-weight: 400;
+  color: var(--color-graphite);
+}
+.flip-card__btn:focus-visible { box-shadow: none; }
+.flip-card__btn:focus-visible .flip-card__face { outline: 2px solid var(--color-red); outline-offset: -10px; border-radius: 18px; }
+
+/* ───────── Панели «О проекте» / «Источники» ───────── */
+.panel {
+  width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 2px solid var(--color-red);
+  border-radius: 24px;
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+.panel::backdrop { background: var(--color-graphite-a55); }
+.panel__inner {
+  display: grid;
+  gap: 18px;
+  padding: clamp(24px, 4vw, 48px);
+}
+.panel .h-section { font-size: clamp(32px, 4vw, 50px); }
+.panel .body-text { font-size: clamp(17px, 1.7vw, 22px); }
+.panel .btn-plaque { --w: 260; min-width: 200px; justify-self: start; font-size: clamp(18px, 1.8vw, 24px); }
+.sources-list { display: grid; gap: 10px; padding-left: 1.1em; list-style: disc; }

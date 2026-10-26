@@ -615,7 +615,7 @@
   scroll-margin-top: 80px;
 }
 .review-card .avatar { --d: 224; background: var(--color-graphite); }
-.review-card__name { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-q); line-height: 1.2; color: var(--color-ink); margin-top: calc(-14 * var(--u)); white-space: nowrap; }
+.review-card__name { font-family: var(--font-display); font-weight: 400; font-size: calc(var(--fs-q) * 0.88); line-height: 1.2; color: var(--color-ink); margin-top: calc(-14 * var(--u)); white-space: nowrap; }
 .review-card__first { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-body); color: var(--color-ink); line-height: 1.22; }
 .review-card__first b { font-weight: 600; color: var(--color-red); display: block; }
 .review-card__now { font-size: var(--fs-small); color: var(--color-graphite); min-height: 1.3em; }

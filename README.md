@@ -61,7 +61,7 @@ js/
     review.js              финальный пересмотр
     animations.js          появление при прокрутке, кадры манги, переходы
 assets/
-  fonts/                   Cormorant Garamond, Golos Text (OFL); сюда же — ckazka и Factor A
+  fonts/                   EB Garamond (OFL) — единственный шрифт сайта
   images/portraits/        портреты: полный, -icon (красный в кругу), -mono (серый в кругу)
   images/manga/<ситуация>/ кадры историй <персонаж>-<n>.webp
   images/illustrations/    глаз со спилом, большой спил, блокнот
@@ -101,8 +101,7 @@ tools/build-storyboards.mjs пересобирает docs/ из js/data/stories.
 
 ## Шрифты
 
-- **ckazka** (заголовки) и **Factor A** (текст анкет) — в репозиторий не входят: первый — авторский, второй — коммерческий (trial-версию нельзя публиковать). Если шрифты установлены в системе, сайт использует их через `local()`. Для публикации положи лицензированные файлы в `assets/fonts/` (`ckazka.woff2`, `FactorA-Regular.woff2`) и раскомментируй строку `url(...)` в `css/fonts.css`.
-- Пока их нет, используются замены с открытой лицензией: Cormorant Garamond для заголовков и Golos Text вместо Factor A.
+- Везде используется только **EB Garamond** (SIL OFL): 400 / 600 / 700, прямой и курсив, файлы лежат в `assets/fonts/`, подключение — `css/fonts.css`.
 
 ## Доступность
 

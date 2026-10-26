@@ -23,10 +23,10 @@
   --color-graphite-a55: rgba(41, 37, 38, 0.55);  /* затемнение под панелями */
 
   /* — Шрифты — */
-  /* Новый макет: заголовки и обложка — Cormorant Garamond Regular (MacBook Air 2) */
-  --font-display: 'Cormorant Garamond', serif;
-  --font-text: 'Cormorant Garamond', serif;
-  --font-ui: 'Factor A', 'Factor A TRIAL', 'Golos Text', system-ui, sans-serif;
+  /* Единственный шрифт сайта — EB Garamond */
+  --font-display: 'EB Garamond', serif;
+  --font-text: 'EB Garamond', serif;
+  --font-ui: 'EB Garamond', serif;
 
   /* Масштаб: 1 макетный пиксель при ширине 1440 */
   --page: min(100vw, 1440px);

@@ -97,7 +97,7 @@ tools/build-storyboards.mjs пересобирает docs/ из js/data/stories.
 
 ## Иллюстрация блокнота
 
-Ожидается файл `assets/images/illustrations/travel-notebook.png` (глава «Первое впечатление продолжается», место 1290 × 480 по макету). После добавления в `js/data/manga-manifest.js` замени `travelNotebook: null` на `travelNotebook: 'assets/images/illustrations/travel-notebook.png'`.
+Иллюстрация лежит в `assets/images/illustrations/travel-notebook.webp` (+ `-sm` для телефона) и стоит прямо в разметке главы «Первое впечатление продолжается» в `index.html`.
 
 ## Шрифты
 

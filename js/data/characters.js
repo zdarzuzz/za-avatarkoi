@@ -79,7 +79,7 @@ export const CHARACTERS = [
     forms: { gen: 'Марка', dat: 'Марку', acc: 'Марка', about: 'о Марке', ins: 'Марком' },
     bio: 'Инженер. По выходным — баскетбол. Иногда снимаю видео с друзьями. О себе писать не умею, переписываться неделями тоже не люблю. Лучше созвониться и всё обсудить.',
     interests: 'спорт · техника · видеосъёмка',
-    portrait: P + 'anonymous.webp',   // силуэт из макета Figma (экран анкеты Марка)
+    portrait: P + 'anonymous.webp',   // силуэт с Яндекс Диска (photo_5402266786570378778_y.jpg)
     revealPortrait: P + 'mark.webp',
     anonymous: true,
     icon: P + 'anonymous.webp',

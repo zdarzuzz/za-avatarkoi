@@ -39,7 +39,8 @@
   .flip-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
 
   .review-grid { grid-template-columns: 1fr; margin-inline: 0; row-gap: 8px; }
-  .review-card { max-width: 600px; width: 100%; justify-self: center; padding: 15% 6% 0 9%; grid-template-columns: 30% 1fr; column-gap: 4%; }
+  /* высота карточки — по содержимому, рамка растягивается вместе с ней */
+  .review-card { max-width: 600px; width: 100%; justify-self: center; aspect-ratio: auto; padding: 64px 9% 44px 9%; grid-template-columns: 30% minmax(0, 1fr); column-gap: 4%; }
   .review-card .avatar { width: 100%; height: auto; aspect-ratio: 1; }
   .review-card__name { margin-top: 0; }
   .review-card .round-btn { --size: 56; }
@@ -56,8 +57,9 @@
   .cover__image img { object-position: 58% 0; }
 
   /* Билет на телефоне — вертикальный: корешок уходит вниз */
-  .ticket__spin { aspect-ratio: auto; min-height: 520px; }
-  .ticket__face--front { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+  /* высота по содержимому: лицевая сторона в потоке, оборот накрывает её */
+  .ticket__spin { aspect-ratio: auto; min-height: 0; }
+  .ticket__face--front { position: relative; inset: auto; grid-template-columns: 1fr; grid-template-rows: auto auto; }
   .ticket__face { --hole: 12px; --step: 34px; }
   .ticket__face--front::before { left: 26px; right: 26px; top: 16px; bottom: 16px; border-radius: 10px; }
   .ticket__face--front::after { inset: 18px 14px; background-size: 6px 15px, 6px 15px; background-image:
@@ -73,7 +75,8 @@
   .ticket__num { grid-row: 2 / 4; }
   .ticket__stub .ticket__label { align-self: end; }
   .ticket__note { margin-top: 0; font-size: 16px; }
-  .ticket-block__desc { font-size: 17px; }
+  .ticket-block { gap: 20px; }
+  .ticket-block__desc { font-size: 17px; max-width: 36em; }
 
   .profiles { padding-inline: 0; }
   .profiles__counter { padding-inline: var(--gutter); }
@@ -129,7 +132,9 @@
   .flip-cards { grid-template-columns: 1fr; justify-items: center; gap: 4px; }
   .flip-card { width: min(100%, 360px); }
 
-  .review-card { padding: 16% 6% 6% 9%; grid-template-columns: 28% 1fr; }
+  /* на телефоне высота карточки — по содержимому, рамка растягивается вместе с ней */
+  .review-card { padding: 56px 9% 34px 8%; grid-template-columns: 28% minmax(0, 1fr); column-gap: 14px; }
+  .review-card > * { min-width: 0; }
   .review-card__name { font-size: 24px; white-space: normal; }
   .review-card__first { font-size: 16px; }
   .review-card__now { font-size: 14px; }
@@ -139,4 +144,40 @@
   .btn-plaque { width: min(100%, 320px); }
   .stage-top { flex-wrap: wrap; }
   .site-footer__row .text-link { margin-left: 0; }
+}
+
+/* Узкие телефоны: поля билета не упираются в разделитель */
+@media (max-width: 430px) {
+  .ticket__main { padding: 32px 42px 0; }
+  .ticket__stub { margin: 20px 42px 30px; }
+  .ticket__value { font-size: 21px; }
+  .ticket__field:first-child { padding-right: 12px; }
+  .ticket__field + .ticket__field { padding-left: 12px; }
+}
+@media (max-width: 360px) {
+  .ticket__fields { grid-template-columns: 1fr; }
+  .ticket__field:first-child { padding-right: 0; }
+  .ticket__field + .ticket__field { border-left: 0; padding-left: 0; padding-top: 10px; }
+}
+
+/* Телефон: текстовые блоки на всю колонку. Ширины из макета (в единицах 1440) здесь слишком узкие */
+@media (max-width: 600px) {
+  .story__intro, .story__closing, .story__hint, .story__personal, .story__comment-title,
+  .card__bio, .card__interests, .card__reason .h-question, .confidence__lead, .stories__lead,
+  .observations__hero .body-text, .observations__question, .continue__lead, .continue__outro,
+  .finale__title, .finale__text, .proverb { max-width: none; }
+}
+
+/* Планшет: плашки цитат не растягиваются на всю ширину, карточки трактовок не переполняются */
+@media (max-width: 1024px) {
+  .quote-pair { max-width: 560px; margin-inline: auto; width: 100%; }
+  .flip-card__face { padding: 14% 10%; font-size: 16px; }
+}
+@media (max-width: 860px) {
+  .flip-cards { grid-template-columns: 1fr; justify-items: center; gap: 8px; }
+  .flip-card { width: min(100%, 400px); }
+  .flip-card__face { padding: 16% 14%; font-size: 17px; }
+}
+@media (max-width: 600px) {
+  .framed-quote { aspect-ratio: auto; min-height: 76px; padding: 16px 13%; font-size: 16px; }
 }

@@ -352,3 +352,8 @@
 .choice[aria-checked='true'] { color: var(--color-red); }
 @media (hover: hover) { .choice:hover .choice__radio::after { transform: scale(0.45); } .choice[aria-checked='true']:hover .choice__radio::after { transform: scale(1); } }
 .choice:disabled { cursor: default; opacity: 0.55; }
+
+/* Подпись плашки всегда в одну строку: заливка — узкая полоса, второй строке там нет места */
+.btn-plaque > span { white-space: nowrap; }
+.btn-plaque { min-width: min(100%, 10.5em); }
+.center-action { width: 100%; justify-content: center; }

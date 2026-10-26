@@ -43,6 +43,9 @@ a { color: inherit; }
   border-radius: 6px;
 }
 
+/* разделы получают фокус программно при переходе — рамка вокруг всего этапа не нужна */
+[tabindex="-1"]:focus-visible { box-shadow: none; }
+
 [hidden] { display: none !important; }
 
 .visually-hidden {

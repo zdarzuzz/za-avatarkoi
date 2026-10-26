@@ -69,6 +69,7 @@ export function renderProfiles({ animate = false, from = 'right' } = {}) {
   const s = getState();
   const track = $('[data-slider-track]');
   const counter = $('[data-profile-counter]');
+  $('#profiles').classList.toggle('is-done', s.profileIndex >= CHARACTERS.length);
   if (s.profileIndex >= CHARACTERS.length) {
     track.innerHTML = `<p class="profiles__done body-text body-text--ink">Все шесть анкет просмотрены.</p>`;
     counter.textContent = '';

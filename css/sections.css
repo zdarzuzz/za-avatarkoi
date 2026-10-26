@@ -476,7 +476,7 @@
 
 /* ═════════════ 6. Наблюдения «А что добавил ты?» (MacBook Air 16) ═════════════ */
 .observations { padding-top: calc(58 * var(--u)); padding-bottom: calc(80 * var(--u)); }
-.observations__hero .body-text { margin-top: 0; max-width: calc(635 * var(--u)); }
+.observations__hero .body-text { margin-top: max(10px, calc(18 * var(--u))); max-width: calc(635 * var(--u)); }
 .compare {
   display: grid;
   grid-template-columns: calc(89 * var(--u)) auto calc(89 * var(--u));
@@ -544,11 +544,12 @@
   aspect-ratio: 634 / 212;
   display: grid;
   place-items: center;
-  padding: 0 10%;
+  padding: 0 9%;
+  line-height: 1.18;
   background: url('../assets/images/decorations/quote-frame.webp') center / 100% 100% no-repeat;
   font-family: var(--font-text);
   font-weight: 600;
-  font-size: var(--fs-body);
+  font-size: calc(var(--fs-body) * 0.94);
   color: var(--color-ink);
   text-align: center;
 }
@@ -590,9 +591,8 @@
 
 .chapter--continue { padding-top: calc(54 * var(--u)); }
 .continue__lead { margin-top: calc(21 * var(--u)); max-width: calc(853 * var(--u)); }
-.notebook { margin: calc(40 * var(--u)) auto; width: 100%; aspect-ratio: 1290 / 480; display: grid; place-items: center; }
-.notebook[hidden] { display: none; }
-.notebook img { width: 100%; height: 100%; object-fit: contain; }
+.notebook { margin: calc(40 * var(--u)) auto; width: 100%; }
+.notebook img { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 640; }  /* фон картинки приведён к цвету страницы */
 .chapter--continue .two-col { margin-top: calc(40 * var(--u)); }
 .continue__outro { margin-top: calc(60 * var(--u)); max-width: calc(853 * var(--u)); }
 .chapter--continue .center-action { margin-top: calc(80 * var(--u)); }
@@ -611,7 +611,7 @@
   grid-template-columns: calc(224 * var(--u)) 1fr;
   column-gap: calc(22 * var(--u));
   align-content: start;
-  padding: calc(107 * var(--u)) calc(35 * var(--u)) 0 calc(63 * var(--u));
+  padding: calc(107 * var(--u)) calc(60 * var(--u)) 0 calc(63 * var(--u));
   scroll-margin-top: 80px;
 }
 .review-card .avatar { --d: 224; background: var(--color-graphite); }
@@ -638,4 +638,8 @@
 .site-footer__name { font-family: var(--font-display); font-weight: 400; font-size: 28px; color: var(--color-red); }
 .site-footer__row .text-link { margin-left: auto; font-size: 18px; }
 .profiles__help { text-align: center; font-size: var(--fs-small); color: var(--color-graphite); max-width: 36em; margin: 0 auto calc(20 * var(--u)); font-weight: 400; }
-.profiles__done { text-align: center; padding: 60px 0; margin: 0 auto; }
+.profiles__done { text-align: center; padding: 24px 0 0; margin: 0 auto; }
+/* все анкеты пройдены: подсказка и пустые рамки больше не нужны */
+.profiles.is-done .profiles__help, .profiles.is-done .profiles__counter, .profiles.is-done .slider__ghost { display: none; }
+.profiles.is-done .slider { grid-template-columns: 1fr; }
+.profiles.is-done { padding-bottom: 0; }

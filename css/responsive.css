@@ -39,7 +39,7 @@
 
   .review-grid { grid-template-columns: 1fr; margin-inline: 0; row-gap: 8px; }
   /* высота карточки — по содержимому, рамка растягивается вместе с ней */
-  .review-card { max-width: 600px; width: 100%; justify-self: center; aspect-ratio: auto; padding: 64px 9% 44px 9%; grid-template-columns: 30% minmax(0, 1fr); column-gap: 4%; }
+  .review-card { max-width: 600px; width: 100%; justify-self: center; aspect-ratio: auto; padding: 54px 9%; grid-template-columns: 30% minmax(0, 1fr); column-gap: 4%; }
   .review-card .avatar { width: 100%; height: auto; aspect-ratio: 1; }
   .review-card__name { margin-top: 0; }
   .review-card .round-btn { --size: 56; }
@@ -134,7 +134,7 @@
   .flip-card { width: min(100%, 360px); }
 
   /* на телефоне высота карточки — по содержимому, рамка растягивается вместе с ней */
-  .review-card { padding: 56px 9% 34px 8%; grid-template-columns: 28% minmax(0, 1fr); column-gap: 14px; }
+  .review-card { padding: 46px 9% 46px 8%; grid-template-columns: 28% minmax(0, 1fr); column-gap: 14px; }
   .review-card > * { min-width: 0; }
   .review-card__name { font-size: 24px; white-space: normal; }
   .review-card__first { font-size: 16px; }

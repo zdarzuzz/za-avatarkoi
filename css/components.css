@@ -172,6 +172,10 @@
   display: flex;
   gap: calc(20 * var(--u));
 }
+/* Деталь: одиночный вертикальный или квадратный кадр не растягивается на всю колонку */
+.manga__row--detail .panel-frame { flex: 0 1 auto; width: min(100%, calc(560 * var(--u) + 120px)); }
+.manga__row--detail.manga__row--start { justify-content: flex-start; }
+.manga__row--detail.manga__row--end { justify-content: flex-end; }
 .panel-frame {
   position: relative;
   flex: var(--grow) 1 0;

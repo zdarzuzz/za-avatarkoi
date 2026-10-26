@@ -17,6 +17,31 @@ const imgVars = (b) => `--l:${b.l}%;--t:${b.t}%;--w:${b.w}%;--h:${b.h}%`;
 let handlers = { onObservations: () => {}, onReturnToReview: () => {} };
 let returnTarget = null;
 let disconnectPanels = () => {};
+let disconnectFit = () => {};
+
+/** Реплики не должны выходить за нижний край кадра: на узких экранах текст переносится на большее число строк. */
+function fitBubbles(manga) {
+  if (!manga || typeof ResizeObserver === 'undefined') return () => {};
+  const fit = (panel) => {
+    const h = panel.clientHeight;
+    const placed = [];
+    panel.querySelectorAll('.bubble').forEach((b) => {
+      b.style.top = '';
+      let top = b.offsetTop;
+      const left = b.offsetLeft, w = b.offsetWidth, bh = b.offsetHeight;
+      // если плашка наехала на уже размещённую — сдвигаем ниже неё
+      placed.forEach((r) => {
+        if (left < r.l + r.w && r.l < left + w && top < r.t + r.h + 4 && r.t < top + bh) top = r.t + r.h + 6;
+      });
+      top = Math.max(4, Math.min(top, h - bh - 4));
+      if (top !== b.offsetTop) b.style.top = `${top}px`;
+      placed.push({ l: left, t: top, w, h: bh });
+    });
+  };
+  const ro = new ResizeObserver((entries) => entries.forEach((e) => fit(e.target)));
+  manga.querySelectorAll('[data-panel]').forEach((p) => ro.observe(p));
+  return () => ro.disconnect();
+}
 
 /** Кто доступен в этой ситуации (у кого есть история с кадрами), в порядке анкет. */
 export const availableIds = (s = getState()) => {
@@ -55,6 +80,9 @@ function leadText(s) {
   if (none) return `Все шесть анкет остались пропущенными — это тоже решение. Посмотрим, что могло бы открыться во встречах с ${a.forms.ins} и ${b.forms.ins}.`;
   const aCont = s.initial[a.id] === 'continue';
   const bCont = s.initial[b.id] === 'continue';
+  const missing = (kind) => CHARACTERS.some((c) => s.initial[c.id] === kind) && ![a, b].some((c) => s.initial[c.id] === kind);
+  if (missing('continue')) return `С теми, с кем знакомство продолжено, в этой ситуации эпизода нет. Посмотрим на встречи с ${a.forms.ins} и ${b.forms.ins} — их анкеты остались пропущенными.`;
+  if (missing('skip')) return `С теми, чьи анкеты пропущены, в этой ситуации эпизода нет. Посмотрим на встречи с ${a.forms.ins} и ${b.forms.ins}.`;
   if (aCont && !bCont) return `Сначала — ${a.name}: с ней знакомство продолжено. Затем — ${b.name}, чья анкета осталась пропущенной.`.replace('с ней', a.gender === 'm' ? 'с ним' : 'с ней');
   return `Посмотрим на два эпизода — с ${a.forms.ins} и ${b.forms.ins}.`;
 }
@@ -103,17 +131,31 @@ function renderIcons() {
 }
 
 /* ───── Кадры ───── */
-function panelTemplate(p, rowH, n, c) {
+/** Ширина кадра на экране: доля ряда от основной колонки манги (до 1100 px). */
+function sizesFor(p, rowW) {
+  const share = Math.max(0.2, Math.min(1, p.w / rowW));
+  return `(max-width: 600px) 100vw, ${Math.round(share * 100)}vw`;
+}
+
+function panelTemplate(p, rowH, n, c, rowW = p.w) {
   const img = p.fit
     ? `<img class="panel-frame__img panel-frame__img--fit" src="${p.img}" alt="${esc(p.scene)}" style="${imgVars(p.fit)}" width="${p.imgW}" height="${p.imgH}" loading="lazy" decoding="async">`
-    : `<img class="panel-frame__img panel-frame__img--contain" src="${p.img}" alt="${esc(p.scene)}" width="${p.imgW}" height="${p.imgH}" loading="lazy" decoding="async">`;
+    : `<img class="panel-frame__img panel-frame__img--contain" src="${p.img}"${p.imgSm ? ` srcset="${p.imgSm} ${p.smW}w, ${p.img} ${p.imgW}w" sizes="${sizesFor(p, rowW)}"` : ''} alt="${esc(p.scene)}" width="${p.imgW}" height="${p.imgH}" loading="lazy" decoding="async">`;
   const bubbles = p.bubbles.map((bb, i) => `<p class="bubble bubble--${bb.tail}${bb.you ? ' bubble--you' : ''}" style="--x:${bb.x}%;--y:${bb.y}%;--bw:${bb.w}%;--bdelay:${i * 0.25}s"><span class="visually-hidden">${bb.you ? 'Ты' : c.name}: </span>${esc(bb.text)}</p>`).join('');
   return `<figure class="panel-frame" data-panel="${n}" style="--grow:${p.w};--ar:${p.w} / ${rowH}">${img}${bubbles}</figure>`;
 }
 
 function mangaTemplate(story, c) {
   let n = 0;
-  return `<div class="manga" data-manga>${story.rows.map((row) => `<div class="manga__row${row.panels.length > 1 ? ' manga__row--pair' : ''}">${row.panels.map((p) => panelTemplate(p, row.h, ++n, c)).join('')}</div>`).join('')}</div>`;
+  let detail = 0;
+  return `<div class="manga" data-manga>${story.rows.map((row) => {
+    const rowW = row.panels.reduce((sum, p) => sum + p.w, 0);
+    const cls = ['manga__row'];
+    if (row.panels.length > 1) cls.push('manga__row--pair');
+    // одиночный вертикальный или квадратный кадр — деталь: уже колонки, по очереди слева и справа
+    if (row.detail) cls.push('manga__row--detail', (detail++ % 2) ? 'manga__row--end' : 'manga__row--start');
+    return `<div class="${cls.join(' ')}">${row.panels.map((p) => panelTemplate(p, row.h, ++n, c, rowW)).join('')}</div>`;
+  }).join('')}</div>`;
 }
 
 function navButtons(s) {
@@ -177,6 +219,8 @@ function renderStory({ scroll = false } = {}) {
   root.innerHTML = storyTemplate(c, story, s);
   if (!seenBefore) update((st) => { st.viewed.push(c.id); });
   disconnectPanels = observePanels(root.querySelector('[data-manga]'), { seen: seenBefore });
+  disconnectFit();
+  disconnectFit = fitBubbles(root.querySelector('[data-manga]'));
   // кнопки навигации зависят от отметки «просмотрено» — перерисовываем после неё
   root.querySelector('[data-story-nav]').innerHTML = navButtons(getState());
   renderIcons();
@@ -215,7 +259,7 @@ export function renderStories() {
   if (s.mandatory.length < 2) update((st) => { st.mandatory = pickMandatory(st); });
   const cur = getState();
   if (!cur.currentStory) update((st) => { st.currentStory = st.mandatory.find((id) => !st.viewed.includes(id)) ?? st.mandatory[0]; });
-  $('[data-stories-lead]').innerHTML = `Ты уже сделал выбор. Теперь посмотрим на&nbsp;один возможный эпизод знакомства. <span class="stories__lead-more">${leadText(getState())}</span>`;
+  $('[data-stories-lead]').innerHTML = `Выбор уже сделан. Теперь посмотрим на&nbsp;один возможный эпизод знакомства. <span class="stories__lead-more">${leadText(getState())}</span>`;
   renderIcons();
   renderStory();
 }

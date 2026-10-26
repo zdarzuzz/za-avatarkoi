@@ -6,7 +6,7 @@
   .ticket__fields { grid-template-columns: 1fr 1fr; }
   .ticket__note { margin-top: 3%; }
 
-  .profiles { --card-w: min(460px, calc((100svh - 370px) * 634 / 845), 62vw); }
+  .profiles { --card-w: min(420px, 60vw); }
   .card__actions .btn-plaque { width: min(calc(var(--card-w) * 0.54), 48%); }
 
   .stories__head { grid-template-columns: 1fr; row-gap: 16px; }
@@ -80,7 +80,7 @@
 
   .profiles { padding-inline: 0; }
   .profiles__counter { padding-inline: var(--gutter); }
-  .profiles { --card-w: min(360px, calc(100vw - 2 * var(--gutter) - 24px), calc((100svh - 300px) * 634 / 845)); }
+  .profiles { --card-w: min(360px, calc(100vw - 2 * var(--gutter) - 24px)); }
   .slider { grid-template-columns: minmax(0, 1fr); }
   .slider__track { grid-column: 1; }
   .slider__ghost { display: none; }

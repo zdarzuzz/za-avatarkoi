@@ -12,11 +12,11 @@ const ICONS = {
 };
 
 const imgVars = (box) => `--l:${box.l}%;--t:${box.t}%;--w:${box.w}%;--h:${box.h}%`;
-const word = (v) => (v === 'continue' ? 'продолжить' : v === 'skip' ? 'пропустить' : 'анкета не открыта');
+const word = (v) => (v === 'continue' ? 'продолжить' : v === 'skip' ? 'пропустить' : 'анкета не открыта');
 const nowText = (v, first) => {
-  const base = v === 'continue' ? 'Сейчас: продолжить общение' : v === 'skip' ? 'Сейчас: отказаться' : 'Сейчас: решение не выбрано';
+  const base = v === 'continue' ? 'Сейчас: продолжить общение' : v === 'skip' ? 'Сейчас: отказаться' : 'Сейчас: решение не выбрано';
   if (!first) return base;
-  return v === first ? `${base} — как в начале` : `${base} — решение изменилось`;
+  return v === first ? `${base} — как в начале` : `${base} — решение изменилось`;
 };
 
 let handlers = { onOpenStory: () => {} };
@@ -43,7 +43,7 @@ function cardTemplate(c, s) {
         <p class="review-card__now${first && fin !== first ? ' is-changed' : ''}" data-now aria-live="polite">${nowText(fin, first)}</p>
         <div class="review-card__controls" role="group" aria-label="Итоговое решение: ${c.name}">
           <button class="round-btn" type="button" data-final="continue" aria-pressed="${fin === 'continue'}" aria-label="Продолжить общение с ${c.forms.ins}">${ICONS.check}</button>
-          <button class="round-btn" type="button" data-final="skip" aria-pressed="${fin === 'skip'}" aria-label="Отказаться от общения с ${c.forms.ins}">${ICONS.cross}</button>
+          <button class="round-btn" type="button" data-final="skip" aria-pressed="${fin === 'skip'}" aria-label="Отказаться от общения с ${c.forms.ins}">${ICONS.cross}</button>
           ${hasStory ? `<button class="round-btn round-btn--dark" type="button" data-open="${c.id}" aria-label="Открыть историю: ${c.name}">${ICONS.arrow}</button>` : ''}
         </div>
       </div>
@@ -54,7 +54,7 @@ export function renderReview() {
   const s = getState();
   document.querySelector('[data-review-grid]').innerHTML = ORDER.map((id) => cardTemplate(getCharacter(id), s)).join('');
   const conf = CONFIDENCE.find((c) => c.id === s.confidence);
-  document.querySelector('[data-review-confidence]').textContent = conf ? `Уверенность в первых впечатлениях перед историями: «${conf.label}».` : '';
+  document.querySelector('[data-review-confidence]').textContent = conf ? `Уверенность в первых впечатлениях перед историями: «${conf.label}».` : '';
 }
 
 function syncCard(id) {

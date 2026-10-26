@@ -8,7 +8,8 @@
   aspect-ratio: 3 / 1;
   font-family: var(--font-text);
   font-weight: 600;
-  font-size: var(--fs-body);
+  /* единый размер подписи на всех плашках сайта */
+  font-size: var(--fs-btn);
   color: var(--color-red);
   isolation: isolate;
   transition: transform var(--t-fast) var(--ease);
@@ -31,7 +32,7 @@
   z-index: -1;
   pointer-events: none;
 }
-.btn-plaque > span { display: block; width: 100%; padding: 0 9%; text-align: center; line-height: 1.05; text-box: trim-both cap alphabetic; }
+.btn-plaque > span { display: block; width: 100%; padding: 0 9%; text-align: center; line-height: 1.05; text-box: trim-both cap alphabetic; transform: translateY(-2px); /* оптически чуть выше центра */ }
 .btn-plaque--fill { color: var(--color-pink); }
 .btn-plaque--fill::before { opacity: 1; }
 .btn-plaque--ui { font-family: var(--font-ui); font-weight: 400; }
@@ -288,7 +289,7 @@
 }
 .panel .h-section { font-size: clamp(32px, 4vw, 50px); }
 .panel .body-text { font-size: clamp(17px, 1.7vw, 22px); }
-.panel .btn-plaque { --w: 260; min-width: 200px; justify-self: start; font-size: clamp(18px, 1.8vw, 24px); }
+.panel .btn-plaque { --w: 260; min-width: 200px; justify-self: start; }
 .sources-list { display: grid; gap: 10px; padding-left: 1.1em; list-style: disc; }
 
 

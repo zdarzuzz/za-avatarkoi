@@ -7,7 +7,7 @@
   .ticket__note { margin-top: 3%; }
 
   .profiles { --card-w: min(460px, calc((100svh - 370px) * 634 / 845), 62vw); }
-  .card__actions .btn-plaque { width: min(calc(var(--card-w) * 0.66), 48%); font-size: clamp(17px, 2.3vw, 22px); }
+  .card__actions .btn-plaque { width: min(calc(var(--card-w) * 0.54), 48%); }
 
   .stories__head { grid-template-columns: 1fr; row-gap: 16px; }
   .stories__lead { justify-self: start; max-width: 640px; }
@@ -44,17 +44,16 @@
   .review-card__name { margin-top: 0; }
   .review-card .round-btn { --size: 56; }
 
-  .btn-plaque { width: min(100%, 340px); font-size: clamp(18px, 2.4vw, 24px); }
+  .btn-plaque { width: min(100%, 340px); }
 }
 
 /* ═════════════ Телефон (≤ 600) ═════════════ */
 @media (max-width: 600px) {
   /* на телефоне шрифт реплик не меньше 12 px — расширяем плашки, чтобы текст не шёл столбиком; правый край кадра не пересекаем */
   .bubble { max-width: min(calc(97% - var(--x)), max(var(--bw), 56%)); }
-  .cover { --cover-h: min(100svh, calc(79.7vw + 250px)); }
+  .cover { --cover-h: min(100svh, calc(79.7vw + 130px)); height: calc(var(--cover-h) + 22svh); }
+  .ticket-block { min-height: 0; padding-top: 12px; }
   .cover__head { top: calc(min(100svh, 79.7vw) - 36px); transform: none; }
-  .cover__author { padding: 8px 20px 9px; }
-  .cover__author-label { font-size: 11px; }
 
   /* Билет на телефоне — вертикальный: корешок уходит вниз */
   /* высота по содержимому: лицевая сторона в потоке, оборот накрывает её */
@@ -80,13 +79,13 @@
 
   .profiles { padding-inline: 0; }
   .profiles__counter { padding-inline: var(--gutter); }
-  .profiles { --card-w: min(340px, calc(100vw - 2 * var(--gutter-wide) - 48px)); }
+  .profiles { --card-w: min(360px, calc(100vw - 2 * var(--gutter) - 24px), calc((100svh - 300px) * 634 / 845)); }
   .slider { grid-template-columns: minmax(0, 1fr); }
   .slider__track { grid-column: 1; }
   .slider__ghost { display: none; }
   .card { padding-inline: 6px; }
   .card__actions { gap: 8px; width: 100%; margin-top: -4px; }
-  .card__actions .btn-plaque { width: 48%; font-size: 17px; }
+  .card__actions .btn-plaque { width: 48%; }
   .card__name, .card__interests, .card__bio, .card__reason { padding-inline: 4px; }
   .card__interests, .card__bio { font-size: 17px; }
   .card__reason .h-question { font-size: 28px; }
@@ -200,6 +199,6 @@
   .webring__link small { letter-spacing: 0.06em; }
 }
 @media (max-width: 360px) {
-  .card__actions .btn-plaque { font-size: 15px; }
+  .card__actions .btn-plaque { letter-spacing: -0.01em; }
   .webring__link small { font-size: 11px; }
 }

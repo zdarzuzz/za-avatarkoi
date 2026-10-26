@@ -23,13 +23,13 @@ function cardTemplate(c, pending) {
   const choice = pending?.choice;
   const reasons = reasonsFor(c);
   const label = choice === 'skip' ? 'Пропустить' : 'Продолжить';
-  const q = choice === 'skip' ? 'Что больше всего повлияло на&nbsp;решение пропустить?' : 'Что больше всего повлияло на&nbsp;твой выбор?';
+  const q = choice === 'skip' ? 'Что больше всего повлияло на&nbsp;решение пропустить?' : 'Что больше всего повлияло на&nbsp;твой выбор?';
   return `
   <article class="card${choice ? ' is-deciding' : ''}" data-card="${c.id}" tabindex="0"
     aria-labelledby="card-name-${c.id}" aria-describedby="card-help">
     <div class="card__portrait" data-swipe>
       <div class="card__oval${c.flip ? ' card__oval--flip' : ''}">
-        <img src="${c.portrait}" alt="${c.anonymous ? 'Аватар без фотографии' : c.id === 'varya' ? 'Аватар: рисованный пушистый зверёк — не она сама' : `Аватар: ${c.name}`}"
+        <img src="${c.portrait}" alt="${c.anonymous ? 'Аватар без фотографии' : c.id === 'varya' ? 'Аватар: рисованный пушистый зверёк — не она сама' : `Аватар: ${c.name}`}"
           style="${imgVars(c.profileImg)}" width="400" height="533" decoding="async" draggable="false">
       </div>
       <img class="card__frame" src="assets/images/decorations/frame-ornate.webp" alt="" aria-hidden="true" width="1086" height="1448" decoding="async" draggable="false">
@@ -76,7 +76,7 @@ export function renderProfiles({ animate = false, from = 'right' } = {}) {
   renderProgress(s);
   if (s.profileIndex >= CHARACTERS.length) {
     const seen = Object.keys(s.initial).length;
-    track.innerHTML = `<p class="profiles__done body-text body-text--ink">${seen === CHARACTERS.length ? 'Все шесть анкет просмотрены.' : `Просмотрено анкет: ${seen} из ${CHARACTERS.length}.`}</p>`;
+    track.innerHTML = `<p class="profiles__done body-text body-text--ink">${seen === CHARACTERS.length ? 'Все шесть анкет просмотрены.' : `Просмотрено анкет: ${seen} из ${CHARACTERS.length}.`}</p>`;
     counter.textContent = '';
     setGhosts(CHARACTERS.length);
     return;

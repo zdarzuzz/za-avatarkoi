@@ -74,17 +74,17 @@ function introLine(c, s) {
   const choice = s.initial[c.id];
   const reason = getReason(s.reasons[c.id]);
   const why = reason ? ` Главным было «${reason.label.toLowerCase()}».` : '';
-  if (!choice) return `Анкета ${c.forms.gen} осталась неоткрытой — эта история показывает встречу без первого впечатления.`;
-  if (choice === 'skip') return `Анкета ${c.forms.gen} осталась пропущенной.${why} История открыта не для того, чтобы переубедить, а чтобы показать детали, которых в анкете не было.`;
+  if (!choice) return `Анкета ${c.forms.gen} осталась неоткрытой — эта история показывает встречу без первого впечатления.`;
+  if (choice === 'skip') return `Анкета ${c.forms.gen} осталась пропущенной.${why} История открыта не для того, чтобы переубедить, а чтобы показать детали, которых в анкете не было.`;
   return `Знакомство с ${c.forms.ins} продолжено.${why} Вот один возможный эпизод.`;
 }
 
 function personalNote(c, s) {
   const choice = s.initial[c.id];
   const base = choice === 'skip'
-    ? 'Ниже — что в этой сцене могло бы поддержать сомнения, а что их, возможно, не касается.'
-    : 'Ниже — что в этой сцене могло поддержать такое решение, а что — поставить его под вопрос.';
-  return `${base} История не доказывает, что выбор был верным или ошибочным.`;
+    ? 'Ниже — что в этой сцене могло бы поддержать сомнения, а что их, возможно, не касается.'
+    : 'Ниже — что в этой сцене могло поддержать такое решение, а что — поставить его под вопрос.';
+  return `${base} История не доказывает, что выбор был верным или ошибочным.`;
 }
 
 /* ───── Иконки ───── */
@@ -102,7 +102,7 @@ function renderIcons() {
       <button class="avatar-btn" type="button" data-open-story="${id}"
         aria-label="История: ${c.name}, ${c.ageLabel}${must ? ', обязательная' : ', дополнительная'}${seen ? ', просмотрена' : ''}" ${active ? 'aria-current="true"' : ''}>
         <span class="avatar${active ? ' avatar--active' : ''}${c.flip ? ' avatar--flip' : ''}">
-          <img class="avatar__mono" src="${isMark(c) && !seen ? src : c.iconMono}" alt="" style="${imgVars(box)}" width="200" height="266" loading="lazy" decoding="async">
+          <img class="avatar__mono" src="${c.anonymous && seen ? c.revealIconMono : c.iconMono}" alt="" style="${imgVars(box)}" width="200" height="266" loading="lazy" decoding="async">
           <img class="avatar__red" src="${src}" alt="" style="${imgVars(box)}" width="200" height="266" loading="lazy" decoding="async">
         </span>
         ${seen ? `<span class="avatar-btn__seen" aria-hidden="true">${ICON_CHECK}</span>` : ''}
@@ -110,8 +110,8 @@ function renderIcons() {
   }).join('');
   const left = s.mandatory.filter((id) => !s.viewed.includes(id)).length;
   $('[data-stories-progress]').textContent = left
-    ? `Обязательных историй осталось: ${left} из 2`
-    : ids.length > 2 ? 'Обязательные истории просмотрены. Остальные — по желанию.' : 'Обе истории просмотрены.';
+    ? `Обязательных историй осталось: ${left} из 2`
+    : ids.length > 2 ? 'Обязательные истории просмотрены. Остальные — по желанию.' : 'Обе истории просмотрены.';
 }
 
 /* ───── Кадры ───── */
@@ -123,7 +123,7 @@ function sizesFor(p, rowW) {
 
 function panelTemplate(p, rowH, n, c, rowW = p.w) {
   const img = p.fit
-    ? `<img class="panel-frame__img panel-frame__img--fit" src="${p.img}" alt="${esc(p.scene)}" style="${imgVars(p.fit)}" width="${p.imgW}" height="${p.imgH}" loading="lazy" decoding="async">`
+    ? `<img class="panel-frame__img panel-frame__img--fit" src="${p.img}"${p.imgSm ? ` srcset="${p.imgSm} ${p.smW}w, ${p.img} ${p.imgW}w" sizes="${sizesFor(p, rowW)}"` : ''} alt="${esc(p.scene)}" style="${imgVars(p.fit)}" width="${p.imgW}" height="${p.imgH}" loading="lazy" decoding="async">`
     : `<img class="panel-frame__img panel-frame__img--contain" src="${p.img}"${p.imgSm ? ` srcset="${p.imgSm} ${p.smW}w, ${p.img} ${p.imgW}w" sizes="${sizesFor(p, rowW)}"` : ''} alt="${esc(p.scene)}" width="${p.imgW}" height="${p.imgH}" loading="lazy" decoding="async">`;
   const bubbles = p.bubbles.map((bb, i) => `<p class="bubble bubble--${bb.tail}${bb.you ? ' bubble--you' : ''}" style="--x:${bb.x}%;--y:${bb.y}%;--bw:${bb.w}%;--bdelay:${i * 0.25}s"><span class="visually-hidden">${bb.you ? 'Ты' : c.name}: </span>${esc(bb.text)}</p>`).join('');
   return `<figure class="panel-frame" data-panel="${n}" style="--grow:${p.w};--ar:${p.w} / ${rowH}">${img}${bubbles}</figure>`;
@@ -136,7 +136,7 @@ function mangaTemplate(story, c) {
     const rowW = row.panels.reduce((sum, p) => sum + p.w, 0);
     const cls = ['manga__row'];
     if (row.panels.length > 1) cls.push('manga__row--pair');
-    // одиночный вертикальный или квадратный кадр — деталь: уже колонки, по очереди слева и справа
+    // одиночный вертикальный или квадратный кадр — деталь: уже колонки, по очереди слева и справа
     if (row.detail) cls.push('manga__row--detail', (detail++ % 2) ? 'manga__row--end' : 'manga__row--start');
     return `<div class="${cls.join(' ')}">${row.panels.map((p) => panelTemplate(p, row.h, ++n, c, rowW)).join('')}</div>`;
   }).join('')}</div>`;
@@ -172,15 +172,15 @@ function storyTemplate(c, story, s) {
         <section class="story__question" aria-labelledby="q-title">
           <h3 class="h-question" id="q-title">Хочешь продолжить знакомство?</h3>
           <div class="answer-row" role="group" aria-labelledby="q-title">
-            ${[['yes', 'Да'], ['no', 'Нет'], ['unsure', 'Не знаю']].map(([id, l]) => `<button class="btn-plaque" type="button" data-answer="${id}" aria-pressed="${answer === id}"><span>${l}</span></button>`).join('')}
+            ${[['yes', 'Да'], ['no', 'Нет'], ['unsure', 'Не знаю']].map(([id, l]) => `<button class="btn-plaque" type="button" data-answer="${id}" aria-pressed="${answer === id}"><span>${l}</span></button>`).join('')}
           </div>
-          <p class="story__prompt">Что в&nbsp;этой сцене могло вызвать желание общаться дальше?</p>
+          <p class="story__prompt">Что в&nbsp;этой сцене могло вызвать желание общаться дальше?</p>
           <p class="story__hint" data-hint aria-live="polite">${answer ? story.hints[answer] : ''}</p>
         </section>
 
         <section class="story__comment" aria-labelledby="comment-title">
           <p class="story__comment-label">Авторский комментарий</p>
-          <h3 class="story__comment-title" id="comment-title">Что могло повлиять на&nbsp;твоё впечатление ${c.forms.about}?</h3>
+          <h3 class="story__comment-title" id="comment-title">Что могло повлиять на&nbsp;твоё впечатление ${c.forms.about}?</h3>
           <p class="story__personal">${personalNote(c, s)}</p>
           <div class="observations-grid">
             ${story.comments.map((o) => `<div class="observation"><h4>${o.title}</h4><p>${o.text}</p></div>`).join('')}

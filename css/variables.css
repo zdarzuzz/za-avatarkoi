@@ -45,6 +45,7 @@
   --fs-option: calc(35 * var(--u));
   --fs-body: calc(32 * var(--u));
   --fs-small: calc(24 * var(--u));
+  --fs-btn: clamp(17px, calc(28 * var(--u)), 28px);   /* подписи всех кнопок-плашек */
 
   --gutter: calc(75 * var(--u));
   /* от анкет и дальше поля на 40 % шире — композиция «книжная», с запасом воздуха */

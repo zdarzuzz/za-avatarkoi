@@ -6,25 +6,55 @@
   <title>Человек в твоих глазах</title>
   <meta name="description" content="Интерактивный лонгрид о первом впечатлении: выбери людей по анкетам, узнай их в манге и посмотри, что изменилось в твоём взгляде.">
   <meta name="theme-color" content="#fbeed5">
-  <link rel="preload" href="assets/images/decorations/cover-eye.webp" as="image" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/images/decorations/cover-eye.webp" imagesrcset="assets/images/decorations/cover-eye-sm.webp 800w, assets/images/decorations/cover-eye.webp 1405w" imagesizes="(max-width: 900px) 100vw, 125svh" fetchpriority="high">
   <script>document.documentElement.classList.add('js')</script>
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-cyrillic-400-normal.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-cyrillic-600-normal.woff2">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="modulepreload" href="js/modules/state.js">
+  <link rel="modulepreload" href="js/modules/storage.js">
+  <link rel="modulepreload" href="js/modules/animations.js">
+  <link rel="modulepreload" href="js/modules/cover.js">
+  <link rel="modulepreload" href="js/modules/ticket.js">
+  <link rel="modulepreload" href="js/modules/profiles.js">
+  <link rel="modulepreload" href="js/modules/confidence.js">
+  <link rel="modulepreload" href="js/modules/stories.js">
+  <link rel="modulepreload" href="js/modules/observations.js">
+  <link rel="modulepreload" href="js/modules/analysis.js">
+  <link rel="modulepreload" href="js/modules/review.js">
+  <link rel="modulepreload" href="js/modules/reveal.js">
+  <link rel="modulepreload" href="js/modules/smooth-scroll.js">
+  <link rel="modulepreload" href="js/modules/webring.js">
+  <link rel="modulepreload" href="js/data/characters.js">
+  <link rel="modulepreload" href="js/data/situations.js">
+  <link rel="modulepreload" href="js/data/stories.js">
+  <link rel="modulepreload" href="js/data/stories-new.js">
+  <link rel="modulepreload" href="js/data/frames.js">
+  <link rel="modulepreload" href="js/data/article-examples.js">
+  <link rel="modulepreload" href="js/data/webring.js">
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#ticket">Перейти к началу прохождения</a>
+  <a class="skip-link" href="#ticket">Перейти к&nbsp;началу прохождения</a>
 
   <main id="main">
     <!-- ═══ Обложка (MacBook Air 2) ═══ -->
     <section class="cover stage-journey" id="cover" aria-labelledby="cover-title">
       <div class="cover__sticky" aria-hidden="true">
         <div class="cover__image">
-          <img src="assets/images/decorations/cover-eye.webp" alt="" width="1405" height="1120" decoding="async" fetchpriority="high">
+          <img src="assets/images/decorations/cover-eye.webp" srcset="assets/images/decorations/cover-eye-sm.webp 800w, assets/images/decorations/cover-eye.webp 1405w" sizes="(max-width: 900px) 100vw, 125svh" alt="" width="1405" height="1120" decoding="async" fetchpriority="high">
         </div>
       </div>
       <header class="cover__head">
         <h1 class="cover__title" id="cover-title">Человек в&nbsp;твоих глазах</h1>
-        <p class="cover__author"><span class="cover__author-label">Автор проекта</span><span class="cover__author-name">Дарья Зюзина</span></p>
+        
       </header>
     </section>
 
@@ -63,7 +93,7 @@
     <section class="profiles stage-journey" id="profiles" aria-labelledby="profiles-title">
       <h2 class="visually-hidden" id="profiles-title">Анкеты</h2>
       <p class="profiles__counter visually-hidden" data-profile-counter></p>
-      <p class="profiles__help" id="card-help">Нажми «Продолжить» или «Пропустить», проведи по&nbsp;анкете вправо или влево либо используй стрелки → и&nbsp;←.</p>
+      <p class="profiles__help" id="card-help">Реши кнопкой, свайпом по&nbsp;анкете или&nbsp;стрелками ←&nbsp;и&nbsp;→</p>
       <div class="slider" data-slider>
         <div class="slider__ghost slider__ghost--prev" aria-hidden="true"></div>
         <div class="slider__track" data-slider-track></div>
@@ -74,18 +104,18 @@
 
     <!-- ═══ Вопрос об уверенности ═══ -->
     <section class="confidence stage-journey" id="confidence" data-gated aria-labelledby="confidence-title" tabindex="-1">
-      <h2 class="h-question" id="confidence-title">Насколько ты доверяешь своим первым впечатлениям?</h2>
+      <h2 class="h-question" id="confidence-title">Насколько ты&nbsp;доверяешь своим первым впечатлениям?</h2>
       <p class="body-text confidence__lead">Позади шесть анкет. Прежде чем узнать этих людей ближе, отметь, в&nbsp;скольких решениях есть уверенность сейчас.</p>
       <div class="choice-list" role="radiogroup" aria-labelledby="confidence-title" data-confidence></div>
       <div class="center-action">
-        <button class="btn-plaque btn-plaque--fill" type="button" data-confidence-next disabled><span>Узнать их ближе</span></button>
+        <button class="btn-plaque btn-plaque--fill" type="button" data-confidence-next disabled><span>Узнать их&nbsp;ближе</span></button>
       </div>
     </section>
 
     <!-- ═══ Манга (MacBook Air 13) ═══ -->
     <section class="stories stage-journey" id="stories" data-gated aria-labelledby="stories-title" tabindex="-1">
       <header class="stories__head">
-        <h2 class="h-display" id="stories-title">За пределами первого впечатления</h2>
+        <h2 class="h-display" id="stories-title">За&nbsp;пределами первого впечатления</h2>
       </header>
       <nav class="stories__nav" aria-label="Истории персонажей">
         <ul class="avatar-row" data-story-icons></ul>
@@ -101,8 +131,8 @@
     <!-- ═══ Наблюдения о первом впечатлении (MacBook Air 16, начало) ═══ -->
     <section class="observations stage-journey" id="observations" data-gated aria-labelledby="obs-title" tabindex="-1">
       <header class="observations__hero">
-        <h2 class="h-display h-display--xl" id="obs-title">А что добавил ты?</h2>
-        <p class="body-text body-text--ink" data-type>В карточке — несколько деталей. В&nbsp;голове — уже целый человек.</p>
+        <h2 class="h-display h-display--xl" id="obs-title">А&nbsp;что&nbsp;добавил ты?</h2>
+        <p class="body-text body-text--ink" data-type>В&nbsp;карточке — несколько деталей. В&nbsp;голове — уже&nbsp;целый человек.</p>
       </header>
 
       <div class="compare" data-compare aria-roledescription="слайдер" aria-label="Наблюдение и впечатление">
@@ -111,7 +141,7 @@
         </button>
         <div class="compare__pair">
           <div class="compare__card">
-            <p class="compare__label">В карточке</p>
+            <p class="compare__label">В&nbsp;карточке</p>
             <p class="compare__value" data-compare-card></p>
           </div>
           <div class="compare__card compare__card--impression">
@@ -122,21 +152,21 @@
         <button class="round-btn round-btn--arrow" type="button" data-compare-next aria-label="Следующий пример">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
         </button>
-        <p class="compare__caption"><span data-compare-index aria-live="polite"></span> Справа — возможное впечатление, а&nbsp;не установленное качество человека.</p>
+        <p class="compare__caption"><span data-compare-index aria-live="polite"></span> Справа — возможное впечатление, а&nbsp;не&nbsp;установленное качество человека.</p>
       </div>
 
       <hr class="rule">
       <div class="chapter chapter--detail" data-pin>
         <h3 class="h-section" data-reveal>Деталь становится характером</h3>
         <div class="chapter__cols">
-          <p class="body-text" data-type>Чтобы решить, хочется ли познакомиться с&nbsp;человеком, иногда достаточно одной детали. Манеры писать, выражения лица, знакомой песни в&nbsp;списке интересов. Но между тем, что мы заметили, и&nbsp;тем, что решили о&nbsp;человеке, может оказаться большой промежуток.</p>
-          <p class="body-text" data-type>За коротким ответом действительно может стоять отсутствие интереса. А&nbsp;может — усталость, спешка или привычка говорить по&nbsp;существу. Одной реплики недостаточно, чтобы уверенно выбрать объяснение.</p>
+          <p class="body-text" data-type>Чтобы решить, хочется ли&nbsp;познакомиться с&nbsp;человеком, иногда достаточно одной детали. Манеры писать, выражения лица, знакомой песни в&nbsp;списке интересов. Но&nbsp;между тем, что&nbsp;мы&nbsp;заметили, и&nbsp;тем, что&nbsp;решили о&nbsp;человеке, может оказаться большой промежуток.</p>
+          <p class="body-text" data-type>За&nbsp;коротким ответом действительно может стоять отсутствие интереса. А&nbsp;может — усталость, спешка или&nbsp;привычка говорить по&nbsp;существу. Одной реплики недостаточно, чтобы уверенно выбрать объяснение.</p>
         </div>
       </div>
       <hr class="rule">
-      <p class="h-section h-section--red observations__question" data-reveal data-pause>Что ты видишь в&nbsp;карточке — и&nbsp;что успеваешь к&nbsp;этому добавить?</p>
+      <p class="h-section h-section--red observations__question" data-reveal data-pause>Что&nbsp;ты&nbsp;видишь в&nbsp;карточке — и&nbsp;что&nbsp;успеваешь к&nbsp;этому добавить?</p>
       <figure class="eye-band" data-reveal>
-        <img src="assets/images/illustrations/eye-log.webp" alt="Глаз в красной растровой манере: вместо зрачка — спил бревна" width="1404" height="1120" loading="lazy" decoding="async">
+        <img src="assets/images/illustrations/eye-log.webp" srcset="assets/images/illustrations/eye-log-sm.webp 800w, assets/images/illustrations/eye-log.webp 1404w" sizes="(max-width: 900px) 160vw, 1440px" alt="Глаз в красной растровой манере: вместо зрачка — спил бревна" width="1404" height="1120" loading="lazy" decoding="async">
       </figure>
       <div class="center-action observations__next">
         <button class="btn-plaque btn-plaque--fill" type="button" data-open-analysis><span>К&nbsp;разбору</span></button>
@@ -150,20 +180,20 @@
         <p class="stage-top__label">Психологический разбор</p>
       </div>
       <div class="chapter chapter--self">
-        <h2 class="h-display" id="analysis-title" data-reveal>С&nbsp;собой мы знакомы лучше всего</h2>
+        <h2 class="h-display" id="analysis-title" data-reveal>С&nbsp;собой мы&nbsp;знакомы лучше всего</h2>
         <div class="quote-pair">
-          <p class="framed-quote" data-reveal>Я не ответил, потому что был занят.</p>
-          <p class="framed-quote" data-reveal>Он не ответил, потому что ему всё равно</p>
+          <p class="framed-quote" data-reveal>Я&nbsp;не&nbsp;ответил, потому что&nbsp;был занят.</p>
+          <p class="framed-quote" data-reveal>Он&nbsp;не&nbsp;ответил, потому что&nbsp;ему всё&nbsp;равно</p>
         </div>
         <div class="two-col" data-pin>
-          <p class="body-text" data-type>Узнаёшь эту разницу? О&nbsp;собственном молчании мы знаем многое: трудный день, разряженный телефон, желание собраться с&nbsp;мыслями. О&nbsp;чужом часто известно только одно — ответа нет.</p>
-          <p class="body-text" data-type>Из-за этой разницы в&nbsp;информации свои поступки бывает легче объяснить обстоятельствами, а&nbsp;чужие — характером. Мы видим результат, но не&nbsp;всегда видим путь к&nbsp;нему. И&nbsp;всё же можем чувствовать уверенность, будто причина очевидна.</p>
+          <p class="body-text" data-type>Узнаёшь эту разницу? О&nbsp;собственном молчании мы&nbsp;знаем многое: трудный день, разряженный телефон, желание собраться с&nbsp;мыслями. О&nbsp;чужом часто известно только одно — ответа нет.</p>
+          <p class="body-text" data-type>Из-за&nbsp;этой разницы в&nbsp;информации свои поступки бывает легче объяснить обстоятельствами, а&nbsp;чужие — характером. Мы&nbsp;видим результат, но&nbsp;не&nbsp;всегда видим путь к&nbsp;нему. И&nbsp;всё&nbsp;же&nbsp;можем чувствовать уверенность, будто причина очевидна.</p>
         </div>
         <blockquote class="proverb" data-reveal data-pause>«В&nbsp;чужом глазу соринку видит, а&nbsp;в&nbsp;своём — бревна не&nbsp;замечает»</blockquote>
         <div class="self__bottom" data-pin>
           <div class="body-text">
-            <p data-type>Не обязательно искать в&nbsp;себе тот же недостаток, который раздражает в&nbsp;другом. Полезнее заметить собственную слепую зону: насколько мало нам известно о&nbsp;его ситуации.</p>
-            <p data-type>Это не значит, что нужно оправдывать грубость, терпеть нарушение границ или продолжать неприятное общение. Можно отказаться от&nbsp;знакомства, не&nbsp;превращая «мне не&nbsp;подходит» в&nbsp;«с&nbsp;этим человеком что‑то не&nbsp;так».</p>
+            <p data-type>Не&nbsp;обязательно искать в&nbsp;себе тот же&nbsp;недостаток, который раздражает в&nbsp;другом. Полезнее заметить собственную слепую зону: насколько мало нам известно о&nbsp;его ситуации.</p>
+            <p data-type>Это&nbsp;не&nbsp;значит, что&nbsp;нужно оправдывать грубость, терпеть нарушение границ или&nbsp;продолжать неприятное общение. Можно отказаться от&nbsp;знакомства, не&nbsp;превращая «мне не&nbsp;подходит» в&nbsp;«с&nbsp;этим человеком что‑то&nbsp;не&nbsp;так».</p>
           </div>
           <img class="self__log" src="assets/images/illustrations/log-large.webp" alt="Спил бревна с годовыми кольцами" width="1254" height="1254" loading="lazy" decoding="async" data-reveal>
         </div>
@@ -175,31 +205,31 @@
           <h3 class="h-section" data-reveal>У&nbsp;каждого свой опыт</h3>
           <p class="body-text body-text--ink" data-type>Одна деталь. <br>Разные ассоциации</p>
         </div>
-        <p class="body-text" data-type>Общие интересы действительно могут привлекать. Иногда за небольшим совпадением мы предполагаем гораздо больше: похожие ценности, чувство юмора, отношение к&nbsp;людям. Хотя любовь к&nbsp;одной музыке ещё не&nbsp;означает, что вам будет одинаково комфортно путешествовать или решать разногласия.</p>
+        <p class="body-text" data-type>Общие интересы действительно могут привлекать. Иногда за&nbsp;небольшим совпадением мы&nbsp;предполагаем гораздо больше: похожие ценности, чувство юмора, отношение к&nbsp;людям. Хотя любовь к&nbsp;одной музыке ещё&nbsp;не&nbsp;означает, что&nbsp;вам будет одинаково комфортно путешествовать или&nbsp;решать разногласия.</p>
         <div class="body-text">
-          <p data-type>Со стилем общения тоже нет единственной реакции. Кому‑то нравится эмоциональная речь, кому‑то спокойнее рядом с&nbsp;немногословным собеседником. Это не делает один способ общения правильным, а&nbsp;другой — плохим.</p>
-          <p data-type>Поэтому полезно разделить два вопроса: «Что мне нравится?» и&nbsp;«Что я&nbsp;действительно знаю об&nbsp;этом человеке?»</p>
+          <p data-type>Со&nbsp;стилем общения тоже нет единственной реакции. Кому‑то&nbsp;нравится эмоциональная речь, кому‑то&nbsp;спокойнее рядом с&nbsp;немногословным собеседником. Это&nbsp;не&nbsp;делает один способ общения правильным, а&nbsp;другой — плохим.</p>
+          <p data-type>Поэтому полезно разделить два вопроса: «Что&nbsp;мне нравится?» и&nbsp;«Что&nbsp;я&nbsp;действительно знаю об&nbsp;этом человеке?»</p>
         </div>
       </div>
       <hr class="rule">
       <div class="flip-block">
-        <p class="flip-hint" id="flip-hint">Нажми на&nbsp;карточку, чтобы увидеть другую трактовку той же детали</p>
+        <p class="flip-hint" id="flip-hint">Нажми на&nbsp;карточку, чтобы увидеть другую трактовку той же&nbsp;детали</p>
         <ul class="flip-cards" data-flip-cards></ul>
       </div>
       <hr class="rule">
 
       <div class="chapter chapter--continue">
         <h3 class="h-display" data-reveal>Первое впечатление продолжается</h3>
-        <p class="body-text body-text--ink continue__lead" data-type>Знакомство не заканчивается первым решением. Но однажды возникшее впечатление может влиять и&nbsp;на&nbsp;то, что мы замечаем дальше.</p>
+        <p class="body-text body-text--ink continue__lead" data-type>Знакомство не&nbsp;заканчивается первым решением. Но&nbsp;однажды возникшее впечатление может влиять и&nbsp;на&nbsp;то, что&nbsp;мы&nbsp;замечаем дальше.</p>
         <figure class="notebook"><img src="assets/images/illustrations/travel-notebook.webp" srcset="assets/images/illustrations/travel-notebook-sm.webp 800w, assets/images/illustrations/travel-notebook.webp 1600w" sizes="(max-width: 1024px) calc(100vw - 32px), 1073px" width="1600" height="640" alt="Раскрытый блокнот с нарисованным маршрутом поездки: вокзал, город, мост, рынок — и карандаш рядом" loading="lazy" decoding="async"></figure>
         <div class="two-col" data-pin>
           <div class="body-text">
-            <p data-type>Представь: попутчик заранее составил подробный маршрут. Если он уже тебе понравился, это легко прочитать как заботу: «Здорово, он обо всём подумал». Если насторожил — как желание контролировать: «Он уже решил всё за&nbsp;меня».</p>
-            <p data-type>Так может проявляться склонность искать подтверждения своему мнению: замечать то, что с&nbsp;ним совпадает, и&nbsp;меньше внимания уделять тому, что заставляет его пересмотреть.</p>
+            <p data-type>Представь: попутчик заранее составил подробный маршрут. Если он&nbsp;уже&nbsp;тебе понравился, это&nbsp;легко прочитать как&nbsp;заботу: «Здорово, он&nbsp;обо&nbsp;всём подумал». Если насторожил — как&nbsp;желание контролировать: «Он&nbsp;уже&nbsp;решил всё&nbsp;за&nbsp;меня».</p>
+            <p data-type>Так может проявляться склонность искать подтверждения своему мнению: замечать то, что&nbsp;с&nbsp;ним совпадает, и&nbsp;меньше внимания уделять тому, что&nbsp;заставляет его пересмотреть.</p>
           </div>
           <div class="body-text">
-            <p data-type>Но сам маршрут ещё не отвечает на&nbsp;главный вопрос. Готов ли человек выслушать твои пожелания? Изменить планы? Спокойно принять отказ? Именно эти поступки помогут отличить заботу от&nbsp;давления.</p>
-            <p data-type>После истории ты можешь изменить решение — или оставить прежнее. Важно не&nbsp;выбрать «правильно», а&nbsp;понять, на&nbsp;что теперь опирается твой выбор.</p>
+            <p data-type>Но&nbsp;сам маршрут ещё&nbsp;не&nbsp;отвечает на&nbsp;главный вопрос. Готов ли&nbsp;человек выслушать твои пожелания? Изменить планы? Спокойно принять отказ? Именно эти поступки помогут отличить заботу от&nbsp;давления.</p>
+            <p data-type>После истории ты&nbsp;можешь изменить решение — или&nbsp;оставить прежнее. Важно не&nbsp;выбрать «правильно», а&nbsp;понять, на&nbsp;что&nbsp;теперь опирается твой выбор.</p>
           </div>
         </div>
         <p class="h-section h-section--red continue__outro" data-reveal data-pause>Первое впечатление — начало, а&nbsp;не&nbsp;окончательный вывод.</p>
@@ -214,17 +244,17 @@
       <div class="stage-top">
         <button class="pill" type="button" data-back-analysis>← Вернуться к&nbsp;разбору</button>
       </div>
-      <h2 class="h-display" id="review-title">Что теперь ты видишь иначе?</h2>
-      <p class="body-text body-text--ink review__lead">Решения приняты: с&nbsp;кем продолжить общение, а&nbsp;кого пропустить.<br>Теперь можно оставить свое решение или изменить его.</p>
+      <h2 class="h-display" id="review-title">Что&nbsp;теперь ты&nbsp;видишь иначе?</h2>
+      <p class="body-text body-text--ink review__lead">Решения приняты: с&nbsp;кем продолжить общение, а&nbsp;кого пропустить.<br>Теперь можно оставить свое решение или&nbsp;изменить его.</p>
       <p class="review__confidence" data-review-confidence></p>
       <ul class="review-grid" data-review-grid></ul>
-      <p class="body-text body-text--ink review__note">Можно изменить выбор. Можно лучше понять, почему он остался прежним</p>
+      <p class="body-text body-text--ink review__note">Можно изменить выбор. Можно лучше понять, почему он&nbsp;остался прежним</p>
 
       <div class="finale">
-        <h2 class="h-display finale__title">Анкета — ещё не&nbsp;человек</h2>
-        <p class="body-text body-text--ink finale__text">В&nbsp;несколько строк помещаются возраст, пара увлечений и&nbsp;фраза о&nbsp;себе. А&nbsp;то, как человек слушает, спорит, шутит и&nbsp;относится к&nbsp;чужим границам, становится понятно постепенно&nbsp;— в&nbsp;разговорах, общих делах и&nbsp;мелочах, которые не&nbsp;попадают в&nbsp;профиль.</p>
+        <h2 class="h-display finale__title">Анкета — ещё&nbsp;не&nbsp;человек</h2>
+        <p class="body-text body-text--ink finale__text">В&nbsp;несколько строк помещаются возраст, пара увлечений и&nbsp;фраза о&nbsp;себе. А&nbsp;то, как&nbsp;человек слушает, спорит, шутит и&nbsp;относится к&nbsp;чужим границам, становится понятно постепенно&nbsp;— в&nbsp;разговорах, общих делах и&nbsp;мелочах, которые не&nbsp;попадают в&nbsp;профиль.</p>
         <div class="center-action">
-          <button class="btn-plaque btn-plaque--fill" type="button" data-restart><span>Попробовать ещё раз</span></button>
+          <button class="btn-plaque btn-plaque--fill" type="button" data-restart><span>Попробовать ещё&nbsp;раз</span></button>
         </div>
       </div>
     </section>
@@ -235,8 +265,8 @@
       <summary class="sources__summary"><h2 class="sources__title" id="sources-title">Источники</h2><span class="sources__chevron" aria-hidden="true"></span></summary>
       <div class="sources__body">
         <ul class="sources__list">
-        <li>Гоффман&nbsp;И. Анализ фреймов: эссе об&nbsp;организации повседневного опыта. — ситуация знакомства как рамка.</li>
-        <li>Мороз&nbsp;О. Онлайн- и&nbsp;офлайн-сообщества; Алгоритмическая публичность. — как интерфейс задаёт способы предъявлять себя.</li>
+        <li>Гоффман&nbsp;И. Анализ фреймов: эссе об&nbsp;организации повседневного опыта. — ситуация знакомства как&nbsp;рамка.</li>
+        <li>Мороз&nbsp;О. Онлайн- и&nbsp;офлайн-сообщества; Алгоритмическая публичность. — как&nbsp;интерфейс задаёт способы предъявлять себя.</li>
         <li>Ross&nbsp;L. (1977). The intuitive psychologist and his shortcomings. — фундаментальная ошибка атрибуции.</li>
         <li>Jones&nbsp;E.&nbsp;E., Nisbett&nbsp;R.&nbsp;E. (1971). The actor and the observer. — асимметрия «действующий — наблюдатель».</li>
         <li>Nickerson&nbsp;R.&nbsp;S. (1998). Confirmation bias: A&nbsp;ubiquitous phenomenon in&nbsp;many guises. — склонность к&nbsp;подтверждению.</li>
@@ -259,7 +289,7 @@
   </footer>
 
   <noscript>
-    <p class="noscript">Для прохождения с&nbsp;выбором нужен JavaScript. Тексты статьи ниже доступны и&nbsp;без него.</p>
+    <p class="noscript">Для&nbsp;прохождения с&nbsp;выбором нужен JavaScript. Тексты статьи ниже доступны и&nbsp;без&nbsp;него.</p>
   </noscript>
 </body>
 </html>

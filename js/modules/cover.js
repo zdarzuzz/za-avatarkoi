@@ -16,7 +16,8 @@ export function initCover({ onPassed } = {}) {
     ticking = false;
     const vh = window.innerHeight;
     const rect = section.getBoundingClientRect();
-    const track = section.offsetHeight - vh;               // участок, на котором картинка закреплена
+    // участок, на котором картинка закреплена; на телефоне обложка ниже экрана — берём долю её высоты
+    const track = Math.max(section.offsetHeight - vh, section.offsetHeight * 0.45);
     const p = track > 0 ? clamp(-rect.top / track) : 1;
     // первые 35 % — картинка держится, затем затухает до конца участка
     const fade = reducedMotion() ? 1 : 1 - clamp((p - 0.35) / 0.65);

@@ -1,8 +1,11 @@
-/* Общая сетка: контент в 1290 макетных пикселей (поля по 75 при ширине 1440) */
-.context__inner,
-.selection,
+/* Общая система контейнеров: контент 1290 макетных px (поля 75 при ширине 1440). */
+.container,
+.ticket-block,
+.profiles,
+.confidence,
 .stories,
-.articles,
+.observations,
+.analysis,
 .review,
 .site-footer {
   width: 100%;
@@ -11,11 +14,10 @@
   padding-inline: var(--gutter);
 }
 
-.rule {
-  border: 0;
-  border-top: var(--line);
-  margin: 0;
-}
+/* Этапы, которые открывает сценарий. Без JS всё видно: тексты читаются и так. */
+html.js [data-gated]:not([data-shown]) { display: none; }
+
+.rule { border: 0; border-top: var(--line); margin: 0; }
 
 .two-col {
   display: grid;
@@ -23,42 +25,61 @@
   gap: calc(22 * var(--u));
 }
 
-.center-action {
-  display: flex;
-  justify-content: center;
-}
+.center-action { display: flex; justify-content: center; gap: calc(16 * var(--u)); flex-wrap: wrap; }
 
 .h-display {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--fs-h1);
-  line-height: normal;
+  line-height: 1.2;
   color: var(--color-ink);
   max-width: calc(853 * var(--u));
+  text-wrap: balance;
 }
+.h-display--xl { font-size: var(--fs-xl); }
 
 .h-section {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--fs-h2);
-  line-height: normal;
+  line-height: 1.2;
   color: var(--color-ink);
 }
 .h-section--red { color: var(--color-red); }
+
+.h-question {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-q);
+  line-height: 1.2;
+  color: var(--color-ink);
+  text-align: center;
+  text-wrap: balance;
+}
 
 .body-text {
   font-family: var(--font-text);
   font-weight: 600;
   font-size: var(--fs-body);
-  line-height: normal;
+  line-height: 1.22;
   color: var(--color-graphite);
+  max-width: 40em;               /* комфортная длина строки для длинного текста */
 }
 .body-text--ink { color: var(--color-ink); }
 .body-text p + p { margin-top: 1.2em; }
 
-.log-mark {
-  width: calc(198 * var(--u));
-  height: auto;
-  aspect-ratio: 198 / 196;
-  object-fit: cover;
+/* Верхняя полоса отдельного этапа */
+.stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: calc(32 * var(--u)) 0 calc(24 * var(--u));
+  min-height: 76px;
+}
+.stage-top__label {
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--color-red);
 }

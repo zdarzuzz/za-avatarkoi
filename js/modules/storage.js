@@ -1,7 +1,7 @@
 // Безопасная работа с localStorage: приватный режим, переполнение и повреждённые данные
 // не должны ломать запуск сайта.
 
-const KEY = 'za-avatarkoi:state';
+const KEY = 'chelovek-v-glazakh:state';
 
 export function readState() {
   try {

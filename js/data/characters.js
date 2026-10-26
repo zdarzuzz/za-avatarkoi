@@ -1,7 +1,8 @@
 // Шесть анкет. Одинаковы во всех ситуациях.
-// Тексты анкет и портреты взяты из Figma (фреймы MacBook Air 5, 7–11).
+// Тексты анкет и портреты — из Figma (MacBook Air 5, 7–11, 18).
 // `forms` — падежные формы имени для персонализированных фраз.
-// `look` — описание внешности, которое используется как референс в промптах иллюстраций.
+// `anonymous` — у человека нет фотографии в анкете: внешность раскрывается только в манге,
+//               а пункт «Аватар» в вопросе о причине не показывается.
 
 const P = 'assets/images/portraits/';
 
@@ -21,8 +22,6 @@ export const CHARACTERS = [
     // положение портрета внутри овальной маски анкеты (из Figma, в % от овала 323.551×483.774)
     profileImg: { w: 99.86, h: 89.05, l: 0.19, t: 8.09 },
     iconImg: { w: 85.49, h: 113.99, l: 7.54, t: 6.03 },
-    look: 'девушка 20 лет, тёмные волосы чуть ниже подбородка с боковым пробором, прямоугольные очки в тонкой оправе, бретельный топ или свободная рубашка, наушники на шее, спокойное немного отстранённое лицо',
-    lookEn: 'a 20-year-old young woman, dark chin-length bob with side part, thin rectangular glasses, strappy top or loose shirt, headphones around neck, calm slightly detached face',
   },
   {
     id: 'alina',
@@ -38,8 +37,6 @@ export const CHARACTERS = [
     iconMono: P + 'alina-mono.webp',
     profileImg: { w: 103.54, h: 103.77, l: -1.98, t: 5 },
     iconImg: { w: 77.89, h: 116.58, l: 7.54, t: 9.55 },
-    look: 'девушка 19 лет, длинные волнистые волосы с двумя заколками, большие выразительные глаза, свитер с норвежским узором, телефон в руке, живая мимика',
-    lookEn: 'a 19-year-old young woman, long wavy hair with two hair clips, big expressive eyes, Nordic-pattern knit sweater, phone in hand, lively facial expressions',
   },
   {
     id: 'danya',
@@ -55,8 +52,6 @@ export const CHARACTERS = [
     iconMono: P + 'danya-mono.webp',
     profileImg: { w: 132.9, h: 125.06, l: -16.51, t: 9.96 },
     iconImg: { w: 119.1, h: 167.34, l: -9.05, t: 10.05 },
-    look: 'молодой человек 25 лет, взъерошенные волосы средней длины, белая рубашка, тёмный жилет и свободно завязанный галстук, спокойная лёгкая полуулыбка',
-    lookEn: 'a 25-year-old young man, tousled medium-length hair, white shirt, dark vest and loosely knotted tie, calm slight half-smile',
   },
   {
     id: 'varya',
@@ -74,8 +69,6 @@ export const CHARACTERS = [
     flip: true,
     profileImg: { w: 106.63, h: 74, l: -3.22, t: 26.08 },
     iconImg: { w: 89.25, h: 92.66, l: 6.22, t: 14.57 },
-    look: 'женщина 47 лет, короткое волнистое каре с седыми прядями, круглые серьги, светлый тренч, холщовая сумка с картонной папкой билетов, живое любопытное лицо (на аватарке у неё не она, а рисованный пушистый зверёк — в манге она сама)',
-    lookEn: 'a 47-year-old woman, short wavy bob with grey streaks, round earrings, light trench coat, canvas tote with a cardboard folder of tickets, lively curious face',
   },
   {
     id: 'mark',
@@ -86,13 +79,16 @@ export const CHARACTERS = [
     forms: { gen: 'Марка', dat: 'Марку', acc: 'Марка', about: 'о Марке', ins: 'Марком' },
     bio: 'Инженер. По выходным — баскетбол. Иногда снимаю видео с друзьями. О себе писать не умею, переписываться неделями тоже не люблю. Лучше созвониться и всё обсудить.',
     interests: 'спорт · техника · видеосъёмка',
-    portrait: P + 'mark.webp',
-    icon: P + 'mark-icon.webp',
-    iconMono: P + 'mark-mono.webp',
-    profileImg: { w: 99.86, h: 89.05, l: 0.19, t: 8.09 },
-    iconImg: { w: 87.88, h: 117.17, l: 6.03, t: 6.53 },
-    look: 'мужчина 29 лет, длинные растрёпанные волнистые волосы до плеч, расстёгнутая спортивная куртка на молнии, тёмная футболка, кулон на цепочке, задумчивый взгляд в сторону, иногда камера в руках',
-    lookEn: 'a 29-year-old man, long messy wavy shoulder-length hair, unzipped sports track jacket, dark t-shirt, pendant on a chain, thoughtful sideways glance, sometimes holds a camera',
+    portrait: P + 'anonymous.svg',
+    revealPortrait: P + 'mark.webp',
+    anonymous: true,
+    icon: P + 'anonymous.svg',
+    revealIcon: P + 'mark-icon.webp',
+    iconMono: P + 'anonymous.svg',
+    profileImg: { w: 100, h: 100, l: 0, t: 0 },
+    revealProfileImg: { w: 99.86, h: 89.05, l: 0.19, t: 8.09 },
+    iconImg: { w: 100, h: 100, l: 0, t: 0 },
+    revealIconImg: { w: 87.88, h: 117.17, l: 6.03, t: 6.53 },
   },
   {
     id: 'nika',
@@ -108,8 +104,6 @@ export const CHARACTERS = [
     iconMono: P + 'nika-mono.webp',
     profileImg: { w: 109.1, h: 97.15, l: -11.25, t: 4.38 },
     iconImg: { w: 86.37, h: 115.16, l: 0, t: 11.06 },
-    look: 'женщина 67 лет азиатской внешности, волосы убраны в косу вокруг головы, серьги-капли, слоистая винтажная одежда с вышитым воротником, морщинки, внимательный прямой взгляд, блокнот для скетчей',
-    lookEn: 'a 67-year-old East Asian woman, hair braided in a crown around her head, drop earrings, layered vintage clothes with an embroidered collar, fine wrinkles, attentive direct gaze, sketchbook',
   },
 ];
 
@@ -128,3 +122,15 @@ export const REASONS = [
 ];
 
 export const getReason = (id) => REASONS.find((r) => r.id === id);
+
+/** Варианты причины для конкретного человека: без «Аватара», если фотографии не было. */
+export const reasonsFor = (character) =>
+  REASONS.filter((r) => !(r.id === 'avatar' && character.anonymous));
+
+// Вопрос об уверенности — один раз, после всех анкет
+export const CONFIDENCE = [
+  { id: 'sure', label: 'Почти во всех' },
+  { id: 'some', label: 'В некоторых' },
+  { id: 'unsure', label: 'Почти ни в каких' },
+  { id: 'unknown', label: 'Сложно сказать' },
+];

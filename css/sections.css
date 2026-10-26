@@ -1,336 +1,357 @@
-/* ═════════════ 1. Обложка (MacBook Air 1–3) ═════════════ */
-.intro {
+/* ═════════════ 1. Обложка (MacBook Air 2) ═════════════
+   Заголовок уходит вверх вместе с прокруткой, изображение закреплено и затухает по прогрессу.
+   Длина участка — 160 % высоты экрана: без долгой пустой прокрутки. */
+.cover {
   position: relative;
-  height: 500vh;               /* длина «дорожки» прокрутки для закреплённой сцены */
+  height: 160svh;
 }
-.intro__stage {
+.cover__sticky {
   position: sticky;
   top: 0;
-  height: 100vh;
   height: 100svh;
   overflow: hidden;
-  background: var(--color-bg);
+  opacity: var(--cover-fade, 1);
+  will-change: opacity;
 }
-.intro__face {
-  position: absolute;
-  left: 0; top: 0;
-  /* макетный размер image 21; масштаб и положение задаёт intro.js
-     (cover-кадрирование + сдвиг вправо + приближение к зрачку) */
-  width: 1440px;
-  height: 1148px;
-  transform-origin: 0 0;
-  will-change: transform, opacity;
-}
-.intro__eye {
+.cover__image {
   position: absolute;
   inset: 0;
+}
+.cover__image img {
   width: 100%;
   height: 100%;
   max-width: none;
   object-fit: cover;
+  object-position: 50% 0;   /* кадр в макете: image 21 смещён на −149 из 1148 */
 }
-.intro__fade {
-  /* градиент из image 21: 50% прозрачно → #FBEED5 на 93.269% */
+.cover__image::after {
+  /* градиент из image 21: 50 % прозрачно → #FBEED5 на 93.269 % */
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, var(--color-bg-transparent) 50%, var(--color-bg) 93.269%);
 }
-.intro__mote {
+.cover__head {
   position: absolute;
-  left: 0; top: 0;
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  background: var(--color-graphite);  /* Ellipse 2: #292526 */
-  opacity: 0;
-  transform-origin: 50% 50%;
-  will-change: transform, opacity;
-}
-.intro__log {
-  position: absolute;
-  left: 0; top: 0;
-  width: 100px;
-  height: auto;
-  max-width: none;
-  aspect-ratio: 1261 / 1247;
-  opacity: 0;
-  transform-origin: 50% 50%;
-  will-change: transform, opacity;
-}
-.intro__title {
-  position: absolute;
-  left: 0; right: 0;
-  top: 69.9%;                   /* 698 / 999 — MacBook Air 2 */
+  left: 0;
+  right: 0;
+  top: calc(100svh - 262 * var(--u) - 40px);  /* 737 из 999 — нижняя треть первого экрана */
+  padding-inline: var(--gutter);
   text-align: center;
+}
+.cover__title {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--fs-hero);
-  line-height: normal;
+  line-height: 1.21;
   color: var(--color-red);
-  white-space: nowrap;
-  will-change: transform, opacity;
+  text-wrap: balance;
 }
-.intro__hint {
-  position: absolute;
-  left: 50%; bottom: 18px;
-  transform: translateX(-50%);
+.cover__author {
+  margin-top: calc(10 * var(--u));
+  font-family: var(--font-text);
+  font-weight: 600;
   font-size: var(--fs-small);
   color: var(--color-graphite);
-  transition: opacity var(--t) var(--ease);
 }
 
-/* ═════════════ 2. Контекст (MacBook Air 4) ═════════════ */
-.context {
-  position: relative;
-  z-index: 2;
-  scroll-margin-top: 0;
-}
-@media (min-width: 1025px) and (prefers-reduced-motion: no-preference) {
-  /* блок контекста наезжает на закреплённую обложку: его спил (центр — 215 макетных px
-     от верха блока) встаёт в центр экрана ровно в момент, когда сцена отпускается */
-  .context { margin-top: calc(-50vh - 215 * var(--u)); }
-}
-.context:focus { outline: none; }
-.context__inner {
-  position: relative;
-  display: grid;
-  grid-template-columns: calc(653 * var(--u)) calc(198 * var(--u)) calc(528 * var(--u));
-  justify-content: space-between;
-  align-items: center;
-  column-gap: 0;
-  min-height: calc(430 * var(--u));
-  padding: calc(105 * var(--u)) calc(73 * var(--u)) calc(105 * var(--u)) calc(74 * var(--u));
-}
-.context__title {
-  max-width: calc(547 * var(--u));   /* текст не заходит под спил (621 − 74) */
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--fs-h1);
-  line-height: normal;
-  color: var(--color-ink);
+/* ═════════════ 2. Билет (MacBook Air 4) ═════════════ */
+.ticket-block {
   position: relative;
   z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: calc(28 * var(--u));
+  padding-top: calc(47 * var(--u));
+  padding-bottom: calc(80 * var(--u));
+  min-height: 70svh;
+  align-content: center;
+  scroll-margin-top: 0;
 }
-.context__inner .log-mark { margin-left: calc(-106 * var(--u)); }
-.context__text {
+.ticket-block:focus { outline: none; }
+.ticket {
+  width: 100%;
+  max-width: calc(1290 * var(--u));
+  perspective: 1600px;
+}
+.ticket__spin {
+  position: relative;
+  aspect-ratio: 1290 / 544;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.ticket__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--color-red);
+  color: var(--color-pink);
+  /* вырубка билета: полукруги Ø38 по краям с шагом 50 (Subtract: Ellipse 37–56) */
+  --hole: calc(19 * var(--u));
+  --step: calc(50 * var(--u));
+  -webkit-mask:
+    radial-gradient(circle var(--hole) at 0 50%, #0000 98%, #000) 0 calc(22 * var(--u)) / 51% var(--step) repeat-y,
+    radial-gradient(circle var(--hole) at 100% 50%, #0000 98%, #000) 100% calc(22 * var(--u)) / 51% var(--step) repeat-y;
+  mask:
+    radial-gradient(circle var(--hole) at 0 50%, #0000 98%, #000) 0 calc(22 * var(--u)) / 51% var(--step) repeat-y,
+    radial-gradient(circle var(--hole) at 100% 50%, #0000 98%, #000) 100% calc(22 * var(--u)) / 51% var(--step) repeat-y;
+}
+.ticket__face--front {
+  display: grid;
+  grid-template-columns: calc(917 * var(--u)) 1fr;
+}
+.ticket__face--front::before {
+  /* внутренняя рамка Rectangle 19 (1156 × 481) */
+  content: '';
+  position: absolute;
+  left: calc(67 * var(--u));
+  right: calc(67 * var(--u));
+  top: calc(31 * var(--u));
+  bottom: calc(32 * var(--u));
+  border: 1px solid var(--color-pink);
+  border-radius: calc(12 * var(--u));
+  pointer-events: none;
+}
+.ticket__face--front::after {
+  /* перфорация: два столбца точек Ø10 с шагом 21 (Group 12, 13) */
+  content: '';
+  position: absolute;
+  inset: calc(33 * var(--u)) calc(38 * var(--u));
+  background:
+    radial-gradient(circle calc(5 * var(--u)) at 50% 50%, var(--color-pink) 96%, #0000) 0 0 / calc(10 * var(--u)) calc(21 * var(--u)) repeat-y,
+    radial-gradient(circle calc(5 * var(--u)) at 50% 50%, var(--color-pink) 96%, #0000) 100% 0 / calc(10 * var(--u)) calc(21 * var(--u)) repeat-y;
+  pointer-events: none;
+}
+.ticket__face--back {
+  transform: rotateY(180deg);
+  background:
+    repeating-linear-gradient(135deg, var(--color-pink) 0 1px, #0000 1px 18px),
+    var(--color-red);
+}
+.ticket__main {
+  position: relative;
+  padding: calc(99 * var(--u)) 0 0 calc(107 * var(--u));
+}
+.ticket__line {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-ticket);
+  line-height: 1.22;
+  color: var(--color-pink);
+  max-width: calc(823 * var(--u));
+  min-height: 2.44em;
+  padding-bottom: calc(47 * var(--u));
+  border-bottom: 1px solid var(--color-pink);   /* Line 12 */
+}
+.ticket__fields {
+  display: grid;
+  grid-template-columns: calc(370 * var(--u)) 1fr;
+  max-width: calc(823 * var(--u));
+  margin-top: calc(16 * var(--u));
+}
+.ticket__field { padding-top: calc(31 * var(--u)); }
+.ticket__field + .ticket__field {
+  border-left: 1px solid var(--color-pink);      /* Line 13 */
+  padding-left: calc(66 * var(--u));
+}
+.ticket__label {
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  color: var(--color-pink);
+  opacity: 0.85;
+}
+.ticket__value {
+  margin-top: calc(5 * var(--u));
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-value);
+  line-height: 1.2;
+  color: var(--color-pink);
+}
+.ticket__stub {
+  position: relative;
+  border-left: 1px dashed var(--color-pink);       /* Line 14 */
+  margin: calc(31 * var(--u)) 0 calc(32 * var(--u));
+  padding: calc(68 * var(--u)) calc(60 * var(--u)) 0 calc(37 * var(--u));
+}
+.ticket__no {
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-body);
+}
+.ticket__num {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-num);
+  line-height: 1.2;
+  margin-bottom: calc(-2 * var(--u));
+}
+.ticket__note {
+  margin-top: calc(47 * var(--u));
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  line-height: 1.22;
+}
+.ticket-block__desc {
+  max-width: calc(853 * var(--u));
+  text-align: center;
   font-family: var(--font-ui);
   font-weight: 400;
   font-size: var(--fs-body);
-  line-height: normal;
   color: var(--color-ink);
+  transition: opacity 0.5s var(--ease);
 }
+.ticket-block.is-spinning .ticket-block__desc { opacity: 0; }
 
-/* ═════════════ 3. Анкеты (MacBook Air 5, 7–12) ═════════════ */
-.selection {
+/* ═════════════ 3. Анкеты — слайдер (MacBook Air 18–19) ═════════════ */
+.profiles {
   position: relative;
-  padding-top: calc(20 * var(--u));
-  padding-bottom: calc(48 * var(--u));
+  padding-top: calc(24 * var(--u));
+  padding-bottom: calc(60 * var(--u));
+  overflow: clip;
 }
-.selection__counter {
-  text-align: right;
+.profiles__counter {
+  text-align: center;
   font-size: var(--fs-small);
   color: var(--color-graphite);
-  min-height: 1.3em;
-  padding-right: calc(1 * var(--u));
+  min-height: 1.4em;
+  margin-bottom: calc(16 * var(--u));
 }
-.selection__viewport { position: relative; }
-.selection__done {
+.slider {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(308 * var(--u)) 1fr calc(308 * var(--u));
+  align-items: start;
+  touch-action: pan-y;      /* вертикальная прокрутка страницы остаётся за браузером */
+}
+.slider__ghost {
+  margin-top: calc(201 * var(--u));
+  aspect-ratio: 308 / 411;
+  background: url('../assets/images/decorations/frame-ornate.webp') center / 100% 100% no-repeat;
+  opacity: 0.32;            /* боковые рамки — пустые и приглушённые */
+  transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
+}
+.slider__ghost[data-empty] { opacity: 0.12; }
+.slider__track { position: relative; min-width: 0; }
+
+.card {
   display: grid;
   justify-items: center;
-  gap: 20px;
-  padding: 40px 0;
-  font-size: var(--fs-body);
-  color: var(--color-graphite);
+  outline: none;
+  transition: transform 0.45s var(--ease), opacity 0.45s var(--ease);
 }
-
-.profile {
+.card.is-out-left { transform: translateX(-40%) scale(0.86); opacity: 0; }
+.card.is-out-right { transform: translateX(40%) scale(0.86); opacity: 0; }
+.card.is-in { transform: translateX(28%) scale(0.92); opacity: 0; }
+.card.is-dragging { transition: none; }
+.card__portrait {
   position: relative;
-  display: grid;
-  grid-template-columns: calc(585 * var(--u)) 1fr calc(528 * var(--u));
-  min-height: calc(779 * var(--u));
-  margin-left: calc(-30 * var(--u));
+  width: calc(634 * var(--u));
+  max-width: 100%;
+  aspect-ratio: 634 / 845;
 }
-.profile__portrait {
-  position: relative;
-  width: calc(585 * var(--u));
-  aspect-ratio: 585 / 779;
-  align-self: start;
-}
-.profile__oval {
+.card__oval {
+  /* Ellipse 3: 351.93 × 526.20 в (141.85, 144.39) внутри рамки 634 × 845 */
   position: absolute;
-  /* Ellipse 3: 323.551 × 483.774 at (130.41, 133.82) внутри рамки 585 × 779 */
-  left: 22.29%; top: 17.18%;
-  width: 55.31%; height: 62.1%;
+  left: 22.37%;
+  top: 17.09%;
+  width: 55.51%;
+  height: 62.27%;
   border-radius: 50%;
   overflow: hidden;
+  background: var(--color-bg);
 }
-.profile__oval img {
+.card__oval img {
   position: absolute;
   max-width: none;
   left: var(--l); top: var(--t);
   width: var(--w); height: var(--h);
   object-fit: cover;
 }
-.profile__oval--flip img { transform: scaleX(-1); }
-.profile__frame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-.profile__log {
-  align-self: start;
-  justify-self: center;
-  margin-top: calc(289 * var(--u));
-  margin-left: calc(-9 * var(--u));
-}
-.profile__body {
-  position: relative;
+.card__oval--flip img { transform: scaleX(-1); }
+.card__frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.card__actions {
   display: flex;
-  flex-direction: column;
-  padding-top: calc(30 * var(--u));
-  min-height: calc(779 * var(--u));
+  justify-content: center;
+  gap: calc(21 * var(--u));
+  margin-top: calc(-13 * var(--u));     /* кнопки заходят на низ рамки (y 832 при высоте 845) */
+  position: relative;
+  z-index: 1;
 }
-.profile__name {
+.card__actions .btn-plaque { font-family: var(--font-ui); font-weight: 400; }
+.card__actions .btn-plaque--fill { color: var(--color-white); }
+.card__name {
+  margin-top: calc(-1 * var(--u));
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--fs-h1);
-  line-height: normal;
+  line-height: 1.21;
   color: var(--color-red-name);
-  white-space: nowrap;
+  text-align: center;
 }
-.profile__bio {
-  margin-top: calc(14 * var(--u));
+.card__interests,
+.card__bio {
+  max-width: calc(854 * var(--u));
+  text-align: center;
   font-family: var(--font-ui);
   font-weight: 400;
   font-size: var(--fs-body);
-  line-height: normal;
+  line-height: 1.22;
   color: var(--color-ink);
 }
-.profile__interests {
-  margin-top: 1.2em;
-  font-family: var(--font-ui);
-  font-weight: 400;
-  font-size: var(--fs-body);
-  color: var(--color-ink-soft);
-}
-.profile__actions {
-  margin-top: auto;
-  display: grid;
-  padding-bottom: calc(1 * var(--u));
-}
-/* рамки кнопок накладываются, как в макете: 543 → 662 при высоте 175 */
-.profile__actions .btn-plaque + .btn-plaque { margin-top: calc(-56 * var(--u)); }
-.profile__actions .btn-plaque {
-  --w: 525;
-  font-family: var(--font-ui);
-  font-weight: 400;
-}
-.profile__actions .btn-plaque::before { inset: 24.9% 2.47% 28.3% 2.57%; }
-.profile__actions .btn-plaque--fill { color: var(--color-white); }
+.card__interests { margin-top: calc(27 * var(--u)); color: var(--color-ink-soft); }
+.card__bio { margin-top: calc(35 * var(--u)); }
 
-/* Опрос (Rectangle 7: 528 × 731, #C03740, r 30) */
-.poll {
-  position: absolute;
-  inset: 0 0 auto auto;
-  width: calc(528 * var(--u));
-  min-height: calc(731 * var(--u));
-  background: var(--color-red);
-  border-radius: var(--radius-poll);
-  padding: calc(93 * var(--u)) calc(36 * var(--u)) calc(48 * var(--u));
-  color: var(--color-pink);
-  z-index: 3;
-}
-.poll__title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--fs-h2);
-  line-height: normal;
-  color: var(--color-pink);
-  max-width: calc(455 * var(--u));
-}
-.poll__options {
-  margin-top: calc(14 * var(--u));
-  display: grid;
-  border: 0;
-  padding: 0;
-}
-.poll__option {
-  display: flex;
-  align-items: center;
-  gap: calc(24 * var(--u));
-  width: 100%;
-  text-align: left;
-  font-family: var(--font-text);
-  font-weight: 700;
-  font-size: var(--fs-option);
-  line-height: 1.55;
-  color: var(--color-pink);
-  padding: 0;
-  min-height: 44px;
-}
-.poll__radio {
-  flex: none;
-  width: calc(29 * var(--u));
-  height: calc(29 * var(--u));
-  min-width: 22px;
-  min-height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--color-pink);       /* Ellipse 4: stroke #FFE8E7, 2 */
-  display: grid;
-  place-items: center;
-}
-.poll__radio::after {
-  content: '';
-  width: 52%;
-  height: 52%;
-  border-radius: 50%;
-  background: var(--color-pink);
-  transform: scale(0);
-  transition: transform var(--t-fast) var(--ease);
-}
-.poll__option[aria-checked='true'] .poll__radio::after { transform: scale(1); }
-@media (hover: hover) {
-  .poll__option:hover .poll__radio::after { transform: scale(0.45); }
-  .poll__option[aria-checked='true']:hover .poll__radio::after { transform: scale(1); }
-}
-.poll__option:focus-visible { box-shadow: 0 0 0 2px var(--color-red), 0 0 0 4px var(--color-pink); }
-.poll__thanks {
-  margin-top: calc(18 * var(--u));
-  font-family: var(--font-text);
-  font-size: var(--fs-small);
+/* Вопрос о причине — прямо в анкете (MacBook Air 19) */
+.card__reason { display: grid; justify-items: center; margin-top: calc(-1 * var(--u)); }
+.card__reason[hidden] { display: none; }
+.card__reason .h-question { max-width: calc(853 * var(--u)); }
+.card__reason .choice-list { margin-top: calc(31 * var(--u)); }
+.card__reason-note {
+  margin-top: calc(16 * var(--u));
   min-height: 1.4em;
+  font-size: var(--fs-small);
+  color: var(--color-graphite);
+  text-align: center;
 }
+.card__undo { margin-top: calc(8 * var(--u)); }
+.card.is-deciding .card__info { display: none; }
+.card .card__confirm[hidden] { display: none; }
 
-/* ═════════════ 4. Манга (MacBook Air 13, 15) ═════════════ */
-.stories { padding-top: calc(47 * var(--u)); padding-bottom: calc(80 * var(--u)); }
+/* ═════════════ 4. Вопрос об уверенности ═════════════ */
+.confidence {
+  display: grid;
+  justify-items: center;
+  padding-top: calc(80 * var(--u));
+  padding-bottom: calc(100 * var(--u));
+  text-align: center;
+}
+.confidence__lead { margin-top: calc(20 * var(--u)); text-align: center; max-width: calc(760 * var(--u)); }
+.confidence .center-action { margin-top: calc(40 * var(--u)); }
+
+/* ═════════════ 5. Манга (MacBook Air 13) ═════════════ */
+.stories { padding-top: calc(43 * var(--u)); padding-bottom: calc(80 * var(--u)); }
 .stories__head {
   display: grid;
-  grid-template-columns: calc(526 * var(--u)) calc(198 * var(--u)) calc(526 * var(--u));
-  justify-content: space-between;
-  align-items: start;
+  grid-template-columns: calc(853 * var(--u)) 1fr;
+  column-gap: calc(40 * var(--u));
+  align-items: end;
 }
-.stories__title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--fs-h1);
-  line-height: normal;
-  color: var(--color-ink);
-}
-.stories__head .log-mark { margin-top: calc(122 * var(--u)); margin-left: calc(-26 * var(--u)); }
 .stories__lead {
-  margin-top: calc(163 * var(--u));
+  justify-self: end;
+  max-width: calc(526 * var(--u));
   font-family: var(--font-text);
   font-weight: 600;
   font-size: var(--fs-body);
   color: var(--color-ink);
+  padding-bottom: calc(8 * var(--u));
 }
-.stories__nav { margin-top: calc(52 * var(--u)); margin-bottom: calc(72 * var(--u)); }
-.avatar-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
+.stories__nav { margin: calc(53 * var(--u)) 0 calc(57 * var(--u)); }
+.avatar-row { display: flex; justify-content: space-between; gap: 8px; }
 .avatar-btn {
   position: relative;
   border-radius: 50%;
@@ -343,254 +364,156 @@
 .avatar-btn__seen {
   position: absolute;
   right: 6%; bottom: 6%;
-  width: calc(40 * var(--u));
-  height: calc(40 * var(--u));
+  width: calc(40 * var(--u)); height: calc(40 * var(--u));
   min-width: 18px; min-height: 18px;
   border-radius: 50%;
   background: var(--color-red);
   border: 2px solid var(--color-bg);
-  display: grid;
-  place-items: center;
+  display: grid; place-items: center;
 }
 .avatar-btn__seen svg { width: 60%; height: 60%; fill: none; stroke: var(--color-pink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-
-.return-bar {
-  position: sticky;
-  top: 12px;
-  z-index: 5;
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 16px;
+.avatar-btn__tag {
+  position: absolute;
+  left: 50%; top: 100%;
+  transform: translate(-50%, 8px);
+  white-space: nowrap;
+  font-size: calc(18 * var(--u));
+  color: var(--color-red);
 }
-.return-bar .text-link {
-  background: var(--color-bg);
-  border: 1px solid var(--color-red);
-  border-radius: 999px;
-  padding: 8px 18px;
-  text-decoration: none;
+.stories__progress {
+  margin-top: calc(40 * var(--u));
+  font-size: var(--fs-small);
+  color: var(--color-graphite);
+  text-align: center;
+  min-height: 1.4em;
 }
+.return-bar { position: sticky; top: 12px; z-index: 6; margin-top: 16px; }
 
-.story { padding-top: calc(46 * var(--u)); }
-.story__grid {
+.story { padding-top: calc(31 * var(--u)); scroll-margin-top: 16px; }
+.story__layout {
   display: grid;
-  grid-template-columns: calc(456 * var(--u)) 1fr;
-  column-gap: calc(58 * var(--u));
+  grid-template-columns: calc(109 * var(--u)) minmax(0, calc(1073 * var(--u))) calc(108 * var(--u));
+  justify-content: center;
   align-items: start;
 }
-.story__person {
+/* Закреплённый указатель: небольшая иконка и имя текущего персонажа */
+.story__who {
   position: sticky;
   top: 24px;
   display: grid;
-  justify-items: center;
+  justify-items: start;
+  gap: 8px;
+  margin-top: calc(98 * var(--u));
+  z-index: 2;
 }
-.story__portrait {
-  position: relative;
-  width: calc(456 * var(--u));
-  aspect-ratio: 456 / 608;
-}
-.story__portrait .profile__oval {
-  /* Ellipse 3: 252.99 × 378.27 at (101.97, 103.06) внутри рамки 456 × 608 */
-  left: 22.36%; top: 16.95%;
-  width: 55.48%; height: 62.21%;
-}
-.story__name {
-  margin-top: calc(12 * var(--u));
+.story__who .avatar { --d: 90; min-width: 56px; min-height: 56px; background: var(--color-graphite); }
+.story__who-name {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--fs-h3);
+  font-size: calc(26 * var(--u));
+  min-height: 1em;
+  line-height: 1.1;
   color: var(--color-graphite);
-  text-align: center;
+  max-width: calc(105 * var(--u));
 }
-.story__plaques {
-  justify-self: stretch;
-  display: grid;
-  gap: calc(9 * var(--u));
-  margin-top: calc(40 * var(--u));
-  padding-inline: calc(21 * var(--u)) 0;
-}
-.story__plaques .info-plaque { margin-left: calc(-21 * var(--u)); }
-.story__main { min-width: 0; }
+.story__main { min-width: 0; grid-column: 2; }
 .story__title {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--fs-h3);
+  line-height: 1.21;
   color: var(--color-graphite);
 }
 .story__intro {
-  margin-top: calc(10 * var(--u));
-  margin-bottom: calc(20 * var(--u));
+  margin: calc(12 * var(--u)) 0 calc(24 * var(--u));
   font-size: var(--fs-small);
   color: var(--color-graphite);
-  max-width: calc(797 * var(--u));
+  max-width: calc(860 * var(--u));
 }
-.story__closing {
-  margin-top: calc(30 * var(--u));
-  font-size: var(--fs-body);
-  color: var(--color-graphite);
-}
+.story__closing { margin-top: calc(22 * var(--u)); font-size: var(--fs-body); color: var(--color-graphite); max-width: calc(797 * var(--u)); }
 
-.story__question {
-  margin-top: calc(80 * var(--u));
-  padding-top: calc(46 * var(--u));
-  border-top: var(--line);
-  text-align: center;
-}
-.story__question h3 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--fs-h2);
-  color: var(--color-ink);
-}
+.story__question { margin-top: calc(22 * var(--u)); padding-top: calc(46 * var(--u)); border-top: var(--line); text-align: center; }
 .answer-row {
   display: grid;
   grid-template-columns: repeat(3, calc(417 * var(--u)));
   justify-content: space-between;
-  margin-top: calc(33 * var(--u));
+  margin-top: calc(13 * var(--u));
 }
 .answer-row .btn-plaque { color: var(--color-ink); }
 .answer-row .btn-plaque[aria-pressed='true'] { color: var(--color-pink); }
-.story__prompt {
-  margin-top: calc(11 * var(--u));
-  font-size: var(--fs-body);
-  color: var(--color-graphite);
-}
-.story__hint {
-  min-height: 2.6em;
-  margin: calc(18 * var(--u)) auto 0;
-  max-width: calc(860 * var(--u));
-  font-size: var(--fs-body);
-  color: var(--color-red);
-}
+.story__prompt { margin-top: calc(11 * var(--u)); font-size: var(--fs-body); color: var(--color-graphite); }
+.story__hint { min-height: 2.6em; margin: calc(18 * var(--u)) auto 0; max-width: calc(860 * var(--u)); font-size: var(--fs-body); color: var(--color-red); }
 
-.story__comment {
-  margin-top: calc(46 * var(--u));
-  padding-top: calc(46 * var(--u));
-  border-top: var(--line);
-}
+.story__comment { margin-top: calc(10 * var(--u)); padding-top: calc(46 * var(--u)); border-top: var(--line); }
 .story__comment-label { font-size: var(--fs-body); color: var(--color-graphite); }
 .story__comment-title {
   margin-top: calc(20 * var(--u));
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: var(--fs-h2);
+  font-size: var(--fs-q);
+  line-height: 1.2;
   color: var(--color-ink);
   max-width: calc(963 * var(--u));
 }
-.story__personal {
-  margin-top: calc(14 * var(--u));
-  font-size: var(--fs-small);
-  color: var(--color-graphite);
-  max-width: calc(860 * var(--u));
-}
-.observations {
-  margin-top: calc(6 * var(--u));
+.story__personal { margin-top: calc(14 * var(--u)); font-size: var(--fs-small); color: var(--color-graphite); max-width: calc(860 * var(--u)); }
+.observations-grid {
+  margin-top: calc(38 * var(--u));
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
-.observation {
-  display: grid;
-  align-content: start;
-  justify-items: center;
-  padding-inline: calc(20 * var(--u));
-}
+.observation { padding-inline: calc(20 * var(--u)); }
 .observation + .observation { border-left: var(--line); }
 .observation:first-child { padding-left: 0; }
 .observation:last-child { padding-right: 0; }
-.observation__head {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: calc(417 * var(--u));
-  max-width: 100%;
-  aspect-ratio: 3 / 1;
-  background: url('../assets/images/decorations/button-frame.webp') center / 100% 100% no-repeat;
+.observation h4 {
   font-family: var(--font-text);
   font-weight: 600;
-  font-size: min(var(--fs-body), calc(30 * var(--u)));
-  line-height: 1.05;
+  font-size: var(--fs-body);
   color: var(--color-ink);
-  text-align: center;
-  padding: 0 11%;
-  margin-bottom: calc(-9 * var(--u));
+  margin-bottom: calc(45 * var(--u));
 }
-.observation p {
-  font-size: var(--fs-small);
-  color: var(--color-ink);
-}
-.story__nav {
-  display: flex;
-  justify-content: center;
-  gap: calc(40 * var(--u));
-  flex-wrap: wrap;
-  margin-top: calc(30 * var(--u));
-}
+.observation p { font-size: var(--fs-small); color: var(--color-ink); }
+.story__nav { display: flex; justify-content: center; gap: calc(21 * var(--u)); flex-wrap: wrap; margin-top: calc(30 * var(--u)); }
 
-/* ═════════════ 5. Статьи (MacBook Air 16) ═════════════ */
-.articles { padding-top: calc(58 * var(--u)); padding-bottom: calc(80 * var(--u)); }
-.articles__sub { max-width: calc(635 * var(--u)); }
-
+/* ═════════════ 6. Наблюдения «А что добавил ты?» (MacBook Air 16) ═════════════ */
+.observations { padding-top: calc(58 * var(--u)); padding-bottom: calc(80 * var(--u)); }
+.observations__hero .body-text { margin-top: 0; max-width: calc(635 * var(--u)); }
 .compare {
-  position: relative;
   display: grid;
-  /* по макету: стрелка 89 · карточка 469 · спил (заходит на карточки) · карточка 469 · 2 · стрелка 89 = 1290 */
-  grid-template-columns: calc(89 * var(--u)) calc(469 * var(--u)) calc(172 * var(--u)) calc(469 * var(--u)) calc(2 * var(--u)) calc(89 * var(--u));
-  justify-content: center;
+  grid-template-columns: calc(89 * var(--u)) auto calc(89 * var(--u));
+  justify-content: space-between;
   align-items: center;
-  margin-top: calc(39 * var(--u));
+  margin: calc(38 * var(--u)) calc(54 * var(--u)) 0;
   padding-bottom: calc(20 * var(--u));
 }
+.compare__pair { display: grid; grid-template-columns: calc(457 * var(--u)) calc(454 * var(--u)); gap: 0; margin-inline: calc(54 * var(--u)); }
 .compare__card {
-  position: relative;
-  aspect-ratio: 469 / 313;
+  aspect-ratio: 457 / 305;
   background: url('../assets/images/decorations/card-frame.webp') center / 100% 100% no-repeat;
-  padding: calc(66 * var(--u)) calc(40 * var(--u)) 0 calc(47 * var(--u));
+  padding: calc(72 * var(--u)) calc(36 * var(--u)) 0 calc(47 * var(--u));
 }
-.compare__card--right { transform: translateY(calc(6 * var(--u))); }
-.compare__next { grid-column: 6; }
-.compare__label {
-  font-family: var(--font-text);
-  font-weight: 400;
-  font-size: var(--fs-small);
-  color: var(--color-ink);
-}
+.compare__label { font-family: var(--font-text); font-weight: 400; font-size: var(--fs-small); color: var(--color-ink); }
 .compare__value {
-  margin-top: calc(30 * var(--u));
+  margin-top: calc(17 * var(--u));
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--fs-h2);
-  line-height: normal;
+  line-height: 1.2;
   color: var(--color-ink);
+  min-height: 2.4em;
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
 }
 .compare.is-switching .compare__value { opacity: 0; transform: translateY(8px); }
-.compare__log {
-  position: relative;
-  z-index: 1;
-  width: calc(198 * var(--u));
-  max-width: none;
-  margin: calc(-6 * var(--u)) calc(-14 * var(--u)) 0 calc(-12 * var(--u));
-}
-.compare__caption {
-  grid-column: 1 / -1;
-  margin-top: calc(24 * var(--u));
-  text-align: center;
-  font-family: var(--font-text);
-  font-weight: 400;
-  font-size: var(--fs-small);
-  color: var(--color-graphite);
-}
+.compare__caption { grid-column: 1 / -1; margin-top: calc(24 * var(--u)); text-align: center; font-family: var(--font-text); font-weight: 400; font-size: var(--fs-small); color: var(--color-graphite); }
 .compare__caption span { margin-right: 0.6em; color: var(--color-red); font-weight: 600; }
 
 .chapter--detail {
   display: grid;
-  grid-template-columns: calc(417 * var(--u)) calc(416 * var(--u)) calc(416 * var(--u));
+  grid-template-columns: calc(375 * var(--u)) minmax(0, calc(914 * var(--u)));
   justify-content: space-between;
   padding: calc(78 * var(--u)) 0 calc(85 * var(--u));
 }
-.articles__question {
-  padding-top: calc(30 * var(--u));
-  max-width: calc(853 * var(--u));
-}
+.chapter__cols { display: grid; grid-template-columns: 1fr 1fr; gap: calc(20 * var(--u)); }
+.observations__question { padding-top: calc(30 * var(--u)); max-width: calc(853 * var(--u)); }
 .eye-band {
   position: relative;
   margin: calc(45 * var(--u)) calc(-1 * var(--gutter)) 0;
@@ -598,13 +521,11 @@
   overflow: hidden;
 }
 .eye-band img {
-  /* кадрирование image 23: w 153.96%, h 255.36%, left -31.17%, top -77.68% */
+  /* кадрирование image 23 из макета: w 153.96 %, h 255.36 %, left −31.17 %, top −77.68 % */
   position: absolute;
   max-width: none;
-  left: -31.17%;
-  top: -77.68%;
-  width: 153.96%;
-  height: 255.36%;
+  left: -31.17%; top: -77.68%;
+  width: 153.96%; height: 255.36%;
 }
 .eye-band::after {
   content: '';
@@ -612,15 +533,13 @@
   inset: 0;
   background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-transparent-alt) 51.406%, var(--color-bg) 102.18%);
 }
-.articles > .rule + .articles__question { border: 0; }
+.observations__next { margin-top: calc(40 * var(--u)); }
 
-.chapter--self { padding: calc(38 * var(--u)) 0 calc(75 * var(--u)); }
-.quote-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(22 * var(--u));
-  margin-top: calc(3 * var(--u));
-}
+/* ═════════════ 7. Психологический разбор — отдельный этап ═════════════ */
+.analysis { padding-bottom: calc(80 * var(--u)); }
+.analysis:focus { outline: none; }
+.chapter--self { padding: calc(20 * var(--u)) 0 calc(75 * var(--u)); }
+.quote-pair { display: grid; grid-template-columns: 1fr 1fr; gap: calc(22 * var(--u)); margin-top: calc(33 * var(--u)); }
 .framed-quote {
   aspect-ratio: 634 / 212;
   display: grid;
@@ -640,73 +559,50 @@
   text-align: center;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: var(--fs-h1);
-  line-height: normal;
+  font-size: var(--fs-xl);
+  line-height: 1.2;
   color: var(--color-red);
+  text-wrap: balance;
 }
 .self__bottom {
   display: grid;
   grid-template-columns: calc(632 * var(--u)) calc(635 * var(--u));
   justify-content: space-between;
   align-items: start;
-  margin-top: calc(-53 * var(--u));
+  margin-top: calc(-6 * var(--u));
   padding-left: calc(3 * var(--u));
 }
-.self__bottom > .body-text { margin-top: calc(140 * var(--u)); }
+.self__bottom > .body-text { margin-top: calc(93 * var(--u)); }
 .self__log { width: 100%; height: auto; aspect-ratio: 1; }
 
 .chapter--experience {
   display: grid;
-  grid-template-columns: calc(417 * var(--u)) calc(416 * var(--u)) calc(417 * var(--u));
+  grid-template-columns: calc(409 * var(--u)) calc(416 * var(--u)) calc(417 * var(--u));
   justify-content: space-between;
-  padding: calc(62 * var(--u)) 0 calc(140 * var(--u)) 0;
+  padding: calc(62 * var(--u)) 0 calc(140 * var(--u));
 }
-.experience__head .body-text { margin-top: calc(10 * var(--u)); }
+.experience__head .body-text { margin-top: calc(24 * var(--u)); }
 .chapter--experience > .body-text { margin-top: calc(15 * var(--u)); }
 
 .flip-block { padding: calc(14 * var(--u)) 0 calc(28 * var(--u)); }
-.flip-hint {
-  text-align: center;
-  font-family: var(--font-text);
-  font-weight: 400;
-  font-size: var(--fs-small);
-  color: var(--color-graphite);
-  margin-bottom: calc(6 * var(--u));
-}
-.flip-cards {
-  display: grid;
-  grid-template-columns: repeat(3, calc(445 * var(--u)));
-  justify-content: space-between;
-  margin-inline: calc(-15 * var(--u));
-}
+.flip-hint { text-align: center; font-family: var(--font-text); font-weight: 400; font-size: var(--fs-small); color: var(--color-graphite); margin-bottom: calc(6 * var(--u)); }
+.flip-cards { display: grid; grid-template-columns: repeat(3, calc(445 * var(--u))); justify-content: space-between; margin-inline: calc(-15 * var(--u)); }
 
 .chapter--continue { padding-top: calc(54 * var(--u)); }
 .continue__lead { margin-top: calc(21 * var(--u)); max-width: calc(853 * var(--u)); }
-.notebook {
-  margin: calc(40 * var(--u)) auto;
-  width: 100%;
-  /* промежуток в макете между вводным абзацем и колонками: 1290 × 480 */
-  aspect-ratio: 1290 / 480;
-  display: grid;
-  place-items: center;
-}
+.notebook { margin: calc(40 * var(--u)) auto; width: 100%; aspect-ratio: 1290 / 480; display: grid; place-items: center; }
+.notebook[hidden] { display: none; }
 .notebook img { width: 100%; height: 100%; object-fit: contain; }
-.two-col--wide { gap: calc(20 * var(--u)); }
-.two-col--wide .body-text p + p { margin-top: 1.2em; }
+.chapter--continue .two-col { margin-top: calc(40 * var(--u)); }
 .continue__outro { margin-top: calc(60 * var(--u)); max-width: calc(853 * var(--u)); }
 .chapter--continue .center-action { margin-top: calc(80 * var(--u)); }
 
-/* ═════════════ 6. Финальный пересмотр (MacBook Air 17) ═════════════ */
-.review { padding-top: calc(40 * var(--u)); padding-bottom: calc(60 * var(--u)); }
+/* ═════════════ 8. Что теперь ты видишь иначе? (MacBook Air 17) ═════════════ */
+.review { padding-bottom: calc(60 * var(--u)); }
 .review:focus { outline: none; }
-.review__top { min-height: 44px; }
 .review__lead { margin-top: 0; }
-.review-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: calc(42 * var(--u)) calc(-22 * var(--u)) 0;
-  column-gap: 0;
-}
+.review__confidence { margin-top: calc(14 * var(--u)); font-size: var(--fs-small); color: var(--color-graphite); min-height: 1.3em; }
+.review-grid { display: grid; grid-template-columns: 1fr 1fr; margin: calc(42 * var(--u)) calc(-22 * var(--u)) 0; }
 .review-card {
   position: relative;
   aspect-ratio: 677 / 451;
@@ -719,64 +615,27 @@
   scroll-margin-top: 80px;
 }
 .review-card .avatar { --d: 224; background: var(--color-graphite); }
-.review-card__name {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--fs-h2);
-  line-height: normal;
-  color: var(--color-ink);
-  margin-top: calc(-14 * var(--u));
-  white-space: nowrap;
-}
-.review-card__first {
-  font-family: var(--font-text);
-  font-weight: 600;
-  font-size: var(--fs-body);
-  color: var(--color-ink);
-}
+.review-card__name { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-q); line-height: 1.2; color: var(--color-ink); margin-top: calc(-14 * var(--u)); white-space: nowrap; }
+.review-card__first { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-body); color: var(--color-ink); line-height: 1.22; }
 .review-card__first b { font-weight: 600; color: var(--color-red); display: block; }
-.review-card__now {
-  font-size: var(--fs-small);
-  color: var(--color-graphite);
-  min-height: 1.3em;
-}
-.review-card__controls {
-  display: flex;
-  gap: calc(15 * var(--u));
-  margin-top: calc(6 * var(--u));
-}
+.review-card__now { font-size: var(--fs-small); color: var(--color-graphite); min-height: 1.3em; }
+.review-card__now.is-changed { color: var(--color-red); }
+.review-card__controls { display: flex; gap: calc(15 * var(--u)); margin-top: calc(6 * var(--u)); }
 .review-card__controls .round-btn:last-child { margin-left: auto; }
 .review__note { margin-top: calc(-6 * var(--u)); }
-
 .finale { padding-top: calc(100 * var(--u)); }
 .finale__title { max-width: calc(963 * var(--u)); }
 .finale__text { margin-top: calc(14 * var(--u)); max-width: calc(853 * var(--u)); }
 .finale .center-action { margin-top: calc(51 * var(--u)); }
 
-/* ═════════════ Подвал ═════════════ */
-.site-footer {
-  border-top: var(--line);
-  padding-top: 22px;
-  padding-bottom: 28px;
-  font-family: var(--font-text);
-  font-size: 18px;
-  color: var(--color-graphite);
-}
-.site-footer__row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 28px;
-}
-.site-footer__name {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 28px;
-  color: var(--color-red);
-}
-.site-footer__links { display: flex; gap: 20px; margin-left: auto; }
-.site-footer__links .text-link { font-size: 18px; }
-.site-footer__note { margin-top: 8px; font-weight: 400; font-size: 15px; }
-
-/* пока открыт опрос, кнопки анкеты под ним не видны и не доступны */
-.profile__body:has(.poll:not([hidden])) .profile__actions { visibility: hidden; }
+/* ═════════════ Подвал и источники ═════════════ */
+.site-footer { border-top: var(--line); padding-top: 28px; padding-bottom: 28px; font-family: var(--font-text); font-size: 18px; color: var(--color-graphite); }
+.sources { max-width: 960px; }
+.sources__title { font-family: var(--font-display); font-weight: 400; font-size: 34px; color: var(--color-ink); }
+.sources__list { margin-top: 12px; display: grid; gap: 8px; padding-left: 1.1em; list-style: disc; font-size: 17px; line-height: 1.3; }
+.sources__credits { margin-top: 14px; font-size: 16px; font-weight: 400; }
+.site-footer__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 28px; margin-top: 28px; padding-top: 18px; border-top: var(--line); }
+.site-footer__name { font-family: var(--font-display); font-weight: 400; font-size: 28px; color: var(--color-red); }
+.site-footer__row .text-link { margin-left: auto; font-size: 18px; }
+.profiles__help { text-align: center; font-size: var(--fs-small); color: var(--color-graphite); max-width: 36em; margin: 0 auto calc(20 * var(--u)); font-weight: 400; }
+.profiles__done { text-align: center; padding: 60px 0; margin: 0 auto; }

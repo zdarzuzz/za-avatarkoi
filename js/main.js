@@ -1,166 +1,184 @@
-// Точка входа: связывает разделы и восстанавливает прохождение после обновления страницы.
+// Точка входа. Управляет этапами и восстанавливает прохождение после обновления страницы.
+//
+// Сценарий: обложка → билет → анкеты → уверенность → истории → «А что добавил ты?»  (одна длинная страница)
+//           → психологический разбор (отдельное состояние) → «Что теперь ты видишь иначе?» (отдельное состояние)
+// Отдельные состояния открываются без перезагрузки и смены адреса: предыдущие этапы скрываются,
+// перестают занимать место и выпадают из фокуса клавиатуры (hidden + inert).
 
-import { getSituation } from './data/situations.js';
-import { initState, getState, update, setStage, forceStage, restart, stageReached } from './modules/state.js';
-import { initIntro } from './modules/intro.js';
-import { initSelection, render as renderSelection } from './modules/selection.js';
-import { initStories, renderStories, openFromReview, setReturnTarget } from './modules/stories.js';
-import { initArticles, revealArticles } from './modules/articles.js';
+import { initState, getState, update, advanceStage, setStageExact, reached, restart } from './modules/state.js';
+import { initCover } from './modules/cover.js';
+import { armTicket } from './modules/ticket.js';
+import { initProfiles, renderProfiles } from './modules/profiles.js';
+import { initConfidence } from './modules/confidence.js';
+import { initStories, renderStories, openFromReview, setReturnTarget, mandatoryDone } from './modules/stories.js';
+import { initObservations } from './modules/observations.js';
+import { initAnalysis, onAnalysisOpen } from './modules/analysis.js';
 import { initReview, renderReview, focusCard } from './modules/review.js';
-import { goTo, hideSection, showSection, wait } from './modules/animations.js';
+import { initTyping, initReveal, refreshTyping } from './modules/reveal.js';
+import { goTo, reducedMotion } from './modules/animations.js';
 
+const $ = (id) => document.getElementById(id);
 const el = {
-  context: document.getElementById('context'),
-  selection: document.getElementById('selection'),
-  stories: document.getElementById('stories'),
-  articles: document.getElementById('articles'),
-  review: document.getElementById('review'),
+  cover: $('cover'), ticket: $('ticket'), profiles: $('profiles'), confidence: $('confidence'),
+  stories: $('stories'), observations: $('observations'), analysis: $('analysis'), review: $('review'),
 };
+const JOURNEY = ['cover', 'ticket', 'profiles', 'confidence', 'stories', 'observations'];
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-function renderContext() {
-  const situation = getSituation(getState().situationId);
-  document.querySelector('[data-situation-title]').textContent = situation.title;
-  document.querySelector('[data-situation-text]').textContent = situation.description;
+function show(node, on) {
+  node.hidden = !on;
+  node.inert = !on;
+  if (on) node.dataset.shown = ''; else delete node.dataset.shown;
 }
 
-/* ───── Переходы между разделами ───── */
-function openStories({ scroll }) {
-  setStage('stories');
-  const wasHidden = el.stories.hidden;
-  el.stories.hidden = false;
-  if (wasHidden) renderStories();
-  if (scroll) goTo(el.stories);
+/** Какие части сценария видны. mode: journey | analysis | review | story */
+let mode = 'journey';
+function setMode(next) {
+  mode = next;
+  const s = getState();
+  if (next === 'journey') {
+    show(el.cover, true); show(el.ticket, true); show(el.profiles, true);
+    show(el.confidence, reached('confidence'));
+    show(el.stories, reached('stories'));
+    show(el.observations, reached('observations'));
+    show(el.analysis, false); show(el.review, false);
+  } else {
+    JOURNEY.forEach((k) => show(el[k], next === 'story' && k === 'stories'));
+    show(el.analysis, next === 'analysis');
+    show(el.review, next === 'review');
+  }
+  document.body.dataset.mode = next;
+  if (next !== 'story') setReturnTarget(null);
+  refreshTyping();
+  return s;
 }
 
-async function openArticles() {
-  setStage('articles');
-  if (getState().stage === 'review') forceStage('articles');
-  setReturnTarget(null);
-  if (!el.review.hidden) await hideSection(el.review);
-  await showSection(el.articles);
-  revealArticles();
-  goTo(el.articles);
+function enter(node) {
+  if (!reducedMotion()) { node.classList.remove('stage-enter'); void node.offsetWidth; node.classList.add('stage-enter'); }
 }
 
-async function openReview() {
-  forceStage('review');
-  await hideSection(el.articles);       // скрытые статьи не занимают высоту и не держат фокус
+/* ───── Переходы ───── */
+function toConfidence() {
+  advanceStage('confidence');
+  show(el.confidence, true);
+  enter(el.confidence);
+  goTo(el.confidence);
+}
+
+function toStories() {
+  advanceStage('stories');
+  show(el.stories, true);
+  renderStories();
+  enter(el.stories);
+  goTo(el.stories);
+}
+
+function toObservations() {
+  if (!mandatoryDone()) return;
+  advanceStage('observations');
+  show(el.observations, true);
+  enter(el.observations);
+  initReveal(el.observations);
+  initTyping(el.observations);
+  goTo(el.observations);
+}
+
+function toAnalysis() {
+  advanceStage('analysis');
+  setMode('analysis');
+  onAnalysisOpen();
+  window.scrollTo(0, 0);                 // разбор открывается с начала
+  enter(el.analysis);
+  initReveal(el.analysis);
+  initTyping(el.analysis);
+  el.analysis.focus({ preventScroll: true });
+}
+
+function backToObservations() {
+  setMode('journey');
+  initReveal(el.observations);
+  initTyping(el.observations);
+  goTo(el.observations);
+}
+
+function toReview() {
+  advanceStage('review');
+  setMode('review');
   renderReview();
-  await showSection(el.review);
-  goTo(el.review);
+  window.scrollTo(0, 0);
+  enter(el.review);
+  el.review.focus({ preventScroll: true });
 }
 
-async function backToArticles() {
-  forceStage('articles');
-  await hideSection(el.review);
-  await showSection(el.articles);
-  revealArticles();
-  goTo(el.articles);
+function backToAnalysis() {
+  setMode('analysis');
+  window.scrollTo(0, 0);
+  initReveal(el.analysis);
+  initTyping(el.analysis);
+  el.analysis.focus({ preventScroll: true });
 }
 
-function openStoryFromReview(id) {
-  // итоги остаются на месте; история открывается выше, рядом — кнопка «Вернуться к итогам»
+function storyFromReview(id) {
+  setMode('story');
+  window.scrollTo(0, 0);
   openFromReview(id);
 }
 
 function returnToReview(id) {
-  if (el.review.hidden) {
-    el.review.hidden = false;
-    renderReview();
-  }
-  if (!id || !focusCard(id)) goTo(el.review);
+  setMode('review');
+  renderReview();
+  if (!id || !focusCard(id)) { window.scrollTo(0, 0); el.review.focus({ preventScroll: true }); }
 }
 
-async function startOver() {
+function startOver() {
   restart();
-  setReturnTarget(null);
-  el.stories.hidden = true;
-  el.articles.hidden = true;
-  el.review.hidden = true;
   document.querySelector('[data-story-root]').innerHTML = '';
-  renderContext();
-  renderSelection();
-  await wait(50);
-  goTo(el.context);
-}
-
-/* ───── Подвал и панели ───── */
-function initFooter() {
-  document.querySelectorAll('[data-panel-open]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const dialog = document.getElementById(`panel-${btn.dataset.panelOpen}`);
-      if (dialog?.showModal) dialog.showModal();
-      else dialog?.setAttribute('open', '');
-    });
-  });
-  document.querySelectorAll('dialog.panel').forEach((d) => {
-    d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
-  });
-  document.querySelector('[data-to-top]')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    document.getElementById('intro-title').setAttribute('tabindex', '-1');
-    document.getElementById('intro-title').focus({ preventScroll: true });
-  });
+  setMode('journey');
+  armTicket();
+  renderProfiles();
+  confidence.render();
+  window.scrollTo(0, el.ticket.offsetTop);
+  el.ticket.focus({ preventScroll: true });
 }
 
 /* ───── Восстановление ───── */
-function restoreView() {
+function restore() {
   const s = getState();
-  if (stageReached('stories')) {
-    el.stories.hidden = false;
-    renderStories();
-  }
-  if (s.stage === 'articles') {
-    el.articles.hidden = false;
-    revealArticles();
-  }
-  if (s.stage === 'review') {
-    el.articles.hidden = true;
-    renderReview();
-    el.review.hidden = false;
-  }
-  // вернуть пользователя к месту, где он остановился
-  const target = {
-    context: s.introSeen ? el.context : null,
-    selection: el.selection,
-    stories: el.stories,
-    articles: el.articles,
-    review: el.review,
-  }[s.stage];
-  if (target) requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+  if (reached('stories')) renderStories();
+  if (s.stage === 'analysis') { toAnalysis(); return; }
+  if (s.stage === 'review') { toReview(); return; }
+  setMode('journey');
+  if (reached('observations')) { initReveal(el.observations); initTyping(el.observations); }
+  const target = { cover: null, ticket: el.ticket, profiles: el.profiles, confidence: el.confidence, stories: el.stories, observations: el.observations }[s.stage];
+  if (target) requestAnimationFrame(() => window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY));
 }
 
+let confidence;
 function boot() {
   initState();
-  renderContext();
-
-  initIntro({
-    onPassed: () => {
-      if (!getState().introSeen) update((s) => { s.introSeen = true; });
-      setStage('context');
-    },
-  });
-  initStories({ onArticles: openArticles, onReturnToReview: returnToReview });
-  initArticles({ onNext: openReview });
-  initReview({ onOpenStory: openStoryFromReview });
-  document.querySelector('[data-back-articles]').addEventListener('click', backToArticles);
+  initCover({ onPassed: () => { if (!getState().coverSeen) update((s) => { s.coverSeen = true; }); advanceStage('ticket'); } });
+  armTicket();
+  initProfiles({ onComplete: toConfidence });
+  confidence = initConfidence({ onNext: toStories });
+  initStories({ onObservations: toObservations, onReturnToReview: returnToReview });
+  initObservations({ onAnalysis: toAnalysis });
+  initAnalysis({ onReview: toReview, onBack: backToObservations });
+  initReview({ onOpenStory: storyFromReview });
+  document.querySelector('[data-back-analysis]').addEventListener('click', backToAnalysis);
   document.querySelector('[data-restart]').addEventListener('click', startOver);
-  initFooter();
-
-  restoreView();
-  initSelection({
-    onDone: ({ scroll }) => openStories({ scroll }),
+  document.querySelector('[data-to-top]').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (mode !== 'journey') setMode('journey');
+    window.scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
   });
-  // как только пользователь дошёл до анкет — этап «selection»
+  // отметить достижение анкет при прокрутке
   if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting)) setStage('selection');
-    }, { threshold: 0.3 });
-    io.observe(el.selection);
+    new IntersectionObserver((en) => { if (en.some((e) => e.isIntersecting)) advanceStage('profiles'); }, { threshold: 0.25 }).observe(el.profiles);
   }
+  restore();
+  document.documentElement.classList.add('is-ready');
 }
 
 boot();
+export { setStageExact };

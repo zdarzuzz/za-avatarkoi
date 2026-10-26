@@ -1,7 +1,8 @@
 // Финальный пересмотр: шесть сокращённых анкет, неизменный первый выбор и текущее итоговое решение.
 // Баллы не считаются, «правильность» выбора не оценивается.
 
-import { getCharacter } from '../data/characters.js';
+import { getCharacter, CONFIDENCE } from '../data/characters.js';
+import { getStory } from '../data/stories.js';
 import { getState, update, finalDecision } from './state.js';
 
 const ICONS = {
@@ -12,8 +13,10 @@ const ICONS = {
 
 const imgVars = (box) => `--l:${box.l}%;--t:${box.t}%;--w:${box.w}%;--h:${box.h}%`;
 const word = (v) => (v === 'continue' ? 'продолжить' : v === 'skip' ? 'пропустить' : 'не выбран');
-const nowText = (v) =>
-  v === 'continue' ? 'Сейчас: продолжить общение' : v === 'skip' ? 'Сейчас: отказаться' : 'Сейчас: решение не выбрано';
+const nowText = (v, first) => {
+  const base = v === 'continue' ? 'Сейчас: продолжить общение' : v === 'skip' ? 'Сейчас: отказаться' : 'Сейчас: решение не выбрано';
+  return v === first ? `${base} — как в начале` : `${base} — решение изменилось`;
+};
 
 let handlers = { onOpenStory: () => {} };
 
@@ -22,19 +25,25 @@ const ORDER = ['sonya', 'alina', 'danya', 'mark', 'varya', 'nika'];
 
 function cardTemplate(c, s) {
   const fin = finalDecision(c.id, s);
+  const first = s.initial[c.id];
+  // внешность Марка видна только после его истории
+  const showFace = !c.anonymous || s.viewed.includes(c.id);
+  const src = showFace && c.anonymous ? c.revealIcon : c.icon;
+  const box = showFace && c.anonymous ? c.revealIconImg : c.iconImg;
+  const hasStory = Boolean(getStory(s.situationId, c.id));
   return `
     <li class="review-card" id="review-${c.id}" data-review="${c.id}" aria-labelledby="review-name-${c.id}">
       <span class="avatar${c.flip ? ' avatar--flip' : ''}">
-        <img src="${c.icon}" alt="" style="${imgVars(c.iconImg)}" loading="lazy" decoding="async">
+        <img src="${src}" alt="" style="${imgVars(box)}" width="200" height="266" loading="lazy" decoding="async">
       </span>
       <div class="review-card__body">
         <h3 class="review-card__name" id="review-name-${c.id}">${c.name}, ${c.ageLabel}</h3>
-        <p class="review-card__first">Первый выбор: <b>${word(s.initial[c.id])}</b></p>
-        <p class="review-card__now" data-now aria-live="polite">${nowText(fin)}</p>
+        <p class="review-card__first">Первый выбор: <b>${word(first)}</b></p>
+        <p class="review-card__now${fin !== first ? ' is-changed' : ''}" data-now aria-live="polite">${nowText(fin, first)}</p>
         <div class="review-card__controls" role="group" aria-label="Итоговое решение: ${c.name}">
           <button class="round-btn" type="button" data-final="continue" aria-pressed="${fin === 'continue'}" aria-label="Продолжить общение с ${c.forms.ins}">${ICONS.check}</button>
           <button class="round-btn" type="button" data-final="skip" aria-pressed="${fin === 'skip'}" aria-label="Отказаться от общения с ${c.forms.ins}">${ICONS.cross}</button>
-          <button class="round-btn round-btn--dark" type="button" data-open="${c.id}" aria-label="Открыть историю: ${c.name}">${ICONS.arrow}</button>
+          ${hasStory ? `<button class="round-btn round-btn--dark" type="button" data-open="${c.id}" aria-label="Открыть историю: ${c.name}">${ICONS.arrow}</button>` : ''}
         </div>
       </div>
     </li>`;
@@ -43,14 +52,19 @@ function cardTemplate(c, s) {
 export function renderReview() {
   const s = getState();
   document.querySelector('[data-review-grid]').innerHTML = ORDER.map((id) => cardTemplate(getCharacter(id), s)).join('');
+  const conf = CONFIDENCE.find((c) => c.id === s.confidence);
+  document.querySelector('[data-review-confidence]').textContent = conf ? `Уверенность в первых впечатлениях перед историями: «${conf.label}».` : '';
 }
 
 function syncCard(id) {
   const card = document.querySelector(`[data-review="${id}"]`);
   if (!card) return;
   const fin = finalDecision(id);
+  const first = getState().initial[id];
   card.querySelectorAll('[data-final]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.final === fin)));
-  card.querySelector('[data-now]').textContent = nowText(fin);
+  const now = card.querySelector('[data-now]');
+  now.textContent = nowText(fin, first);
+  now.classList.toggle('is-changed', fin !== first);
 }
 
 export function initReview(h) {

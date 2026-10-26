@@ -23,7 +23,8 @@
   --color-graphite-a55: rgba(41, 37, 38, 0.55);  /* затемнение под панелями */
 
   /* — Шрифты — */
-  --font-display: 'ckazka', 'Cormorant Garamond', serif;
+  /* Новый макет: заголовки и обложка — Cormorant Garamond Regular (MacBook Air 2) */
+  --font-display: 'Cormorant Garamond', serif;
   --font-text: 'Cormorant Garamond', serif;
   --font-ui: 'Factor A', 'Factor A TRIAL', 'Golos Text', system-ui, sans-serif;
 
@@ -32,10 +33,15 @@
   --u: calc(var(--page) / 1440);
 
   /* Размеры шрифтов из макета (в макетных пикселях × масштаб) */
-  --fs-hero: calc(190 * var(--u));
-  --fs-h1: calc(100 * var(--u));
-  --fs-h2: calc(60 * var(--u));
-  --fs-h3: calc(50 * var(--u));
+  --fs-hero: calc(140 * var(--u));     /* обложка */
+  --fs-xl: calc(90 * var(--u));        /* «А что добавил ты?», итоги */
+  --fs-h1: calc(75 * var(--u));        /* заголовки глав, имя в анкете */
+  --fs-ticket: calc(55 * var(--u));    /* строка билета */
+  --fs-q: calc(60 * var(--u));         /* вопросы и заголовок комментария */
+  --fs-h3: calc(50 * var(--u));        /* название эпизода */
+  --fs-h2: calc(45 * var(--u));        /* подзаголовки, значения слайдера */
+  --fs-value: calc(48 * var(--u));     /* значения полей билета */
+  --fs-num: calc(104 * var(--u));      /* номер на корешке */
   --fs-option: calc(35 * var(--u));
   --fs-body: calc(32 * var(--u));
   --fs-small: calc(24 * var(--u));
@@ -56,9 +62,15 @@
 /* Планшет */
 @media (max-width: 1024px) {
   :root {
-    --fs-h1: clamp(44px, 8.2vw, 84px);
-    --fs-h2: clamp(32px, 5vw, 50px);
-    --fs-h3: clamp(28px, 4.2vw, 42px);
+    --fs-hero: clamp(64px, 11vw, 120px);
+    --fs-xl: clamp(48px, 7vw, 76px);
+    --fs-h1: clamp(42px, 6vw, 64px);
+    --fs-ticket: clamp(30px, 4.4vw, 46px);
+    --fs-q: clamp(34px, 4.8vw, 50px);
+    --fs-h3: clamp(30px, 4.2vw, 42px);
+    --fs-h2: clamp(28px, 3.8vw, 40px);
+    --fs-value: clamp(26px, 3.6vw, 40px);
+    --fs-num: clamp(56px, 8vw, 88px);
     --fs-body: clamp(18px, 2.4vw, 24px);
     --fs-small: clamp(16px, 1.9vw, 19px);
     --fs-option: clamp(20px, 2.8vw, 28px);
@@ -72,10 +84,15 @@
 /* Телефон */
 @media (max-width: 600px) {
   :root {
-    --fs-hero: clamp(56px, 17vw, 96px);
-    --fs-h1: clamp(40px, 11vw, 56px);
-    --fs-h2: clamp(28px, 8vw, 40px);
-    --fs-h3: clamp(26px, 7vw, 34px);
+    --fs-hero: clamp(48px, 14vw, 72px);
+    --fs-xl: clamp(38px, 11vw, 52px);
+    --fs-h1: clamp(34px, 9.5vw, 46px);
+    --fs-ticket: clamp(26px, 7.4vw, 34px);
+    --fs-q: clamp(28px, 8vw, 38px);
+    --fs-h3: clamp(26px, 7vw, 32px);
+    --fs-h2: clamp(24px, 6.6vw, 30px);
+    --fs-value: clamp(22px, 6vw, 28px);
+    --fs-num: clamp(44px, 12vw, 60px);
     --fs-body: 18px;
     --fs-small: 16px;
     --fs-option: 21px;

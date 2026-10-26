@@ -2,125 +2,168 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>За аватаркой</title>
-  <meta name="description" content="Интерактивный лонгрид о первом впечатлении: выбери людей по коротким анкетам, посмотри на один эпизод знакомства и вернись к своему решению.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Человек в твоих глазах</title>
+  <meta name="description" content="Интерактивный лонгрид о первом впечатлении: выбери людей по анкетам, узнай их в манге и посмотри, что изменилось в твоём взгляде.">
   <meta name="theme-color" content="#fbeed5">
-  <link rel="preload" href="assets/images/decorations/cover-eye.webp" as="image">
+  <link rel="preload" href="assets/images/decorations/cover-eye.webp" as="image" fetchpriority="high">
+  <script>document.documentElement.classList.add('js')</script>
   <link rel="stylesheet" href="css/main.css">
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#context">Перейти к началу прохождения</a>
+  <a class="skip-link" href="#ticket">Перейти к началу прохождения</a>
 
   <main id="main">
-    <!-- 1. Обложка и скролл-анимация (MacBook Air 1–3) -->
-    <section class="intro" id="intro" aria-labelledby="intro-title">
-      <div class="intro__stage">
-        <div class="intro__face" aria-hidden="true">
-          <img class="intro__eye" src="assets/images/decorations/cover-eye.webp" alt="" width="1405" height="1120" decoding="async" fetchpriority="high">
-          <div class="intro__fade"></div>
+    <!-- ═══ Обложка (MacBook Air 2) ═══ -->
+    <section class="cover stage-journey" id="cover" aria-labelledby="cover-title">
+      <div class="cover__sticky" aria-hidden="true">
+        <div class="cover__image">
+          <img src="assets/images/decorations/cover-eye.webp" alt="" width="1405" height="1120" decoding="async" fetchpriority="high">
         </div>
-        <span class="intro__mote" aria-hidden="true"></span>
-        <img class="intro__log" src="assets/images/decorations/log.webp" alt="" aria-hidden="true" width="1261" height="1247" decoding="async">
-        <h1 class="intro__title" id="intro-title">За аватаркой</h1>
-        <p class="intro__hint" aria-hidden="true">Листай вниз</p>
+      </div>
+      <header class="cover__head">
+        <h1 class="cover__title" id="cover-title">Человек в&nbsp;твоих глазах</h1>
+        <p class="cover__author">Дарья Зюзина</p>
+      </header>
+    </section>
+
+    <!-- ═══ Билет с контекстом (MacBook Air 4) ═══ -->
+    <section class="ticket-block stage-journey" id="ticket" aria-labelledby="ticket-line" tabindex="-1">
+      <div class="ticket" data-ticket>
+        <div class="ticket__spin" data-ticket-spin>
+          <div class="ticket__face ticket__face--front">
+            <div class="ticket__main">
+              <h2 class="ticket__line" id="ticket-line" data-t="ticketLine"></h2>
+              <div class="ticket__fields">
+                <div class="ticket__field">
+                  <p class="ticket__label">Маршрут</p>
+                  <p class="ticket__value" data-t="route"></p>
+                </div>
+                <div class="ticket__field">
+                  <p class="ticket__label">Попутчик</p>
+                  <p class="ticket__value" data-t="companion"></p>
+                </div>
+              </div>
+            </div>
+            <div class="ticket__stub">
+              <p class="ticket__no">№000777</p>
+              <p class="ticket__num" data-t="number"></p>
+              <p class="ticket__label">Контекст</p>
+              <p class="ticket__note" data-t="contextNote"></p>
+            </div>
+          </div>
+          <div class="ticket__face ticket__face--back" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p class="ticket-block__desc" data-t="description"></p>
+    </section>
+
+    <!-- ═══ Анкеты (MacBook Air 18–19) ═══ -->
+    <section class="profiles stage-journey" id="profiles" aria-labelledby="profiles-title">
+      <h2 class="visually-hidden" id="profiles-title">Анкеты</h2>
+      <p class="profiles__counter" data-profile-counter aria-live="polite"></p>
+      <p class="profiles__help" id="card-help">Нажми «Продолжить» или «Пропустить», проведи по&nbsp;анкете вправо или влево либо используй стрелки → и&nbsp;←.</p>
+      <div class="slider" data-slider>
+        <div class="slider__ghost slider__ghost--prev" aria-hidden="true"></div>
+        <div class="slider__track" data-slider-track></div>
+        <div class="slider__ghost slider__ghost--next" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- 2. Контекст (MacBook Air 4) -->
-    <section class="context" id="context" aria-labelledby="context-title" tabindex="-1">
-      <div class="context__inner">
-        <h2 class="context__title" id="context-title" data-situation-title></h2>
-        <img class="log-mark" src="assets/images/decorations/log.webp" alt="" aria-hidden="true" width="198" height="196" loading="lazy">
-        <p class="context__text" data-situation-text></p>
+    <!-- ═══ Вопрос об уверенности ═══ -->
+    <section class="confidence stage-journey" id="confidence" data-gated aria-labelledby="confidence-title" tabindex="-1">
+      <h2 class="h-question" id="confidence-title">Насколько ты доверяешь своим первым впечатлениям?</h2>
+      <p class="body-text confidence__lead">Позади шесть анкет. Прежде чем узнать этих людей ближе, отметь, в&nbsp;скольких решениях есть уверенность сейчас.</p>
+      <div class="choice-list" role="radiogroup" aria-labelledby="confidence-title" data-confidence></div>
+      <div class="center-action">
+        <button class="btn-plaque btn-plaque--fill" type="button" data-confidence-next disabled><span>Узнать их ближе</span></button>
       </div>
     </section>
 
-    <!-- 3. Шесть анкет (MacBook Air 5, 7–12) -->
-    <section class="selection" id="selection" aria-labelledby="selection-heading">
-      <h2 class="visually-hidden" id="selection-heading">Анкеты</h2>
-      <p class="selection__counter" data-selection-counter aria-live="polite"></p>
-      <div class="selection__viewport" data-selection-root></div>
-      <div class="selection__done" data-selection-done hidden>
-        <p>Все шесть анкет просмотрены.</p>
-        <button class="btn-plaque btn-plaque--fill" type="button" data-go-stories>
-          <span>К историям</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- 4. Манга (MacBook Air 13, 15) -->
-    <section class="stories" id="stories" aria-labelledby="stories-title" hidden>
+    <!-- ═══ Манга (MacBook Air 13) ═══ -->
+    <section class="stories stage-journey" id="stories" data-gated aria-labelledby="stories-title" tabindex="-1">
       <header class="stories__head">
-        <h2 class="stories__title" id="stories-title">За пределами первого впечатления</h2>
-        <img class="log-mark" src="assets/images/decorations/log.webp" alt="" aria-hidden="true" width="198" height="196" loading="lazy">
-        <p class="stories__lead">Ты уже сделал выбор. Теперь посмотрим на один возможный эпизод знакомства</p>
+        <h2 class="h-display" id="stories-title">За пределами первого впечатления</h2>
+        <p class="stories__lead" data-stories-lead>Ты уже сделал выбор. Теперь посмотрим на&nbsp;один возможный эпизод знакомства</p>
       </header>
       <nav class="stories__nav" aria-label="Истории персонажей">
         <ul class="avatar-row" data-story-icons></ul>
+        <p class="stories__progress" data-stories-progress aria-live="polite"></p>
       </nav>
       <hr class="rule">
       <div class="return-bar" data-return-bar hidden>
-        <button class="text-link" type="button" data-return-review>← Вернуться к итогам</button>
+        <button class="pill" type="button" data-return-review>← Вернуться к&nbsp;итогам</button>
       </div>
-      <article class="story" data-story-root aria-live="off"></article>
+      <article class="story" data-story-root></article>
     </section>
 
-    <!-- 5. Статьи (MacBook Air 16) -->
-    <section class="articles" id="articles" aria-labelledby="articles-title" hidden>
-      <header class="articles__hero">
-        <h2 class="h-display" id="articles-title" data-reveal>А что добавил ты?</h2>
-        <p class="body-text articles__sub" data-reveal>В карточке — несколько деталей. <br>В голове — уже целый человек.</p>
+    <!-- ═══ Наблюдения о первом впечатлении (MacBook Air 16, начало) ═══ -->
+    <section class="observations stage-journey" id="observations" data-gated aria-labelledby="obs-title" tabindex="-1">
+      <header class="observations__hero">
+        <h2 class="h-display h-display--xl" id="obs-title">А что добавил ты?</h2>
+        <p class="body-text body-text--ink" data-type>В карточке — несколько деталей. В&nbsp;голове — уже целый человек.</p>
       </header>
 
       <div class="compare" data-compare aria-roledescription="слайдер" aria-label="Наблюдение и впечатление">
-        <button class="round-btn round-btn--arrow compare__prev" type="button" data-compare-prev aria-label="Предыдущий пример">
+        <button class="round-btn round-btn--arrow" type="button" data-compare-prev aria-label="Предыдущий пример">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
         </button>
-        <div class="compare__card compare__card--left">
-          <p class="compare__label">В карточке</p>
-          <p class="compare__value" data-compare-card></p>
+        <div class="compare__pair">
+          <div class="compare__card">
+            <p class="compare__label">В карточке</p>
+            <p class="compare__value" data-compare-card></p>
+          </div>
+          <div class="compare__card compare__card--impression">
+            <p class="compare__label">Впечатление</p>
+            <p class="compare__value" data-compare-impression></p>
+          </div>
         </div>
-        <img class="log-mark compare__log" src="assets/images/decorations/log.webp" alt="" aria-hidden="true" width="198" height="196" loading="lazy">
-        <div class="compare__card compare__card--right">
-          <p class="compare__label">Впечатление</p>
-          <p class="compare__value" data-compare-impression></p>
-        </div>
-        <button class="round-btn round-btn--arrow compare__next" type="button" data-compare-next aria-label="Следующий пример">
+        <button class="round-btn round-btn--arrow" type="button" data-compare-next aria-label="Следующий пример">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
         </button>
-        <p class="compare__caption"><span data-compare-index aria-live="polite"></span> Справа — возможное впечатление, а не установленное качество человека.</p>
+        <p class="compare__caption"><span data-compare-index aria-live="polite"></span> Справа — возможное впечатление, а&nbsp;не установленное качество человека.</p>
       </div>
 
       <hr class="rule">
       <div class="chapter chapter--detail">
         <h3 class="h-section" data-reveal>Деталь становится характером</h3>
-        <p class="body-text" data-reveal>Чтобы решить, хочется ли познакомиться с человеком, иногда достаточно одной детали. Манеры писать, выражения лица, знакомой песни в списке интересов. Но между тем, что мы заметили, и тем, что решили о человеке, может оказаться большой промежуток.</p>
-        <p class="body-text" data-reveal>За коротким ответом действительно может стоять отсутствие интереса. А может — усталость, спешка или привычка говорить по существу. Одной реплики недостаточно, чтобы уверенно выбрать объяснение.</p>
+        <div class="chapter__cols">
+          <p class="body-text" data-type>Чтобы решить, хочется ли познакомиться с&nbsp;человеком, иногда достаточно одной детали. Манеры писать, выражения лица, знакомой песни в&nbsp;списке интересов. Но между тем, что мы заметили, и&nbsp;тем, что решили о&nbsp;человеке, может оказаться большой промежуток.</p>
+          <p class="body-text" data-type>За коротким ответом действительно может стоять отсутствие интереса. А&nbsp;может — усталость, спешка или привычка говорить по&nbsp;существу. Одной реплики недостаточно, чтобы уверенно выбрать объяснение.</p>
+        </div>
       </div>
       <hr class="rule">
-      <h3 class="h-section h-section--red articles__question" data-reveal>Что ты увидел в карточке — и что успел к этому добавить?</h3>
+      <p class="h-section h-section--red observations__question" data-reveal data-pause>Что ты увидел в&nbsp;карточке — и&nbsp;что успел к&nbsp;этому добавить?</p>
       <figure class="eye-band" data-reveal>
         <img src="assets/images/illustrations/eye-log.webp" alt="Глаз в красной растровой манере: вместо зрачка — спил бревна" width="1404" height="1120" loading="lazy" decoding="async">
       </figure>
+      <div class="center-action observations__next">
+        <button class="btn-plaque btn-plaque--fill" type="button" data-open-analysis><span>К&nbsp;разбору</span></button>
+      </div>
+    </section>
 
-      <hr class="rule">
+    <!-- ═══ Психологический разбор — отдельный этап (MacBook Air 16, продолжение) ═══ -->
+    <section class="analysis" id="analysis" data-gated aria-labelledby="analysis-title" tabindex="-1">
+      <div class="stage-top">
+        <button class="pill" type="button" data-back-observations>← Вернуться к&nbsp;историям</button>
+        <p class="stage-top__label">Психологический разбор</p>
+      </div>
       <div class="chapter chapter--self">
-        <h3 class="h-display" data-reveal>С собой мы знакомы лучше всего</h3>
+        <h2 class="h-display" id="analysis-title" data-reveal>С&nbsp;собой мы знакомы лучше всего</h2>
         <div class="quote-pair">
           <p class="framed-quote" data-reveal>Я не ответил, потому что был занят.</p>
           <p class="framed-quote" data-reveal>Он не ответил, потому что ему всё равно</p>
         </div>
         <div class="two-col">
-          <p class="body-text" data-reveal>Узнаёшь эту разницу? О собственном молчании мы знаем многое: трудный день, разряженный телефон, желание собраться с мыслями. О чужом часто известно только одно — ответа нет.</p>
-          <p class="body-text" data-reveal>Из-за этой разницы в информации свои поступки бывает легче объяснить обстоятельствами, а чужие — характером. Мы видим результат, но не всегда видим путь к нему. И всё же можем чувствовать уверенность, будто причина очевидна.</p>
+          <p class="body-text" data-type>Узнаёшь эту разницу? О&nbsp;собственном молчании мы знаем многое: трудный день, разряженный телефон, желание собраться с&nbsp;мыслями. О&nbsp;чужом часто известно только одно — ответа нет.</p>
+          <p class="body-text" data-type>Из-за этой разницы в&nbsp;информации свои поступки бывает легче объяснить обстоятельствами, а&nbsp;чужие — характером. Мы видим результат, но не&nbsp;всегда видим путь к&nbsp;нему. И&nbsp;всё же можем чувствовать уверенность, будто причина очевидна.</p>
         </div>
-        <blockquote class="proverb" data-reveal>«В чужом глазу соринку видит, а в своём — бревна не замечает»</blockquote>
+        <blockquote class="proverb" data-reveal data-pause>«В&nbsp;чужом глазу соринку видит, а&nbsp;в&nbsp;своём — бревна не&nbsp;замечает»</blockquote>
         <div class="self__bottom">
-          <div class="body-text" data-reveal>
-            <p>Не обязательно искать в себе тот же недостаток, который раздражает в другом. Полезнее заметить собственную слепую зону: насколько мало нам известно о его ситуации.</p>
-            <p>Это не значит, что нужно оправдывать грубость, терпеть нарушение границ или продолжать неприятное общение. Можно отказаться от знакомства, не превращая «мне не подходит» в «с этим человеком что‑то не так».</p>
+          <div class="body-text">
+            <p data-type>Не обязательно искать в&nbsp;себе тот же недостаток, который раздражает в&nbsp;другом. Полезнее заметить собственную слепую зону: насколько мало нам известно о&nbsp;его ситуации.</p>
+            <p data-type>Это не значит, что нужно оправдывать грубость, терпеть нарушение границ или продолжать неприятное общение. Можно отказаться от&nbsp;знакомства, не&nbsp;превращая «мне не&nbsp;подходит» в&nbsp;«с&nbsp;этим человеком что‑то не&nbsp;так».</p>
           </div>
           <img class="self__log" src="assets/images/illustrations/log-large.webp" alt="Спил бревна с годовыми кольцами" width="1254" height="1254" loading="lazy" decoding="async" data-reveal>
         </div>
@@ -129,64 +172,57 @@
       <hr class="rule">
       <div class="chapter chapter--experience">
         <div class="experience__head">
-          <h3 class="h-section" data-reveal>У каждого свой опыт</h3>
+          <h3 class="h-section" data-reveal>У&nbsp;каждого свой опыт</h3>
           <p class="body-text body-text--ink" data-reveal>Одна деталь. <br>Разные ассоциации</p>
         </div>
-        <p class="body-text" data-reveal>Общие интересы действительно могут привлекать. Иногда за небольшим совпадением мы предполагаем гораздо больше: похожие ценности, чувство юмора, отношение к людям. Хотя любовь к одной музыке ещё не означает, что вам будет одинаково комфортно путешествовать или решать разногласия.</p>
-        <div class="body-text" data-reveal>
-          <p>Со стилем общения тоже нет единственной реакции. Кому‑то нравится эмоциональная речь, кому‑то спокойнее рядом с немногословным собеседником. Это не делает один способ общения правильным, а другой — плохим.</p>
-          <p>Поэтому полезно разделить два вопроса: «Что мне нравится?» и «Что я действительно знаю об этом человеке?»</p>
+        <p class="body-text" data-type>Общие интересы действительно могут привлекать. Иногда за небольшим совпадением мы предполагаем гораздо больше: похожие ценности, чувство юмора, отношение к&nbsp;людям. Хотя любовь к&nbsp;одной музыке ещё не&nbsp;означает, что вам будет одинаково комфортно путешествовать или решать разногласия.</p>
+        <div class="body-text">
+          <p data-type>Со стилем общения тоже нет единственной реакции. Кому‑то нравится эмоциональная речь, кому‑то спокойнее рядом с&nbsp;немногословным собеседником. Это не делает один способ общения правильным, а&nbsp;другой — плохим.</p>
+          <p data-type>Поэтому полезно разделить два вопроса: «Что мне нравится?» и&nbsp;«Что я&nbsp;действительно знаю об&nbsp;этом человеке?»</p>
         </div>
       </div>
       <hr class="rule">
       <div class="flip-block">
-        <p class="flip-hint" id="flip-hint">Нажми на карточку, чтобы увидеть другую трактовку той же детали</p>
+        <p class="flip-hint" id="flip-hint">Нажми на&nbsp;карточку, чтобы увидеть другую трактовку той же детали</p>
         <ul class="flip-cards" data-flip-cards></ul>
       </div>
       <hr class="rule">
 
       <div class="chapter chapter--continue">
         <h3 class="h-display" data-reveal>Первое впечатление продолжается</h3>
-        <p class="body-text body-text--ink continue__lead" data-reveal>Знакомство не заканчивается первым решением. <br>Но однажды возникшее впечатление может влиять и на то, что мы замечаем дальше.</p>
-        <figure class="notebook" data-notebook data-reveal>
-          <!-- Иллюстрация раскрытого блокнота с маршрутом и карандашом.
-               Ожидаемый файл: assets/images/illustrations/travel-notebook.png
-               Подключение: js/data/manga-manifest.js → ILLUSTRATIONS.travelNotebook -->
-          <div class="asset-missing" role="img" aria-label="Иллюстрация блокнота с маршрутом пока не добавлена">
-            <span>Иллюстрация блокнота с маршрутом и карандашом</span>
-            <small>Ожидается: assets/images/illustrations/travel-notebook.png</small>
+        <p class="body-text body-text--ink continue__lead" data-type>Знакомство не заканчивается первым решением. Но однажды возникшее впечатление может влиять и&nbsp;на&nbsp;то, что мы замечаем дальше.</p>
+        <figure class="notebook" data-notebook hidden></figure>
+        <div class="two-col">
+          <div class="body-text">
+            <p data-type>Представь: попутчик заранее составил подробный маршрут. Если он уже тебе понравился, это легко прочитать как заботу: «Здорово, он обо всём подумал». Если насторожил — как желание контролировать: «Он уже решил всё за&nbsp;меня».</p>
+            <p data-type>Так может проявляться склонность искать подтверждения своему мнению: замечать то, что с&nbsp;ним совпадает, и&nbsp;меньше внимания уделять тому, что заставляет его пересмотреть.</p>
           </div>
-        </figure>
-        <div class="two-col two-col--wide">
-          <div class="body-text" data-reveal>
-            <p>Представь: попутчик заранее составил подробный маршрут. Если он уже тебе понравился, это легко прочитать как заботу: «Здорово, он обо всём подумал». Если насторожил — как желание контролировать: «Он уже решил всё за меня».</p>
-            <p>Так может проявляться склонность искать подтверждения своему мнению: замечать то, что с ним совпадает, и меньше внимания уделять тому, что заставляет его пересмотреть.</p>
-          </div>
-          <div class="body-text" data-reveal>
-            <p>Но сам маршрут ещё не отвечает на главный вопрос. Готов ли человек выслушать твои пожелания? Изменить планы? Спокойно принять отказ? Именно эти поступки помогут отличить заботу от давления.</p>
-            <p>После истории ты можешь изменить решение — или оставить прежнее. Важно не выбрать «правильно», а понять, на что теперь опирается твой выбор.</p>
+          <div class="body-text">
+            <p data-type>Но сам маршрут ещё не отвечает на&nbsp;главный вопрос. Готов ли человек выслушать твои пожелания? Изменить планы? Спокойно принять отказ? Именно эти поступки помогут отличить заботу от&nbsp;давления.</p>
+            <p data-type>После истории ты можешь изменить решение — или оставить прежнее. Важно не&nbsp;выбрать «правильно», а&nbsp;понять, на&nbsp;что теперь опирается твой выбор.</p>
           </div>
         </div>
-        <p class="h-section h-section--red continue__outro" data-reveal>Первое впечатление — начало, а не окончательный вывод.</p>
+        <p class="h-section h-section--red continue__outro" data-reveal data-pause>Первое впечатление — начало, а&nbsp;не&nbsp;окончательный вывод.</p>
         <div class="center-action">
-          <button class="btn-plaque btn-plaque--fill" type="button" data-articles-next><span>Далее</span></button>
+          <button class="btn-plaque btn-plaque--fill" type="button" data-open-review><span>Далее</span></button>
         </div>
       </div>
     </section>
 
-    <!-- 6. Финальный пересмотр (MacBook Air 17) -->
-    <section class="review" id="review" aria-labelledby="review-title" hidden tabindex="-1">
-      <div class="review__top">
-        <button class="text-link review__back" type="button" data-back-articles>← Вернуться к статьям</button>
+    <!-- ═══ Что теперь ты видишь иначе? (MacBook Air 17) ═══ -->
+    <section class="review" id="review" data-gated aria-labelledby="review-title" tabindex="-1">
+      <div class="stage-top">
+        <button class="pill" type="button" data-back-analysis>← Вернуться к&nbsp;разбору</button>
       </div>
       <h2 class="h-display" id="review-title">Что теперь ты видишь иначе?</h2>
-      <p class="body-text body-text--ink review__lead">Ты выбрал, с кем продолжить общение, а кого пропустить.<br>Теперь можно оставить свое решение или изменить его.</p>
+      <p class="body-text body-text--ink review__lead">Ты выбрал, с&nbsp;кем продолжить общение, а&nbsp;кого пропустить.<br>Теперь можно оставить свое решение или изменить его.</p>
+      <p class="review__confidence" data-review-confidence></p>
       <ul class="review-grid" data-review-grid></ul>
       <p class="body-text body-text--ink review__note">Можно изменить выбор. Можно лучше понять, почему он остался прежним</p>
 
       <div class="finale">
         <h2 class="h-display finale__title">Карточка закончилась. Человек — нет.</h2>
-        <p class="body-text body-text--ink finale__text">В карточке помещаются возраст, интересы и несколько слов о себе. Чтобы узнать, как человек слушает, спорит и уважает границы, нужно больше одного взгляда.</p>
+        <p class="body-text body-text--ink finale__text">В&nbsp;карточке помещаются возраст, интересы и&nbsp;несколько слов о&nbsp;себе. Чтобы узнать, как человек слушает, спорит и&nbsp;уважает границы, нужно больше одного взгляда.</p>
         <div class="center-action">
           <button class="btn-plaque btn-plaque--fill" type="button" data-restart><span>Попробовать ещё раз</span></button>
         </div>
@@ -195,45 +231,28 @@
   </main>
 
   <footer class="site-footer" id="footer">
+    <section class="sources" aria-labelledby="sources-title">
+      <h2 class="sources__title" id="sources-title">Источники</h2>
+      <ul class="sources__list">
+        <li>Гоффман&nbsp;И. Анализ фреймов: эссе об&nbsp;организации повседневного опыта. — ситуация знакомства как рамка.</li>
+        <li>Мороз&nbsp;О. Онлайн- и&nbsp;офлайн-сообщества; Алгоритмическая публичность. — как интерфейс задаёт способы предъявлять себя.</li>
+        <li>Ross&nbsp;L. (1977). The intuitive psychologist and his shortcomings. — фундаментальная ошибка атрибуции.</li>
+        <li>Jones&nbsp;E.&nbsp;E., Nisbett&nbsp;R.&nbsp;E. (1971). The actor and the observer. — асимметрия «действующий — наблюдатель».</li>
+        <li>Nickerson&nbsp;R.&nbsp;S. (1998). Confirmation bias: A&nbsp;ubiquitous phenomenon in&nbsp;many guises. — склонность к&nbsp;подтверждению.</li>
+        <li>Thorndike&nbsp;E.&nbsp;L. (1920). A&nbsp;constant error in&nbsp;psychological ratings. — эффект ореола.</li>
+        <li>Пословица «В&nbsp;чужом глазу соринку видит, а&nbsp;в&nbsp;своём — бревна не&nbsp;замечает»; Мф.&nbsp;7:3–5.</li>
+      </ul>
+      <p class="sources__credits">Портреты, кадры манги и&nbsp;иллюстрации — авторские генерации и&nbsp;графика Дарьи Зюзиной. Шрифт — Cormorant Garamond (SIL OFL). Персонажи и&nbsp;сцены вымышлены.</p>
+    </section>
     <div class="site-footer__row">
-      <p class="site-footer__name">За аватаркой</p>
-      <p>Дарья Зюзина · Дизайн и программирование, НИУ ВШЭ</p>
-      <nav class="site-footer__links" aria-label="Подвал">
-        <button class="text-link" type="button" data-panel-open="about">О проекте</button>
-        <button class="text-link" type="button" data-panel-open="sources">Источники</button>
-        <a class="text-link" href="#intro" data-to-top>Наверх</a>
-      </nav>
+      <p class="site-footer__name">Человек в&nbsp;твоих глазах</p>
+      <p>Дарья Зюзина · Дизайн и&nbsp;программирование, НИУ ВШЭ</p>
+      <a class="text-link" href="#cover" data-to-top>Наверх</a>
     </div>
-    <p class="site-footer__note">Персонажи и сцены вымышлены. Совпадения с реальными людьми случайны.</p>
   </footer>
 
-  <dialog class="panel" id="panel-about" aria-labelledby="panel-about-title">
-    <div class="panel__inner">
-      <h2 class="h-section" id="panel-about-title">О проекте</h2>
-      <p class="body-text">«За аватаркой» — авторский интерактивный лонгрид о первом впечатлении. Сначала ты выбираешь людей по коротким анкетам, потом видишь один возможный эпизод знакомства с каждым и возвращаешься к своему решению.</p>
-      <p class="body-text">Сайт не оценивает выбор и не знает, что ты чувствуешь. Он помогает отделить то, что было в карточке, от того, что мы успели к ней добавить.</p>
-      <p class="body-text">Ответы хранятся только в твоём браузере (localStorage) и никуда не отправляются.</p>
-      <p class="body-text">Автор — Дарья Зюзина. Персонажи, истории и реплики вымышлены.</p>
-      <form method="dialog"><button class="btn-plaque" type="submit"><span>Закрыть</span></button></form>
-    </div>
-  </dialog>
-
-  <dialog class="panel" id="panel-sources" aria-labelledby="panel-sources-title">
-    <div class="panel__inner">
-      <h2 class="h-section" id="panel-sources-title">Источники</h2>
-      <ul class="sources-list body-text">
-        <li>Ross, L. (1977). The intuitive psychologist and his shortcomings: Distortions in the attribution process. — фундаментальная ошибка атрибуции.</li>
-        <li>Jones, E. E., &amp; Nisbett, R. E. (1971). The actor and the observer: Divergent perceptions of the causes of behavior. — асимметрия «действующий — наблюдатель».</li>
-        <li>Nickerson, R. S. (1998). Confirmation bias: A ubiquitous phenomenon in many guises. Review of General Psychology, 2(2). — склонность к подтверждению.</li>
-        <li>Thorndike, E. L. (1920). A constant error in psychological ratings. — эффект ореола.</li>
-        <li>Willis, J., &amp; Todorov, A. (2006). First impressions: Making up your mind after a 100-ms exposure to a face. Psychological Science, 17(7).</li>
-        <li>McPherson, M., Smith-Lovin, L., &amp; Cook, J. M. (2001). Birds of a feather: Homophily in social networks. Annual Review of Sociology, 27.</li>
-        <li>Притча о сучке и бревне — Евангелие от Матфея 7:3–5; русская пословица «В чужом глазу соринку видит, а в своём — бревна не замечает».</li>
-      </ul>
-      <form method="dialog"><button class="btn-plaque" type="submit"><span>Закрыть</span></button></form>
-    </div>
-  </dialog>
-
-  <noscript><p class="noscript">Для прохождения лонгрида нужен JavaScript.</p></noscript>
+  <noscript>
+    <p class="noscript">Для прохождения с&nbsp;выбором нужен JavaScript. Тексты статьи ниже доступны и&nbsp;без него.</p>
+  </noscript>
 </body>
 </html>

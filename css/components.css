@@ -162,35 +162,15 @@
 .avatar--active .avatar__red { opacity: 1; }
 .avatar--active .avatar__mono { opacity: 0; }
 
-/* ───────── Плейсхолдер отсутствующего ассета ───────── */
-.asset-missing {
-  width: 100%;
-  height: 100%;
-  min-height: 120px;
-  display: grid;
-  place-content: center;
-  gap: 8px;
-  padding: 16px;
-  text-align: center;
-  border: 1px dashed var(--color-red);
-  color: var(--color-red);
-  font-family: var(--font-text);
-  font-size: var(--fs-small);
-  background:
-    radial-gradient(circle at 1px 1px, var(--color-red-a18) 1px, transparent 1.4px) 0 0 / 7px 7px,
-    var(--color-bg);
-}
-.asset-missing small { font-size: 0.75em; color: var(--color-graphite); font-weight: 400; }
-
 /* ───────── Манга: ряды кадров и реплики ───────── */
 .manga {
   container-type: inline-size;
   display: grid;
-  gap: calc(15 * var(--u));
+  gap: calc(18 * var(--u));
 }
 .manga__row {
   display: flex;
-  gap: calc(15 * var(--u));
+  gap: calc(20 * var(--u));
 }
 .panel-frame {
   position: relative;
@@ -208,20 +188,12 @@
   left: var(--l); top: var(--t);
   width: var(--w); height: var(--h);
 }
-.panel-frame__img--cover {
+.panel-frame__img--contain {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;   /* без кадрирования: пропорции и детали сохраняются */
 }
-.panel-frame .asset-missing {
-  position: absolute;
-  inset: 0;
-  border: 0;
-  min-height: 0;
-  font-size: clamp(11px, 2.2cqw, 18px);
-}
-.panel-frame .asset-missing small { font-size: clamp(10px, 1.6cqw, 14px); }
 
 .bubble {
   position: absolute;
@@ -233,8 +205,8 @@
   border-radius: var(--radius-bubble) var(--radius-bubble) var(--radius-bubble) 0;
   font-family: var(--font-text);
   font-weight: 600;
-  /* 24 px при колонке 797 px — масштабируется вместе с кадром */
-  font-size: clamp(11px, 3cqw, 24px);
+  /* 24 px при колонке манги 1073 px — масштабируется вместе с кадром */
+  font-size: clamp(12px, 2.24cqw, 24px);
   line-height: 1.12;
   color: var(--color-graphite);
   z-index: 1;
@@ -312,3 +284,67 @@
 .panel .body-text { font-size: clamp(17px, 1.7vw, 22px); }
 .panel .btn-plaque { --w: 260; min-width: 200px; justify-self: start; font-size: clamp(18px, 1.8vw, 24px); }
 .sources-list { display: grid; gap: 10px; padding-left: 1.1em; list-style: disc; }
+
+
+/* ───────── Pill-кнопка возврата ───────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 20px;
+  border: 1px solid var(--color-red);
+  border-radius: 999px;
+  background: var(--color-bg);
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--color-red);
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+@media (hover: hover) { .pill:hover { background: var(--color-red); color: var(--color-pink); } }
+
+/* ───────── Список вариантов (причина, уверенность) — радиокружки Ellipse 4 ───────── */
+.choice-list {
+  display: grid;
+  justify-content: center;
+  margin: calc(40 * var(--u)) auto 0;
+  width: max-content;
+  max-width: 100%;
+}
+.choice {
+  display: flex;
+  align-items: center;
+  gap: calc(59 * var(--u));
+  min-height: 44px;
+  padding: 0;
+  text-align: left;
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: var(--fs-option);
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+.choice__radio {
+  flex: none;
+  width: calc(29 * var(--u));
+  height: calc(29 * var(--u));
+  min-width: 22px;
+  min-height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--color-red);
+  display: grid;
+  place-items: center;
+}
+.choice__radio::after {
+  content: '';
+  width: 52%;
+  height: 52%;
+  border-radius: 50%;
+  background: var(--color-red);
+  transform: scale(0);
+  transition: transform var(--t-fast) var(--ease);
+}
+.choice[aria-checked='true'] .choice__radio::after { transform: scale(1); }
+.choice[aria-checked='true'] { color: var(--color-red); }
+@media (hover: hover) { .choice:hover .choice__radio::after { transform: scale(0.45); } .choice[aria-checked='true']:hover .choice__radio::after { transform: scale(1); } }
+.choice:disabled { cursor: default; opacity: 0.55; }

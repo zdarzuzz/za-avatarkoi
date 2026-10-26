@@ -1,19 +1,9 @@
 /* Шрифты макета:
-   — ckazka (заголовки) и Factor A (текст анкет, кнопки анкеты) — авторские/коммерческие,
+   — В новом макете заголовки набраны Cormorant Garamond. ckazka больше не используется.
+   — Factor A (текст анкет, кнопки анкеты) — коммерческий,
      в репозиторий не входят. Если шрифт установлен в системе, он берётся через local().
      Для публикации положите лицензированный файл в assets/fonts/ и раскомментируйте url().
    — Cormorant Garamond (SIL OFL) и Golos Text (SIL OFL, временная замена Factor A) лежат локально. */
-
-@font-face {
-  font-family: 'ckazka';
-  /* Когда файл появится в assets/fonts/, раскомментируйте строку url(...) —
-     пока она закомментирована, чтобы не было 404 в консоли. */
-  src: local('ckazka'), local('ckazka Regular')
-    /* , url('../assets/fonts/ckazka.woff2') format('woff2') */;
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 
 @font-face {
   font-family: 'Factor A';

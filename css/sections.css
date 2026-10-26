@@ -3,8 +3,7 @@
    Длина участка — 160 % высоты экрана: без долгой пустой прокрутки. */
 .cover {
   /* высота закреплённой части — по картинке: на вертикальных экранах без пустоты под ней */
-  --cover-img-h: min(100svh, 79.7vw);
-  --cover-h: min(100svh, calc(79.7vw + 120px));
+  --cover-h: min(100svh, 79.7vw);
   position: relative;
   height: calc(var(--cover-h) + 40svh);
 }
@@ -19,28 +18,24 @@
 .cover__image {
   position: absolute;
   inset: 0;
-  display: grid;
-  justify-items: center;
-  align-items: start;
+  /* плавный переход в бежевый фон по нижней половине видимой части */
+  -webkit-mask: linear-gradient(180deg, #000 0, #000 50%, #0000 100%);
+  mask: linear-gradient(180deg, #000 0, #000 50%, #0000 100%);
 }
 .cover__image img {
-  /* размер — ровно по картинке (без полей letterbox), поэтому маска растворяет именно края рисунка */
-  width: min(100%, calc(var(--cover-img-h) * 1405 / 1120));
-  height: auto;
+  /* картинка на всю ширину экрана, кадрируется только снизу */
+  width: 100%;
+  height: 100%;
   max-width: none;
-  aspect-ratio: 1405 / 1120;
-  /* мягкий переход в фон: бока и низ растворяются плавно, рисунок виден целиком */
-  -webkit-mask: linear-gradient(90deg, #0000 0, #000 16%, #000 84%, #0000 100%), linear-gradient(180deg, #000 38%, #0000 100%);
-  -webkit-mask-composite: source-in;
-  mask: linear-gradient(90deg, #0000 0, #000 16%, #000 84%, #0000 100%), linear-gradient(180deg, #000 38%, #0000 100%);
-  mask-composite: intersect;
+  object-fit: cover;
+  object-position: 50% 55%;   /* глаз выше заголовка */
 }
 .cover__head {
   position: absolute;
   left: 0;
   right: 0;
   /* нижняя треть картинки: высота картинки — меньшее из высоты экрана и ширины × 1120/1405 */
-  top: calc(min(100svh, 79.7vw) - 6svh);
+  top: calc(var(--cover-h) - 7svh);
   transform: translateY(-100%);   /* низ блока — у нижнего края картинки */
   padding-inline: var(--gutter);
   display: grid;
@@ -54,10 +49,6 @@
   line-height: 1.12;
   color: var(--color-red);
   text-wrap: balance;
-  /* широкая обводка цвета фона под буквами: название отделяется от рисунка */
-  -webkit-text-stroke: 0.2em var(--color-bg);
-  paint-order: stroke fill;
-  text-shadow: 0 0 0.35em var(--color-bg), 0 0 0.12em var(--color-bg);
 }
 
 /* ═════════════ 2. Билет (MacBook Air 4) ═════════════ */

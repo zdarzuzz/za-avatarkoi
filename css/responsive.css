@@ -52,6 +52,7 @@
   /* на телефоне шрифт реплик не меньше 12 px — расширяем плашки, чтобы текст не шёл столбиком; правый край кадра не пересекаем */
   .bubble { max-width: min(calc(97% - var(--x)), max(var(--bw), 56%)); }
   .cover { --cover-h: min(100svh, calc(79.7vw + 130px)); height: calc(var(--cover-h) + 22svh); }
+  .cover__image { bottom: 130px; }
   .ticket-block { min-height: 0; padding-top: 12px; }
   .cover__head { top: calc(min(100svh, 79.7vw) - 36px); transform: none; }
 

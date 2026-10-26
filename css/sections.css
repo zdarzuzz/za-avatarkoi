@@ -620,7 +620,7 @@
 .review:focus { outline: none; }
 .review__lead { margin-top: 0; }
 .review__confidence { margin-top: calc(14 * var(--u)); font-size: var(--fs-small); color: var(--color-graphite); min-height: 1.3em; }
-.review-grid { display: grid; grid-template-columns: 1fr 1fr; margin: calc(42 * var(--u)) calc(-22 * var(--u)) 0; }
+.review-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: calc(22 * var(--u)); row-gap: calc(22 * var(--u)); margin: calc(42 * var(--u)) 0 0; }
 .review-card {
   position: relative;
   /* высота по содержимому (не меньше пропорции рамки из макета): текст и кнопки никогда не выходят за рамку */

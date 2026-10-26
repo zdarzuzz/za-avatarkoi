@@ -1,5 +1,6 @@
 /* ═════════════ Планшет (≤ 1024) ═════════════ */
 @media (max-width: 1024px) {
+  .ticket { max-width: none; }
   .ticket__face--front { grid-template-columns: 1fr calc(300 * var(--u) + 120px); }
   .ticket__main { padding: 7% 0 0 9%; }
   .ticket__stub { padding: 9% 9% 0 8%; }

@@ -48,8 +48,8 @@
   --fs-btn: clamp(17px, calc(28 * var(--u)), 28px);   /* подписи всех кнопок-плашек */
 
   --gutter: calc(75 * var(--u));
-  /* от анкет и дальше поля на 40 % шире — композиция «книжная», с запасом воздуха */
-  --gutter-wide: calc(var(--gutter) * 1.4);
+  /* единые поля по краям для всех блоков — одна сетка макета (контент 1290 из 1440) */
+  --gutter-wide: var(--gutter);
   --line: 1px solid var(--color-red);
   --radius-poll: calc(30 * var(--u));
   --radius-bubble: calc(20 * var(--u));
@@ -77,7 +77,7 @@
     --fs-body: clamp(18px, 2.4vw, 24px);
     --fs-small: clamp(16px, 1.9vw, 19px);
     --fs-option: clamp(20px, 2.8vw, 28px);
-    --gutter: clamp(20px, 4vw, 48px);
+    --gutter: clamp(28px, 5vw, 48px);
     --radius-poll: 24px;
     --radius-bubble: 14px;
     --bubble-border: 2px;
@@ -99,7 +99,7 @@
     --fs-body: 19px;
     --fs-small: 17px;
     --fs-option: 21px;
-    --gutter: 16px;
+    --gutter: 20px;
     --radius-poll: 20px;
     --radius-bubble: 12px;
   }

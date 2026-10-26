@@ -31,7 +31,7 @@
   z-index: -1;
   pointer-events: none;
 }
-.btn-plaque > span { padding: 0 12%; text-align: center; line-height: 1.05; }
+.btn-plaque > span { display: block; width: 100%; padding: 0 9%; text-align: center; line-height: 1.05; text-box: trim-both cap alphabetic; }
 .btn-plaque--fill { color: var(--color-pink); }
 .btn-plaque--fill::before { opacity: 1; }
 .btn-plaque--ui { font-family: var(--font-ui); font-weight: 400; }
@@ -244,7 +244,9 @@
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 18% 16%;
+  /* поля внутри рамки: по бокам — дальше от виньеток, снизу — место под подпись «трактовка» */
+  padding: 13% 14% 21%;
+  text-wrap: balance;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   background: url('../assets/images/decorations/card-frame.webp') center / 100% 100% no-repeat;

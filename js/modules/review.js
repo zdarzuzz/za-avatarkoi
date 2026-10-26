@@ -12,9 +12,10 @@ const ICONS = {
 };
 
 const imgVars = (box) => `--l:${box.l}%;--t:${box.t}%;--w:${box.w}%;--h:${box.h}%`;
-const word = (v) => (v === 'continue' ? 'продолжить' : v === 'skip' ? 'пропустить' : 'не выбран');
+const word = (v) => (v === 'continue' ? 'продолжить' : v === 'skip' ? 'пропустить' : 'анкета не открыта');
 const nowText = (v, first) => {
   const base = v === 'continue' ? 'Сейчас: продолжить общение' : v === 'skip' ? 'Сейчас: отказаться' : 'Сейчас: решение не выбрано';
+  if (!first) return base;
   return v === first ? `${base} — как в начале` : `${base} — решение изменилось`;
 };
 
@@ -37,9 +38,9 @@ function cardTemplate(c, s) {
         <img src="${src}" alt="" style="${imgVars(box)}" width="200" height="266" loading="lazy" decoding="async">
       </span>
       <div class="review-card__body">
-        <h3 class="review-card__name" id="review-name-${c.id}">${c.name}, ${c.ageLabel}</h3>
+        <h3 class="review-card__name" id="review-name-${c.id}">${c.name}, ${c.ageLabel.replace(" ", "\u00a0")}</h3>
         <p class="review-card__first">Первый выбор: <b>${word(first)}</b></p>
-        <p class="review-card__now${fin !== first ? ' is-changed' : ''}" data-now aria-live="polite">${nowText(fin, first)}</p>
+        <p class="review-card__now${first && fin !== first ? ' is-changed' : ''}" data-now aria-live="polite">${nowText(fin, first)}</p>
         <div class="review-card__controls" role="group" aria-label="Итоговое решение: ${c.name}">
           <button class="round-btn" type="button" data-final="continue" aria-pressed="${fin === 'continue'}" aria-label="Продолжить общение с ${c.forms.ins}">${ICONS.check}</button>
           <button class="round-btn" type="button" data-final="skip" aria-pressed="${fin === 'skip'}" aria-label="Отказаться от общения с ${c.forms.ins}">${ICONS.cross}</button>
@@ -64,7 +65,7 @@ function syncCard(id) {
   card.querySelectorAll('[data-final]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.final === fin)));
   const now = card.querySelector('[data-now]');
   now.textContent = nowText(fin, first);
-  now.classList.toggle('is-changed', fin !== first);
+  now.classList.toggle('is-changed', Boolean(first) && fin !== first);
 }
 
 export function initReview(h) {

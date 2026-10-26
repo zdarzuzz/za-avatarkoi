@@ -13,6 +13,13 @@
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
+.profiles,
+.confidence,
+.stories,
+.observations,
+.analysis,
+.review,
+.site-footer { padding-inline: var(--gutter-wide); }
 
 /* Этапы, которые открывает сценарий. Без JS всё видно: тексты читаются и так. */
 html.js [data-gated]:not([data-shown]) { display: none; }

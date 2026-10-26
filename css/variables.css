@@ -23,10 +23,10 @@
   --color-graphite-a55: rgba(41, 37, 38, 0.55);  /* затемнение под панелями */
 
   /* — Шрифты — */
-  /* Единственный шрифт сайта — EB Garamond */
-  --font-display: 'EB Garamond', serif;
-  --font-text: 'EB Garamond', serif;
-  --font-ui: 'EB Garamond', serif;
+  /* Единственный шрифт сайта — Cormorant Garamond */
+  --font-display: 'Cormorant Garamond', serif;
+  --font-text: 'Cormorant Garamond', serif;
+  --font-ui: 'Cormorant Garamond', serif;
 
   /* Масштаб: 1 макетный пиксель при ширине 1440 */
   --page: min(100vw, 1440px);
@@ -47,6 +47,8 @@
   --fs-small: calc(24 * var(--u));
 
   --gutter: calc(75 * var(--u));
+  /* от анкет и дальше поля на 40 % шире — композиция «книжная», с запасом воздуха */
+  --gutter-wide: calc(var(--gutter) * 1.4);
   --line: 1px solid var(--color-red);
   --radius-poll: calc(30 * var(--u));
   --radius-bubble: calc(20 * var(--u));
@@ -93,8 +95,8 @@
     --fs-h2: clamp(24px, 6.6vw, 30px);
     --fs-value: clamp(22px, 6vw, 28px);
     --fs-num: clamp(44px, 12vw, 60px);
-    --fs-body: 18px;
-    --fs-small: 16px;
+    --fs-body: 19px;
+    --fs-small: 17px;
     --fs-option: 21px;
     --gutter: 16px;
     --radius-poll: 20px;

@@ -63,6 +63,7 @@ function freshRun(prev = {}) {
     answers: {},             // ответ после манги
     final: {},               // явное итоговое решение на финальном этапе
     currentStory: null,
+    profilesSkipped: false,  // читатель пропустил оставшиеся анкеты (после двух просмотренных)
   };
 }
 
@@ -90,6 +91,7 @@ function sanitize(raw) {
     reasons: pickMap(raw.reasons, REASON_IDS),
     answers: pickMap(raw.answers, ANSWERS),
     confidence: CONF_IDS.includes(raw.confidence) ? raw.confidence : null,
+    profilesSkipped: Boolean(raw.profilesSkipped),
   });
   for (const id of Object.keys(s.reasons)) if (!s.initial[id]) delete s.reasons[id];
   if (raw.final && typeof raw.final === 'object') {
@@ -105,7 +107,8 @@ function sanitize(raw) {
   }
   // индекс анкеты — первая без подтверждённого решения
   const firstOpen = CHARACTER_IDS.findIndex((id) => !s.initial[id]);
-  s.profileIndex = firstOpen === -1 ? CHARACTER_IDS.length : firstOpen;
+  s.profileIndex = firstOpen === -1 || (s.profilesSkipped && firstOpen >= 2) ? CHARACTER_IDS.length : firstOpen;
+  if (s.profileIndex < CHARACTER_IDS.length) s.profilesSkipped = false;
   if (s.pending && s.pending.id !== CHARACTER_IDS[s.profileIndex]) s.pending = null;
   // дальше незавершённого этапа не пускаем
   const cap = s.profileIndex < CHARACTER_IDS.length ? 'profiles' : !s.confidence ? 'confidence' : null;

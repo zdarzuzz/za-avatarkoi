@@ -1,28 +1,56 @@
 // Билет с контекстом. Ситуация выбрана при старте прохождения и не меняется.
-// Билет вращается один раз — когда блок впервые достигнут прокруткой в этом прохождении.
+// Когда блок впервые достигнут прокруткой, билет несколько раз быстро пролетает справа налево
+// (на пролётах мелькают другие контексты), затем въезжает и плавно останавливается на своём.
 
-import { getSituation } from '../data/situations.js';
+import { getSituation, SITUATIONS } from '../data/situations.js';
 import { getState, update } from './state.js';
 import { reducedMotion } from './animations.js';
 
 let io = null;
 
-export function renderTicket() {
-  const s = getSituation(getState().situationId);
+function fill(s) {
   document.querySelectorAll('#ticket [data-t]').forEach((el) => {
     el.textContent = s[el.dataset.t] ?? '';
   });
 }
 
-function spin(block) {
+export function renderTicket() {
+  fill(getSituation(getState().situationId));
+}
+
+const PASSES = [520, 420, 360];   // мс на пролёт: каждый следующий быстрее
+
+async function spin(block) {
   const ticket = block.querySelector('[data-ticket]');
-  if (reducedMotion()) { update((st) => { st.ticketShown = true; }); return; }
+  const el = ticket.querySelector('[data-ticket-spin]');
+  const done = () => { block.classList.remove('is-spinning'); ticket.classList.remove('is-spinning'); update((st) => { st.ticketShown = true; }); };
+  if (reducedMotion() || !el.animate) { done(); return; }
   block.classList.add('is-spinning');
   ticket.classList.add('is-spinning');
-  ticket.querySelector('[data-ticket-spin]').addEventListener('animationend', () => {
-    block.classList.remove('is-spinning');
-    update((st) => { st.ticketShown = true; });
-  }, { once: true });
+  ticket.setAttribute('aria-busy', 'true');
+  const own = getState().situationId;
+  const others = SITUATIONS.filter((x) => x.id !== own);
+  const off = '115vw';
+  try {
+    for (let i = 0; i < PASSES.length; i += 1) {
+      fill(others[i % others.length] ?? getSituation(own));
+      await el.animate([
+        { transform: `translateX(${off}) skewX(-8deg)`, filter: 'blur(0)' },
+        { transform: 'translateX(0) skewX(-8deg)', filter: 'blur(3px)', offset: 0.5 },
+        { transform: `translateX(-${off}) skewX(-8deg)`, filter: 'blur(0)' },
+      ], { duration: PASSES[i], easing: 'linear' }).finished;
+    }
+    fill(getSituation(own));
+    await el.animate([
+      { transform: `translateX(${off}) skewX(-6deg)`, filter: 'blur(2px)' },
+      { transform: 'translateX(-2.5%) skewX(1deg)', filter: 'blur(0)', offset: 0.72 },
+      { transform: 'translateX(0.6%) skewX(0deg)', offset: 0.88 },
+      { transform: 'none' },
+    ], { duration: 1500, easing: 'cubic-bezier(0.16, 0.84, 0.3, 1)' }).finished;
+  } catch (e) { /* анимация прервана — просто показываем свой билет */ }
+  fill(getSituation(own));
+  ticket.removeAttribute('aria-busy');
+  done();
 }
 
 /** Подготовить вращение для текущего прохождения. */

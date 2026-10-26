@@ -1,7 +1,8 @@
 // Анкеты — слайдер (MacBook Air 18–19).
 // В центре активная анкета, по бокам пустые приглушённые рамки (информацию следующего человека не раскрываем).
 // Решение: кнопки «Пропустить» / «Продолжить», свайп влево / вправо, стрелки ← / → на клавиатуре.
-// После решения в той же анкете появляется вопрос о причине; дальше — только после подтверждения.
+// После решения в той же анкете появляется вопрос о причине; после ответа анкета сама улетает
+// в сторону решения (вправо — продолжить, влево — пропустить). После двух анкет можно пропустить остальные.
 
 import { CHARACTERS, getCharacter, reasonsFor, getReason } from '../data/characters.js';
 import { getState, update } from './state.js';
@@ -12,6 +13,8 @@ const LOCK_MIN = 14;      // px — с какого смещения решае�
 
 let busy = false;
 let onDone = () => {};
+let autoTimer = 0;
+const AUTO_DELAY = 750;   // мс — выбранный ответ успевает подсветиться, затем анкета улетает
 
 const $ = (s) => document.querySelector(s);
 const imgVars = (b) => `--l:${b.l}%;--t:${b.t}%;--w:${b.w}%;--h:${b.h}%`;
@@ -54,7 +57,7 @@ function cardTemplate(c, pending) {
             <span class="choice__radio" aria-hidden="true"></span><span>${r.label}</span>
           </button>`).join('')}
       </div>
-      <p class="card__reason-note" aria-live="polite">${pending?.reason ? `Выбрано: «${getReason(pending.reason).label}». Подтверди кнопкой выше.` : 'Выбери один вариант, затем подтверди решение.'}</p>
+      <p class="card__reason-note" aria-live="polite">${pending?.reason ? `Выбрано: «${getReason(pending.reason).label}».` : 'Выбери вариант — анкета перелистнётся сама.'}</p>
       <button class="text-link card__undo" type="button" data-undo>Изменить решение</button>
     </div>
   </article>`;
@@ -70,8 +73,10 @@ export function renderProfiles({ animate = false, from = 'right' } = {}) {
   const track = $('[data-slider-track]');
   const counter = $('[data-profile-counter]');
   $('#profiles').classList.toggle('is-done', s.profileIndex >= CHARACTERS.length);
+  renderProgress(s);
   if (s.profileIndex >= CHARACTERS.length) {
-    track.innerHTML = `<p class="profiles__done body-text body-text--ink">Все шесть анкет просмотрены.</p>`;
+    const seen = Object.keys(s.initial).length;
+    track.innerHTML = `<p class="profiles__done body-text body-text--ink">${seen === CHARACTERS.length ? 'Все шесть анкет просмотрены.' : `Просмотрено анкет: ${seen} из ${CHARACTERS.length}.`}</p>`;
     counter.textContent = '';
     setGhosts(CHARACTERS.length);
     return;
@@ -87,6 +92,32 @@ export function renderProfiles({ animate = false, from = 'right' } = {}) {
     requestAnimationFrame(() => requestAnimationFrame(() => card.classList.remove('is-in', 'is-out-left')));
   }
   bindSwipe(card);
+}
+
+/** Счётчик внизу блока: точки и «N из 6»; после двух анкет — тихая ссылка «пропустить остальные». */
+function renderProgress(s) {
+  const box = $('[data-profiles-progress]');
+  if (!box) return;
+  const done = Object.keys(s.initial).length;
+  const total = CHARACTERS.length;
+  const finished = s.profileIndex >= total;
+  const dots = CHARACTERS.map((c, i) => `<span class="progress-dot${s.initial[c.id] ? ' is-done' : i === s.profileIndex ? ' is-current' : ''}"></span>`).join('');
+  const canSkip = !finished && done >= 2 && !s.pending;
+  box.innerHTML = finished ? '' : `
+    <p class="profiles__count"><span class="profiles__dots" aria-hidden="true">${dots}</span>
+      <span>Пройдено анкет: <b>${done}</b> из ${total}</span></p>
+    ${canSkip ? '<button class="profiles__skip-rest" type="button" data-skip-rest>Пропустить остальные анкеты <span aria-hidden="true">→</span></button>' : ''}`;
+}
+
+async function skipRest() {
+  if (busy) return;
+  busy = true;
+  clearTimeout(autoTimer);
+  update((st) => { st.pending = null; st.profilesSkipped = true; st.profileIndex = CHARACTERS.length; });
+  renderProfiles();
+  onDone();
+  await wait(200);
+  busy = false;
 }
 
 function focusFirst(card, sel) {
@@ -121,10 +152,13 @@ function pickReason(btn) {
     o.tabIndex = on ? 0 : -1;
   });
   card.querySelector('[data-confirm]').disabled = false;
-  card.querySelector('.card__reason-note').textContent = `Выбрано: «${getReason(btn.dataset.reason).label}». Подтверди кнопкой выше.`;
+  card.querySelector('.card__reason-note').textContent = `Выбрано: «${getReason(btn.dataset.reason).label}».`;
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(confirm, reducedMotion() ? 250 : AUTO_DELAY);
 }
 
 async function confirm() {
+  clearTimeout(autoTimer);
   const s = getState();
   if (busy || !s.pending?.reason) return;
   busy = true;
@@ -157,6 +191,7 @@ async function confirm() {
 
 function undo() {
   if (busy) return;
+  clearTimeout(autoTimer);
   update((st) => { st.pending = null; });
   renderProfiles();
   focusFirst($('[data-card]'), '[data-decide="continue"]');
@@ -204,6 +239,7 @@ export function initProfiles({ onComplete }) {
     else if (b.dataset.reason) pickReason(b);
     else if ('confirm' in b.dataset) confirm();
     else if ('undo' in b.dataset) undo();
+    else if ('skipRest' in b.dataset) skipRest();
   });
   root.addEventListener('keydown', (e) => {
     const card = e.target.closest('[data-card]');

@@ -16,6 +16,8 @@ import { initAnalysis, onAnalysisOpen } from './modules/analysis.js';
 import { initReview, renderReview, focusCard } from './modules/review.js';
 import { initTyping, initReveal, refreshTyping } from './modules/reveal.js';
 import { goTo, reducedMotion } from './modules/animations.js';
+import { initSmoothScroll } from './modules/smooth-scroll.js';
+import { initWebring } from './modules/webring.js';
 
 const $ = (id) => document.getElementById(id);
 const el = {
@@ -157,6 +159,8 @@ function restore() {
 let confidence;
 function boot() {
   initState();
+  initSmoothScroll();
+  initWebring();
   initCover({ onPassed: () => { if (!getState().coverSeen) update((s) => { s.coverSeen = true; }); advanceStage('ticket'); } });
   armTicket();
   initProfiles({ onComplete: toConfidence });

@@ -70,27 +70,11 @@ const isMark = (c) => c.anonymous;
 const portraitOf = (c, s) => (c.anonymous && s.viewed.includes(c.id) ? c.revealIcon : c.icon);
 const iconBoxOf = (c, s) => (c.anonymous && s.viewed.includes(c.id) ? c.revealIconImg : c.iconImg);
 
-/* ───── Подводка ───── */
-function leadText(s) {
-  const [a, b] = s.mandatory.map(getCharacter);
-  if (!a || !b) return '';
-  const all = CHARACTERS.every((c) => s.initial[c.id] === 'continue');
-  const none = CHARACTERS.every((c) => s.initial[c.id] === 'skip');
-  if (all) return `Продолжить хочется со всеми шестью. Посмотрим на два разных эпизода — с ${a.forms.ins} и ${b.forms.ins}.`;
-  if (none) return `Все шесть анкет остались пропущенными — это тоже решение. Посмотрим, что могло бы открыться во встречах с ${a.forms.ins} и ${b.forms.ins}.`;
-  const aCont = s.initial[a.id] === 'continue';
-  const bCont = s.initial[b.id] === 'continue';
-  const missing = (kind) => CHARACTERS.some((c) => s.initial[c.id] === kind) && ![a, b].some((c) => s.initial[c.id] === kind);
-  if (missing('continue')) return `С теми, с кем знакомство продолжено, в этой ситуации эпизода нет. Посмотрим на встречи с ${a.forms.ins} и ${b.forms.ins} — их анкеты остались пропущенными.`;
-  if (missing('skip')) return `С теми, чьи анкеты пропущены, в этой ситуации эпизода нет. Посмотрим на встречи с ${a.forms.ins} и ${b.forms.ins}.`;
-  if (aCont && !bCont) return `Сначала — ${a.name}: с ней знакомство продолжено. Затем — ${b.name}, чья анкета осталась пропущенной.`.replace('с ней', a.gender === 'm' ? 'с ним' : 'с ней');
-  return `Посмотрим на два эпизода — с ${a.forms.ins} и ${b.forms.ins}.`;
-}
-
 function introLine(c, s) {
   const choice = s.initial[c.id];
   const reason = getReason(s.reasons[c.id]);
   const why = reason ? ` Главным было «${reason.label.toLowerCase()}».` : '';
+  if (!choice) return `Анкета ${c.forms.gen} осталась неоткрытой — эта история показывает встречу без первого впечатления.`;
   if (choice === 'skip') return `Анкета ${c.forms.gen} осталась пропущенной.${why} История открыта не для того, чтобы переубедить, а чтобы показать детали, которых в анкете не было.`;
   return `Знакомство с ${c.forms.ins} продолжено.${why} Вот один возможный эпизод.`;
 }
@@ -259,7 +243,6 @@ export function renderStories() {
   if (s.mandatory.length < 2) update((st) => { st.mandatory = pickMandatory(st); });
   const cur = getState();
   if (!cur.currentStory) update((st) => { st.currentStory = st.mandatory.find((id) => !st.viewed.includes(id)) ?? st.mandatory[0]; });
-  $('[data-stories-lead]').innerHTML = `Выбор уже сделан. Теперь посмотрим на&nbsp;один возможный эпизод знакомства. <span class="stories__lead-more">${leadText(getState())}</span>`;
   renderIcons();
   renderStory();
 }

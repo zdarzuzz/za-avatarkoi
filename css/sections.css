@@ -2,13 +2,15 @@
    Заголовок уходит вверх вместе с прокруткой, изображение закреплено и затухает по прогрессу.
    Длина участка — 160 % высоты экрана: без долгой пустой прокрутки. */
 .cover {
+  /* высота закреплённой части — по картинке: на вертикальных экранах без пустоты под ней */
+  --cover-h: min(100svh, calc(79.7vw + 120px));
   position: relative;
-  height: 160svh;
+  height: calc(var(--cover-h) + 40svh);
 }
 .cover__sticky {
   position: sticky;
   top: 0;
-  height: 100svh;
+  height: var(--cover-h);
   overflow: hidden;
   opacity: var(--cover-fade, 1);
   will-change: opacity;
@@ -16,43 +18,72 @@
 .cover__image {
   position: absolute;
   inset: 0;
+  display: grid;
+  justify-items: center;
+  align-items: start;
 }
 .cover__image img {
-  width: 100%;
+  /* картинка целиком: по высоте экрана, без обрезки снизу; края растворяются в фоне */
+  width: auto;
   height: 100%;
-  max-width: none;
-  object-fit: cover;
-  object-position: 50% 0;   /* кадр в макете: image 21 смещён на −149 из 1148 */
-}
-.cover__image::after {
-  /* градиент из image 21: 50 % прозрачно → #FBEED5 на 93.269 % */
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, var(--color-bg-transparent) 50%, var(--color-bg) 93.269%);
+  max-width: 100%;
+  object-fit: contain;
+  object-position: 50% 0;
+  /* края растворяются: по бокам и снизу (как градиент image 21: от 50 % к 93 %) */
+  -webkit-mask: linear-gradient(90deg, #0000 0, #000 9%, #000 91%, #0000 100%), linear-gradient(180deg, #000 50%, #0000 96%);
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(90deg, #0000 0, #000 9%, #000 91%, #0000 100%), linear-gradient(180deg, #000 50%, #0000 96%);
+  mask-composite: intersect;
 }
 .cover__head {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100svh - 262 * var(--u) - 40px);  /* 737 из 999 — нижняя треть первого экрана */
+  /* нижняя треть картинки: высота картинки — меньшее из высоты экрана и ширины × 1120/1405 */
+  top: calc(min(100svh, 79.7vw) - 6svh);
+  transform: translateY(-100%);   /* низ блока — у нижнего края картинки */
   padding-inline: var(--gutter);
+  display: grid;
+  justify-items: center;
   text-align: center;
 }
 .cover__title {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--fs-hero);
-  line-height: 1.21;
+  line-height: 1.12;
   color: var(--color-red);
   text-wrap: balance;
+  /* широкая обводка цвета фона под буквами: название отделяется от рисунка */
+  -webkit-text-stroke: 0.2em var(--color-bg);
+  paint-order: stroke fill;
+  text-shadow: 0 0 0.35em var(--color-bg), 0 0 0.12em var(--color-bg);
 }
+/* Плашка автора: тонкая двойная рамка, подпись разрядкой и имя */
 .cover__author {
-  margin-top: calc(10 * var(--u));
+  margin-top: calc(26 * var(--u) + 8px);
+  display: inline-grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 10px 28px 11px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-red);
+  outline: 1px solid var(--color-red);
+  outline-offset: 3px;
   font-family: var(--font-text);
+  color: var(--color-ink);
+}
+.cover__author-label {
+  font-size: 12px;
   font-weight: 600;
-  font-size: var(--fs-small);
-  color: var(--color-graphite);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-red);
+}
+.cover__author-name {
+  font-size: calc(var(--fs-small) * 1.15);
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 /* ═════════════ 2. Билет (MacBook Air 4) ═════════════ */
@@ -220,25 +251,35 @@
   min-height: 1.4em;
   margin-bottom: calc(16 * var(--u));
 }
+.profiles {
+  /* ширина анкеты: по макету 634, но вся композиция (рамка + кнопки + имя) помещается в экран по высоте */
+  --card-w: min(calc(634 * var(--u)), calc((100svh - 370px) * 634 / 845));
+}
 .slider {
   position: relative;
   display: grid;
-  grid-template-columns: calc(308 * var(--u)) 1fr calc(308 * var(--u));
+  /* центральная колонка ровно по ширине анкеты, боковые — поровну: анкета строго по центру */
+  grid-template-columns: minmax(0, 1fr) minmax(0, calc(var(--card-w) * 1.4)) minmax(0, 1fr);
+  justify-items: center;
   align-items: start;
   touch-action: pan-y;      /* вертикальная прокрутка страницы остаётся за браузером */
 }
 .slider__ghost {
-  margin-top: calc(201 * var(--u));
+  width: min(100%, calc(var(--card-w) * 0.486));
+  margin-top: calc(var(--card-w) * 0.317);
   aspect-ratio: 308 / 411;
   background: url('../assets/images/decorations/frame-ornate.webp') center / 100% 100% no-repeat;
   opacity: 0.32;            /* боковые рамки — пустые и приглушённые */
   transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
 }
 .slider__ghost[data-empty] { opacity: 0.12; }
-.slider__track { position: relative; min-width: 0; }
+.slider__track { position: relative; min-width: 0; width: 100%; grid-row: 1; grid-column: 2; }
+.slider__ghost--prev { grid-row: 1; grid-column: 1; }
+.slider__ghost--next { grid-row: 1; grid-column: 3; }
 
 .card {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   outline: none;
   transition: transform 0.45s var(--ease), opacity 0.45s var(--ease);
@@ -249,7 +290,7 @@
 .card.is-dragging { transition: none; }
 .card__portrait {
   position: relative;
-  width: calc(634 * var(--u));
+  width: var(--card-w);
   max-width: 100%;
   aspect-ratio: 634 / 845;
 }
@@ -275,6 +316,7 @@
 .card__frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
 .card__actions {
+  width: 100%;
   display: flex;
   justify-content: center;
   gap: calc(21 * var(--u));
@@ -282,8 +324,13 @@
   position: relative;
   z-index: 1;
 }
-.card__actions .btn-plaque { font-family: var(--font-ui); font-weight: 400; }
+.card__actions .btn-plaque { font-family: var(--font-ui); font-weight: 400; width: min(calc(var(--card-w) * 0.66), 48%); }
 .card__actions .btn-plaque--fill { color: var(--color-white); }
+.card__info {
+  /* текст анкеты — по левому краю, колонкой чуть шире рамки */
+  width: min(100%, calc(var(--card-w) * 1.15));
+  justify-self: center;
+}
 .card__name {
   margin-top: calc(-1 * var(--u));
   font-family: var(--font-display);
@@ -291,20 +338,19 @@
   font-size: var(--fs-h1);
   line-height: 1.21;
   color: var(--color-red-name);
-  text-align: center;
+  text-align: left;
 }
 .card__interests,
 .card__bio {
-  max-width: calc(854 * var(--u));
-  text-align: center;
+  text-align: left;
   font-family: var(--font-ui);
   font-weight: 400;
   font-size: var(--fs-body);
   line-height: 1.22;
   color: var(--color-ink);
 }
-.card__interests { margin-top: calc(27 * var(--u)); color: var(--color-ink-soft); }
-.card__bio { margin-top: calc(35 * var(--u)); }
+.card__interests { margin-top: calc(14 * var(--u)); color: var(--color-ink-soft); }
+.card__bio { margin-top: calc(20 * var(--u)); line-height: 1.3; }
 
 /* Вопрос о причине — прямо в анкете (MacBook Air 19) */
 .card__reason { display: grid; justify-items: center; margin-top: calc(-1 * var(--u)); }
@@ -352,6 +398,7 @@
 }
 .stories__nav { margin: calc(53 * var(--u)) 0 calc(57 * var(--u)); }
 .avatar-row { display: flex; justify-content: space-between; gap: 8px; }
+.avatar-row .avatar { --d: 168; }
 .avatar-btn {
   position: relative;
   border-radius: 50%;
@@ -431,13 +478,17 @@
 }
 .story__closing { margin-top: calc(22 * var(--u)); font-size: var(--fs-body); color: var(--color-graphite); max-width: calc(797 * var(--u)); }
 
-.story__question { margin-top: calc(22 * var(--u)); padding-top: calc(46 * var(--u)); border-top: var(--line); text-align: center; }
+.story__question { margin-top: calc(22 * var(--u)); padding-top: calc(46 * var(--u)); border-top: var(--line); text-align: center; display: grid; justify-items: center; }
+.story__question > * { width: 100%; }
 .answer-row {
+  /* три плашки делят ширину колонки поровну и не выходят за её края */
   display: grid;
-  grid-template-columns: repeat(3, calc(417 * var(--u)));
-  justify-content: space-between;
-  margin-top: calc(13 * var(--u));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(24 * var(--u));
+  width: min(100%, calc(1290 * var(--u)));
+  margin: calc(18 * var(--u)) auto 0;
 }
+.answer-row .btn-plaque { width: 100%; }
 .answer-row .btn-plaque { color: var(--color-ink); }
 .answer-row .btn-plaque[aria-pressed='true'] { color: var(--color-pink); }
 .story__prompt { margin-top: calc(11 * var(--u)); font-size: var(--fs-body); color: var(--color-graphite); }
@@ -516,7 +567,7 @@
 .observations__question { padding-top: calc(30 * var(--u)); max-width: calc(853 * var(--u)); }
 .eye-band {
   position: relative;
-  margin: calc(45 * var(--u)) calc(-1 * var(--gutter)) 0;
+  margin: calc(45 * var(--u)) calc(-1 * var(--gutter-wide)) 0;
   height: calc(692 * var(--u));
   overflow: hidden;
 }
@@ -605,22 +656,25 @@
 .review-grid { display: grid; grid-template-columns: 1fr 1fr; margin: calc(42 * var(--u)) calc(-22 * var(--u)) 0; }
 .review-card {
   position: relative;
-  aspect-ratio: 677 / 451;
+  /* высота по содержимому (не меньше пропорции рамки из макета): текст и кнопки никогда не выходят за рамку */
+  min-height: calc(451 * var(--u) * 0.9);
   background: url('../assets/images/decorations/review-frame.webp') center / 100% 100% no-repeat;
   display: grid;
-  grid-template-columns: calc(224 * var(--u)) 1fr;
+  grid-template-columns: calc(200 * var(--u)) minmax(0, 1fr);
   column-gap: calc(22 * var(--u));
   align-content: start;
-  padding: calc(107 * var(--u)) calc(60 * var(--u)) 0 calc(63 * var(--u));
+  padding: calc(96 * var(--u) + 8px) calc(70 * var(--u) + 10px) calc(70 * var(--u) + 14px) calc(63 * var(--u) + 6px);
+  align-items: center;
   scroll-margin-top: 80px;
 }
-.review-card .avatar { --d: 224; background: var(--color-graphite); }
-.review-card__name { font-family: var(--font-display); font-weight: 400; font-size: calc(var(--fs-q) * 0.88); line-height: 1.2; color: var(--color-ink); margin-top: calc(-14 * var(--u)); white-space: nowrap; }
+.review-card .avatar { --d: 200; background: var(--color-graphite); }
+.review-card__name { font-family: var(--font-display); font-weight: 400; font-size: calc(var(--fs-q) * 0.74); line-height: 1.15; color: var(--color-ink); margin-top: 0; text-wrap: balance; font-variant-numeric: lining-nums; }
 .review-card__first { font-family: var(--font-text); font-weight: 600; font-size: var(--fs-body); color: var(--color-ink); line-height: 1.22; }
 .review-card__first b { font-weight: 600; color: var(--color-red); display: block; }
 .review-card__now { font-size: var(--fs-small); color: var(--color-graphite); min-height: 1.3em; }
 .review-card__now.is-changed { color: var(--color-red); }
-.review-card__controls { display: flex; gap: calc(15 * var(--u)); margin-top: calc(6 * var(--u)); }
+.review-card__controls { display: flex; gap: calc(15 * var(--u)); margin-top: calc(10 * var(--u)); }
+.review-card__body { min-width: 0; }
 .review-card__controls .round-btn:last-child { margin-left: auto; }
 .review__note { margin-top: calc(-6 * var(--u)); }
 .finale { padding-top: calc(100 * var(--u)); }
@@ -630,9 +684,28 @@
 
 /* ═════════════ Подвал и источники ═════════════ */
 .site-footer { border-top: var(--line); padding-top: 28px; padding-bottom: 28px; font-family: var(--font-text); font-size: 18px; color: var(--color-graphite); }
-.sources { max-width: 960px; }
+.sources { border-bottom: 1px solid var(--color-red-a45, rgba(192,55,64,.45)); }
+.sources__summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; cursor: pointer; list-style: none; }
+.sources__summary::-webkit-details-marker { display: none; }
 .sources__title { font-family: var(--font-display); font-weight: 400; font-size: 34px; color: var(--color-ink); }
-.sources__list { margin-top: 12px; display: grid; gap: 8px; padding-left: 1.1em; list-style: disc; font-size: 17px; line-height: 1.3; }
+.sources__chevron { width: 14px; height: 14px; border-right: 1.5px solid var(--color-red); border-bottom: 1.5px solid var(--color-red); transform: translateY(-4px) rotate(45deg); transition: transform var(--t) var(--ease); }
+.sources[open] .sources__chevron { transform: translateY(3px) rotate(225deg); }
+.sources__summary:hover .sources__title { color: var(--color-red); }
+.sources__body { padding-bottom: 20px; }
+.sources[open] .sources__body { animation: sources-in 0.45s var(--ease) both; }
+@keyframes sources-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* Веб-кольцо: соседние сайты курса */
+.webring { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; margin-top: 36px; padding: 22px 0; border-top: 1px solid var(--color-red); }
+.webring__link { display: inline-flex; align-items: center; gap: 14px; color: var(--color-ink); text-decoration: none; font-family: var(--font-text); }
+.webring__link--next { justify-self: end; text-align: right; }
+.webring__link small { display: block; font-size: 15px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-red); }
+.webring__link b { display: block; font-size: 22px; font-weight: 500; }
+.webring__arrow { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--color-red); border-radius: 50%; color: var(--color-red); font-size: 20px; transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+.webring__link[href]:hover .webring__arrow, .webring__link[href]:focus-visible .webring__arrow { background: var(--color-red); color: var(--color-bg); }
+.webring__link[aria-disabled='true'] { opacity: 0.45; cursor: default; }
+.webring__label { font-family: var(--font-display); font-style: italic; font-size: 20px; line-height: 1.1; text-align: center; color: var(--color-graphite); }
+.sources__list { max-width: 960px; margin-top: 12px; display: grid; gap: 8px; padding-left: 1.1em; list-style: disc; font-size: 17px; line-height: 1.3; }
 .sources__credits { margin-top: 14px; font-size: 16px; font-weight: 400; }
 .site-footer__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 28px; margin-top: 28px; padding-top: 18px; border-top: var(--line); }
 .site-footer__name { font-family: var(--font-display); font-weight: 400; font-size: 28px; color: var(--color-red); }
@@ -643,3 +716,25 @@
 .profiles.is-done .profiles__help, .profiles.is-done .profiles__counter, .profiles.is-done .slider__ghost { display: none; }
 .profiles.is-done .slider { grid-template-columns: 1fr; }
 .profiles.is-done { padding-bottom: 0; }
+
+/* Низ блока анкет: точки, счётчик и тихая ссылка «пропустить остальные» */
+.profiles__progress { display: grid; justify-items: center; gap: 10px; margin-top: calc(48 * var(--u) + 12px); min-height: 3.2em; }
+.profiles__count { display: grid; justify-items: center; gap: 8px; font-size: var(--fs-small); color: var(--color-graphite); }
+.profiles__count b { color: var(--color-red); font-weight: 600; }
+.profiles__dots { display: flex; gap: 10px; }
+.progress-dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--color-red); transition: background-color var(--t) var(--ease), transform var(--t) var(--ease); }
+.progress-dot.is-done { background: var(--color-red); }
+.progress-dot.is-current { transform: scale(1.35); }
+.profiles__skip-rest {
+  font-family: var(--font-text);
+  font-style: italic;
+  font-size: var(--fs-small);
+  color: var(--color-ink);
+  opacity: 0.5;
+  padding: 6px 4px;
+  border-bottom: 1px solid transparent;
+  transition: opacity var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.profiles__skip-rest:hover, .profiles__skip-rest:focus-visible { opacity: 0.9; border-bottom-color: currentColor; }
+.profiles.is-done .profiles__progress { display: none; }
+.card__actions .btn-plaque.card__confirm { width: min(calc(var(--card-w) * 0.8), 100%); min-width: 0; }

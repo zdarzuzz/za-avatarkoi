@@ -24,7 +24,7 @@
       </div>
       <header class="cover__head">
         <h1 class="cover__title" id="cover-title">Человек в&nbsp;твоих глазах</h1>
-        <p class="cover__author">Дарья Зюзина</p>
+        <p class="cover__author"><span class="cover__author-label">Автор проекта</span><span class="cover__author-name">Дарья Зюзина</span></p>
       </header>
     </section>
 
@@ -62,13 +62,14 @@
     <!-- ═══ Анкеты (MacBook Air 18–19) ═══ -->
     <section class="profiles stage-journey" id="profiles" aria-labelledby="profiles-title">
       <h2 class="visually-hidden" id="profiles-title">Анкеты</h2>
-      <p class="profiles__counter" data-profile-counter aria-live="polite"></p>
+      <p class="profiles__counter visually-hidden" data-profile-counter></p>
       <p class="profiles__help" id="card-help">Нажми «Продолжить» или «Пропустить», проведи по&nbsp;анкете вправо или влево либо используй стрелки → и&nbsp;←.</p>
       <div class="slider" data-slider>
         <div class="slider__ghost slider__ghost--prev" aria-hidden="true"></div>
         <div class="slider__track" data-slider-track></div>
         <div class="slider__ghost slider__ghost--next" aria-hidden="true"></div>
       </div>
+      <div class="profiles__progress" data-profiles-progress aria-live="polite"></div>
     </section>
 
     <!-- ═══ Вопрос об уверенности ═══ -->
@@ -85,7 +86,6 @@
     <section class="stories stage-journey" id="stories" data-gated aria-labelledby="stories-title" tabindex="-1">
       <header class="stories__head">
         <h2 class="h-display" id="stories-title">За пределами первого впечатления</h2>
-        <p class="stories__lead" data-stories-lead>Выбор уже сделан. Теперь посмотрим на&nbsp;один возможный эпизод знакомства</p>
       </header>
       <nav class="stories__nav" aria-label="Истории персонажей">
         <ul class="avatar-row" data-story-icons></ul>
@@ -126,7 +126,7 @@
       </div>
 
       <hr class="rule">
-      <div class="chapter chapter--detail">
+      <div class="chapter chapter--detail" data-pin>
         <h3 class="h-section" data-reveal>Деталь становится характером</h3>
         <div class="chapter__cols">
           <p class="body-text" data-type>Чтобы решить, хочется ли познакомиться с&nbsp;человеком, иногда достаточно одной детали. Манеры писать, выражения лица, знакомой песни в&nbsp;списке интересов. Но между тем, что мы заметили, и&nbsp;тем, что решили о&nbsp;человеке, может оказаться большой промежуток.</p>
@@ -155,12 +155,12 @@
           <p class="framed-quote" data-reveal>Я не ответил, потому что был занят.</p>
           <p class="framed-quote" data-reveal>Он не ответил, потому что ему всё равно</p>
         </div>
-        <div class="two-col">
+        <div class="two-col" data-pin>
           <p class="body-text" data-type>Узнаёшь эту разницу? О&nbsp;собственном молчании мы знаем многое: трудный день, разряженный телефон, желание собраться с&nbsp;мыслями. О&nbsp;чужом часто известно только одно — ответа нет.</p>
           <p class="body-text" data-type>Из-за этой разницы в&nbsp;информации свои поступки бывает легче объяснить обстоятельствами, а&nbsp;чужие — характером. Мы видим результат, но не&nbsp;всегда видим путь к&nbsp;нему. И&nbsp;всё же можем чувствовать уверенность, будто причина очевидна.</p>
         </div>
         <blockquote class="proverb" data-reveal data-pause>«В&nbsp;чужом глазу соринку видит, а&nbsp;в&nbsp;своём — бревна не&nbsp;замечает»</blockquote>
-        <div class="self__bottom">
+        <div class="self__bottom" data-pin>
           <div class="body-text">
             <p data-type>Не обязательно искать в&nbsp;себе тот же недостаток, который раздражает в&nbsp;другом. Полезнее заметить собственную слепую зону: насколько мало нам известно о&nbsp;его ситуации.</p>
             <p data-type>Это не значит, что нужно оправдывать грубость, терпеть нарушение границ или продолжать неприятное общение. Можно отказаться от&nbsp;знакомства, не&nbsp;превращая «мне не&nbsp;подходит» в&nbsp;«с&nbsp;этим человеком что‑то не&nbsp;так».</p>
@@ -170,10 +170,10 @@
       </div>
 
       <hr class="rule">
-      <div class="chapter chapter--experience">
+      <div class="chapter chapter--experience" data-pin>
         <div class="experience__head">
           <h3 class="h-section" data-reveal>У&nbsp;каждого свой опыт</h3>
-          <p class="body-text body-text--ink" data-reveal>Одна деталь. <br>Разные ассоциации</p>
+          <p class="body-text body-text--ink" data-type>Одна деталь. <br>Разные ассоциации</p>
         </div>
         <p class="body-text" data-type>Общие интересы действительно могут привлекать. Иногда за небольшим совпадением мы предполагаем гораздо больше: похожие ценности, чувство юмора, отношение к&nbsp;людям. Хотя любовь к&nbsp;одной музыке ещё не&nbsp;означает, что вам будет одинаково комфортно путешествовать или решать разногласия.</p>
         <div class="body-text">
@@ -192,7 +192,7 @@
         <h3 class="h-display" data-reveal>Первое впечатление продолжается</h3>
         <p class="body-text body-text--ink continue__lead" data-type>Знакомство не заканчивается первым решением. Но однажды возникшее впечатление может влиять и&nbsp;на&nbsp;то, что мы замечаем дальше.</p>
         <figure class="notebook"><img src="assets/images/illustrations/travel-notebook.webp" srcset="assets/images/illustrations/travel-notebook-sm.webp 800w, assets/images/illustrations/travel-notebook.webp 1600w" sizes="(max-width: 1024px) calc(100vw - 32px), 1073px" width="1600" height="640" alt="Раскрытый блокнот с нарисованным маршрутом поездки: вокзал, город, мост, рынок — и карандаш рядом" loading="lazy" decoding="async"></figure>
-        <div class="two-col">
+        <div class="two-col" data-pin>
           <div class="body-text">
             <p data-type>Представь: попутчик заранее составил подробный маршрут. Если он уже тебе понравился, это легко прочитать как заботу: «Здорово, он обо всём подумал». Если насторожил — как желание контролировать: «Он уже решил всё за&nbsp;меня».</p>
             <p data-type>Так может проявляться склонность искать подтверждения своему мнению: замечать то, что с&nbsp;ним совпадает, и&nbsp;меньше внимания уделять тому, что заставляет его пересмотреть.</p>
@@ -221,8 +221,8 @@
       <p class="body-text body-text--ink review__note">Можно изменить выбор. Можно лучше понять, почему он остался прежним</p>
 
       <div class="finale">
-        <h2 class="h-display finale__title">Карточка закончилась. Человек — нет.</h2>
-        <p class="body-text body-text--ink finale__text">В&nbsp;карточке помещаются возраст, интересы и&nbsp;несколько слов о&nbsp;себе. Чтобы узнать, как человек слушает, спорит и&nbsp;уважает границы, нужно больше одного взгляда.</p>
+        <h2 class="h-display finale__title">Анкета — ещё не&nbsp;человек</h2>
+        <p class="body-text body-text--ink finale__text">В&nbsp;несколько строк помещаются возраст, пара увлечений и&nbsp;фраза о&nbsp;себе. А&nbsp;то, как человек слушает, спорит, шутит и&nbsp;относится к&nbsp;чужим границам, становится понятно постепенно&nbsp;— в&nbsp;разговорах, общих делах и&nbsp;мелочах, которые не&nbsp;попадают в&nbsp;профиль.</p>
         <div class="center-action">
           <button class="btn-plaque btn-plaque--fill" type="button" data-restart><span>Попробовать ещё раз</span></button>
         </div>
@@ -231,9 +231,10 @@
   </main>
 
   <footer class="site-footer" id="footer">
-    <section class="sources" aria-labelledby="sources-title">
-      <h2 class="sources__title" id="sources-title">Источники</h2>
-      <ul class="sources__list">
+    <details class="sources">
+      <summary class="sources__summary"><h2 class="sources__title" id="sources-title">Источники</h2><span class="sources__chevron" aria-hidden="true"></span></summary>
+      <div class="sources__body">
+        <ul class="sources__list">
         <li>Гоффман&nbsp;И. Анализ фреймов: эссе об&nbsp;организации повседневного опыта. — ситуация знакомства как рамка.</li>
         <li>Мороз&nbsp;О. Онлайн- и&nbsp;офлайн-сообщества; Алгоритмическая публичность. — как интерфейс задаёт способы предъявлять себя.</li>
         <li>Ross&nbsp;L. (1977). The intuitive psychologist and his shortcomings. — фундаментальная ошибка атрибуции.</li>
@@ -242,8 +243,14 @@
         <li>Thorndike&nbsp;E.&nbsp;L. (1920). A&nbsp;constant error in&nbsp;psychological ratings. — эффект ореола.</li>
         <li>Пословица «В&nbsp;чужом глазу соринку видит, а&nbsp;в&nbsp;своём — бревна не&nbsp;замечает»; Мф.&nbsp;7:3–5.</li>
       </ul>
-      <p class="sources__credits">Портреты, кадры манги и&nbsp;иллюстрации — авторские генерации и&nbsp;графика Дарьи Зюзиной. Шрифт — EB Garamond (SIL OFL). Персонажи и&nbsp;сцены вымышлены.</p>
-    </section>
+        <p class="sources__credits">Портреты, кадры манги и&nbsp;иллюстрации — авторские генерации и&nbsp;графика Дарьи Зюзиной. Шрифт — Cormorant Garamond (SIL OFL). Персонажи и&nbsp;сцены вымышлены.</p>
+      </div>
+    </details>
+    <nav class="webring" aria-label="Веб-кольцо курса" data-webring>
+      <a class="webring__link webring__link--prev" data-webring-prev><span class="webring__arrow" aria-hidden="true">←</span><span><small>Предыдущий сайт</small><b data-webring-prev-name></b></span></a>
+      <p class="webring__label">Веб-кольцо<br> курса</p>
+      <a class="webring__link webring__link--next" data-webring-next><span><small>Следующий сайт</small><b data-webring-next-name></b></span><span class="webring__arrow" aria-hidden="true">→</span></a>
+    </nav>
     <div class="site-footer__row">
       <p class="site-footer__name">Человек в&nbsp;твоих глазах</p>
       <p>Дарья Зюзина · Дизайн и&nbsp;программирование, НИУ ВШЭ</p>

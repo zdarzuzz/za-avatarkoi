@@ -6,9 +6,8 @@
   .ticket__fields { grid-template-columns: 1fr 1fr; }
   .ticket__note { margin-top: 3%; }
 
-  .slider { grid-template-columns: 14% 1fr 14%; }
-  .card__portrait { width: min(100%, 460px); }
-  .card__actions .btn-plaque { width: min(42vw, 300px); font-size: clamp(17px, 2.3vw, 22px); }
+  .profiles { --card-w: min(460px, calc((100svh - 370px) * 634 / 845), 62vw); }
+  .card__actions .btn-plaque { width: min(calc(var(--card-w) * 0.66), 48%); font-size: clamp(17px, 2.3vw, 22px); }
 
   .stories__head { grid-template-columns: 1fr; row-gap: 16px; }
   .stories__lead { justify-self: start; max-width: 640px; }
@@ -52,9 +51,10 @@
 @media (max-width: 600px) {
   /* на телефоне шрифт реплик не меньше 12 px — расширяем плашки, чтобы текст не шёл столбиком; правый край кадра не пересекаем */
   .bubble { max-width: min(calc(97% - var(--x)), max(var(--bw), 56%)); }
-  .cover { height: 150svh; }
-  .cover__head { top: calc(100svh - 34vw - 120px); }
-  .cover__image img { object-position: 58% 0; }
+  .cover { --cover-h: min(100svh, calc(79.7vw + 250px)); }
+  .cover__head { top: calc(min(100svh, 79.7vw) - 36px); transform: none; }
+  .cover__author { padding: 8px 20px 9px; }
+  .cover__author-label { font-size: 11px; }
 
   /* Билет на телефоне — вертикальный: корешок уходит вниз */
   /* высота по содержимому: лицевая сторона в потоке, оборот накрывает её */
@@ -80,12 +80,13 @@
 
   .profiles { padding-inline: 0; }
   .profiles__counter { padding-inline: var(--gutter); }
-  .slider { grid-template-columns: 8% 1fr 8%; }
-  .slider__ghost { margin-top: 30%; }
+  .profiles { --card-w: min(340px, calc(100vw - 2 * var(--gutter-wide) - 48px)); }
+  .slider { grid-template-columns: minmax(0, 1fr); }
+  .slider__track { grid-column: 1; }
+  .slider__ghost { display: none; }
   .card { padding-inline: 6px; }
-  .card__portrait { width: min(100%, 340px); }
   .card__actions { gap: 8px; width: 100%; margin-top: -4px; }
-  .card__actions .btn-plaque { width: 50%; font-size: 17px; }
+  .card__actions .btn-plaque { width: 48%; font-size: 17px; }
   .card__name, .card__interests, .card__bio, .card__reason { padding-inline: 4px; }
   .card__interests, .card__bio { font-size: 17px; }
   .card__reason .h-question { font-size: 28px; }
@@ -106,8 +107,8 @@
     align-items: center;
     justify-content: start;
     gap: 8px;
-    margin: 0 calc(-1 * var(--gutter)) 12px;
-    padding: 6px var(--gutter);
+    margin: 0 calc(-1 * var(--gutter-wide)) 12px;
+    padding: 6px var(--gutter-wide);
     border-bottom: 1px solid var(--color-red);
     background: var(--color-bg);
   }
@@ -171,13 +172,34 @@
 /* Планшет: плашки цитат не растягиваются на всю ширину, карточки трактовок не переполняются */
 @media (max-width: 1024px) {
   .quote-pair { max-width: 560px; margin-inline: auto; width: 100%; }
-  .flip-card__face { padding: 14% 10%; font-size: 16px; }
+  .flip-card__face { padding: 12% 12% 21%; font-size: 16px; }
 }
 @media (max-width: 860px) {
   .flip-cards { grid-template-columns: 1fr; justify-items: center; gap: 8px; }
   .flip-card { width: min(100%, 400px); }
-  .flip-card__face { padding: 16% 14%; font-size: 17px; }
+  .flip-card__face { padding: 12% 14% 20%; font-size: 18px; }
 }
 @media (max-width: 600px) {
-  .framed-quote { aspect-ratio: auto; min-height: 76px; padding: 16px 13%; font-size: 16px; }
+  /* на телефоне вместо растянутой картинки — тонкая двойная рамка, текст свободно переносится */
+  .framed-quote { aspect-ratio: auto; min-height: 0; background: none; border: 1px solid var(--color-red); outline: 1px solid var(--color-red); outline-offset: 3px; border-radius: 40px; padding: 14px 26px; margin: 4px; font-size: 16px; line-height: 1.2; }
+  .quote-pair { row-gap: 14px; }
+}
+
+@media (max-width: 600px) {
+  .webring { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .webring__label { grid-column: 1 / -1; grid-row: 1; }
+  .webring__label br { display: none; }
+  .webring__arrow { width: 40px; height: 40px; }
+  .webring__link small { font-size: 12px; }
+  .sources__title { font-size: 28px; }
+}
+@media (max-width: 600px) {
+  .card__actions .btn-plaque { min-width: 0; }
+  .webring > * { min-width: 0; }
+  .webring__link { gap: 8px; }
+  .webring__link small { letter-spacing: 0.06em; }
+}
+@media (max-width: 360px) {
+  .card__actions .btn-plaque { font-size: 15px; }
+  .webring__link small { font-size: 11px; }
 }

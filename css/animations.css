@@ -12,6 +12,10 @@
    слова лишь меняют прозрачность, поэтому строки и следующие блоки не сдвигаются. */
 .type-w { opacity: 0.08; transition: opacity 0.18s linear; }
 .type-w.is-on { opacity: 1; }
+/* закреплённый блок статьи: стоит у верха экрана, пока раскрываются его слова */
+.pin { position: relative; }
+.pin__sticky { position: sticky; }
+.pin__sticky--off { position: static; }
 
 /* Кадры манги: мягкое проявление и небольшое смещение, реплики — чуть позже */
 .panel-frame[data-panel] {
@@ -31,12 +35,9 @@
 .manga--seen .panel-frame[data-panel],
 .manga--seen .panel-frame[data-panel] .bubble { transition-duration: 0.25s; transition-delay: 0s; }
 
-/* Билет: быстрое вращение с плавным торможением, остановка лицевой стороной */
-@keyframes ticket-spin {
-  0%   { transform: rotateY(0deg); }
-  100% { transform: rotateY(1800deg); }
-}
-.ticket.is-spinning .ticket__spin { animation: ticket-spin 2.2s cubic-bezier(0.12, 0.72, 0.18, 1) both; }
+/* Билет: несколько быстрых пролётов справа налево (анимация в js/modules/ticket.js), затем плавная остановка */
+.ticket-block { overflow-x: clip; }
+.ticket.is-spinning .ticket__spin { will-change: transform, filter; }
 
 /* Смена этапа */
 .stage-enter { animation: stage-in 0.6s var(--ease) both; }
@@ -55,7 +56,6 @@
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
   [data-reveal], .panel-frame[data-panel], .panel-frame[data-panel] .bubble { opacity: 1; transform: none; transition: none; }
   .type-w { opacity: 1; transition: none; }
-  .ticket.is-spinning .ticket__spin { animation: none; }
   .card, .card.is-out-left, .card.is-out-right, .card.is-in { transform: none !important; transition: opacity 0.2s linear; }
   .stage-enter { animation: none; }
   .flip-card__inner { transition: none; }

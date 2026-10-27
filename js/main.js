@@ -26,6 +26,11 @@ const el = {
 const JOURNEY = ['cover', 'ticket', 'profiles', 'confidence', 'stories', 'observations'];
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+// Всегда начинаем с первого экрана: без якоря в адресе и с верха страницы.
+if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+window.scrollTo(0, 0);
+// Возврат кнопкой «Назад» из кэша браузера — перезагрузка, чтобы прохождение началось заново.
+window.addEventListener('pageshow', (e) => { if (e.persisted) location.reload(); });
 
 function show(node, on) {
   node.hidden = !on;

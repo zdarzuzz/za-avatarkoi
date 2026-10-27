@@ -117,8 +117,11 @@ function sanitize(raw) {
   return s;
 }
 
+/** Каждый заход — новое прохождение с обложки. Из прошлого берётся только очередь ситуаций,
+ *  чтобы при повторном визите выпал другой контекст. */
 export function initState() {
-  state = sanitize(readState()) ?? freshRun();
+  const prev = sanitize(readState());
+  state = freshRun(prev ? { situationQueue: prev.situationQueue, situationId: prev.situationId, runNumber: prev.runNumber } : {});
   writeState(state);
   return state;
 }

@@ -14,6 +14,9 @@
   <script>document.documentElement.classList.add('js')</script>
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-cyrillic-400-normal.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-cyrillic-600-normal.woff2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/base.css">
@@ -35,14 +38,12 @@
   <link rel="modulepreload" href="js/modules/review.js">
   <link rel="modulepreload" href="js/modules/reveal.js">
   <link rel="modulepreload" href="js/modules/smooth-scroll.js">
-  <link rel="modulepreload" href="js/modules/webring.js">
   <link rel="modulepreload" href="js/data/characters.js">
   <link rel="modulepreload" href="js/data/situations.js">
   <link rel="modulepreload" href="js/data/stories.js">
   <link rel="modulepreload" href="js/data/stories-new.js">
   <link rel="modulepreload" href="js/data/frames.js">
   <link rel="modulepreload" href="js/data/article-examples.js">
-  <link rel="modulepreload" href="js/data/webring.js">
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
@@ -280,11 +281,13 @@
         <p class="sources__credits">Портреты, кадры манги и&nbsp;иллюстрации — авторские генерации и&nbsp;графика Дарьи Зюзиной. Шрифт — Cormorant Garamond (SIL OFL). Персонажи и&nbsp;сцены вымышлены.</p>
       </div>
     </details>
-    <nav class="webring" aria-label="Веб-кольцо курса" data-webring>
-      <a class="webring__link webring__link--prev" data-webring-prev><span class="webring__arrow" aria-hidden="true">←</span><span><small>Предыдущий сайт</small><b data-webring-prev-name></b></span></a>
-      <p class="webring__label">Веб-кольцо<br> курса</p>
-      <a class="webring__link webring__link--next" data-webring-next><span><small>Следующий сайт</small><b data-webring-next-name></b></span><span class="webring__arrow" aria-hidden="true">→</span></a>
-    </nav>
+    <section class="course-webring course-webring--entry" aria-labelledby="course-webring-title">
+      <h2 id="course-webring-title">Веб-ринг</h2>
+      <nav class="course-webring__nav" aria-label="Веб-ринг проектов">
+        <a target="_top" href="https://docs.google.com/spreadsheets/d/1moFgJsWmO2xyTYsfRRvhG63S1ru9MhJKDSAw2pOUqyw/htmlview?gid=93859566&amp;range=A1:E35">Все проекты</a>
+        <a target="_top" href="https://annutka999.github.io/perception-of-time/">Начать маршрут с&nbsp;«Всё быстрее»&nbsp;→</a>
+      </nav>
+    </section>
     <div class="site-footer__row">
       <p class="site-footer__name">Человек в&nbsp;твоих глазах</p>
       <p>Дарья Зюзина · Дизайн и&nbsp;программирование, НИУ ВШЭ</p>

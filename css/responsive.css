@@ -187,20 +187,16 @@
 }
 
 @media (max-width: 600px) {
-  .webring { grid-template-columns: 1fr 1fr; gap: 14px; }
-  .webring__label { grid-column: 1 / -1; grid-row: 1; }
-  .webring__label br { display: none; }
-  .webring__arrow { width: 40px; height: 40px; }
-  .webring__link small { font-size: 12px; }
   .sources__title { font-size: 28px; }
 }
 @media (max-width: 600px) {
   .card__actions .btn-plaque { min-width: 0; }
-  .webring > * { min-width: 0; }
-  .webring__link { gap: 8px; }
-  .webring__link small { letter-spacing: 0.06em; }
 }
 @media (max-width: 360px) {
   .card__actions .btn-plaque { letter-spacing: -0.01em; }
-  .webring__link small { font-size: 11px; }
+}
+
+@media (max-width:720px) {
+  .course-webring__nav, .course-webring--entry .course-webring__nav { grid-template-columns:1fr; }
+  .course-webring__nav a:last-child { justify-content:flex-start; text-align:left; }
 }

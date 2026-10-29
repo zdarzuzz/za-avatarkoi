@@ -6,7 +6,8 @@
 .observations,
 .analysis,
 .review,
-.site-footer {
+.site-footer,
+.webring-wrap {
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
@@ -18,7 +19,8 @@
 .observations,
 .analysis,
 .review,
-.site-footer { padding-inline: var(--gutter-wide); }
+.site-footer,
+.webring-wrap { padding-inline: var(--gutter-wide); }
 
 /* Этапы, которые открывает сценарий. Без JS всё видно: тексты читаются и так. */
 html.js [data-gated]:not([data-shown]) { display: none; }
